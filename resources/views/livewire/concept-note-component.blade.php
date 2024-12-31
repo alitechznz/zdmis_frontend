@@ -3,7 +3,7 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-sm-6 p-0">
-                    <h3>Concept Note list</h3>
+                    <h3>Forecast Monitoring</h3>
                 </div>
                 <div class="col-sm-6 p-0">
                     <ol class="breadcrumb">
@@ -12,7 +12,7 @@
                                     <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
                                 </svg>
                             </a></li>
-                        <li class="breadcrumb-item">Concept Note</li>
+                        <li class="breadcrumb-item">Forecast Monitoring</li>
                     </ol>
                 </div>
             </div>
@@ -22,200 +22,179 @@
     <div class="container-fluid default-dashboard">
         <div class="card">
             <div class="card-body">
-                <div class="row mb-3">
 
-                    <div class="col-6">
-                        <div class="input-group">
-                            <input type="search" wire:model.live="search_keyword"
-                                   class="form-control form-control-sm w-auto"
-                                   placeholder="Search concept note....">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="float-end">
-                            @can('add  concept note')
-                                <a href="{{ route('concept-note-form') }}" class="btn btn-sm btn-primary" wire:click='create'
-                                ><i class="fa fa-plus"></i> Add New </a>
-                            @endcan
-                        </div>
-
-                    </div>
-
-
-                </div>
                 <div class="table-responsive custom-scrollbar">
-                    <table class="table table-bordered table-sm table-hover table-striped table-responsive custom-scrollbar-sm">
-                        <thead class="table-light">
-                        <tr class="text-capitalize">
-                            <th width="70">SN</th>
-                            <th>Project<small class="text-light">_</small>Title</th>
-                            <th>Project<small class="text-light">_</small>Time<small class="text-light">_</small>Frame</th>
-                            <th>Project<small class="text-light">_</small>Code</th>
-                            {{-- <th>Project<small class="text-light">_</small>GFS<small class="text-light">_</small>Code</th> --}}
-                            <th>Created<small class="text-light">_</small>Date</th>
-                            <th>Status</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @forelse ($conceptnote as $conceptnote_item)
-                            <tr>
-                                <td>{{ $loop->index + 1 }}</td>
-                                <td class="text-nowrap" title="{{ $conceptnote_item->projectname }}">{{ Str::limit($conceptnote_item->projectname, 50, ' ...') }}</td>
-                                <td class="text-nowrap">{{ date('Y-m-d', strtotime($conceptnote_item->startdate)) }}
-                                    - {{ date('Y-m-d', strtotime($conceptnote_item->enddate)) }}
-                                </td>
-                                <td>{{ $conceptnote_item->project_code }}</td>
-                                <td class="text-nowrap">{{ $conceptnote_item->created_at->format('d-m-Y H:i:s') }}</td>
-                                <td >
-                                    @if($conceptnote_item->process_status == 1)
-                                        @foreach ($conceptnote_item->decisionFlows as $decisionFlow)
-                                            @if($decisionFlow->status =="Initiated" && $decisionFlow->action=="accept")
-                                                <span class="badge badge-success"> Initiated</span>
-                                            @elseif($decisionFlow->status =="Initiated" && $decisionFlow->action=="reject")
-                                                <span class="badge badge-danger"> Initiated</span>
-                                            @endif
-                                        @endforeach
-                                    @elseif($conceptnote_item->process_status == 2)
-                                        @foreach ($conceptnote_item->decisionFlows as $decisionFlow)
-                                            @if($decisionFlow->status =="Verified" && $decisionFlow->action=='accept')
-                                                <span class="badge badge-success">Verified</span>
-                                            @elseif($decisionFlow->status =='Verified' && $decisionFlow->action=='reject')
-                                                <span class="badge badge-danger">Verified</span>
-                                            @endif
-                                        @endforeach
+                    <div class="col-xl-12 col-md-12 box-col-70">
+                        <div class="file-content">
+                          <div class="card">
+                            <div class="card-header">
+                              <div class="d-md-flex d-sm-block">
+                                <form class="form-inline" action="#" method="get">
+                                  <div class="form-group d-flex align-items-center mb-0">                                      <i class="fa fa-search"></i>
+                                    <input class="form-control-plaintext" type="text" placeholder="Search...">
+                                  </div>
+                                </form>
+                                <div class="flex-grow-1 text-end">
+                                  <form class="d-inline-flex" action="#" method="POST" enctype="multipart/form-data" name="myForm">
+                                    <div class="btn btn-primary" onclick="getFile()"> <i data-feather="plus-square"></i>Generate Alert</div>
+                                    <div style="height: 0px;width: 0px; overflow:hidden;">
+                                      <input id="upfile" type="file" onchange="sub(this)">
+                                    </div>
+                                  </form>
+                                  <div class="btn btn-outline-primary ms-2"><i data-feather="upload">   </i>TMA Dashboard   </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="card-body file-manager">
+                              <h5 class="mb-2">Fire Alert Satellite Visualization</h5>
+                              <ul class="quick-file d-flex flex-row">
+                                <li>
+                                    <a href="https://afis.co.za/" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-fire font-danger"></i></div>
+                                        <h6>Advanced Fire Information System (AFISA)</h6>
+                                    </a>
 
-                                    @elseif($conceptnote_item->process_status == 3)
-                                        @foreach ($conceptnote_item->decisionFlows as $decisionFlow)
-                                            @if($decisionFlow->status =='Submitted' && $decisionFlow->action=='accept')
-                                                <span class="badge badge-success">Submitted</span>
-                                            @elseif($decisionFlow->status =='Submitted' && $decisionFlow->action=='reject')
-                                                <span class="badge badge-danger">Submitted</span>
-                                            @endif
-                                        @endforeach
+                                </li>
+                                <li>
+                                    <a href="https://firms.modaps.eosdis.nasa.gov/map/#d:24hrs;@39.43,-6.27,10.54z" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-fire font-danger"></i></div>
+                                        <h6>FIRMS NASA (Fire Information Rapid Management System)</h6>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://gwis.jrc.ec.europa.eu/apps/gwis_current_situation/index.html" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-fire font-danger"></i></div>
+                                        <h6>Global Wildfire Information System (GWIS)</h6>
+                                    </a>
+                                </li>
 
-                                    @elseif($conceptnote_item->process_status == 4)
-                                        @foreach ($conceptnote_item->decisionFlows as $decisionFlow)
-                                            @if($decisionFlow->status =='ZPC Received' && $decisionFlow->action=='accept')
-                                                <span class="badge badge-success">ZPC-Received</span>
-                                            @elseif($decisionFlow->status =='ZPC Received' && $decisionFlow->action=='reject')
-                                                <span class="badge badge-danger">ZPC-Received</span>
-                                            @endif
-                                        @endforeach
+                              </ul><br /><br />
+                              <h5 class="mb-2">Weather Satellite Visualization</h5>
+                              <ul class="quick-file d-flex flex-row">
+                                <li>
+                                    <a href="https://zoom.earth/maps/pressure/#view=-6.2713,34.759,7z/model=icon" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-cloud font-warning"></i></div>
+                                        <h6>ZOOM EARTH</h6>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://open-meteo.com/en/docs/air-quality-api#hourly=pm10,pm2_5,dust,uv_index" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-cloud font-warning"></i></div>
+                                        <h6>Air Quality(Open Meteo)</h6>
+                                    </a>
 
-                                    @elseif($conceptnote_item->process_status == 5)
-                                        @foreach ($conceptnote_item->decisionFlows as $decisionFlow)
-                                            @if($decisionFlow->status =='ZPC Process' && $decisionFlow->action=='accept')
-                                                <span class="badge badge-success">ZPC-Process</span>
-                                            @elseif($decisionFlow->status =='ZPC Process' && $decisionFlow->action=='reject')
-                                                <span class="badge badge-danger">ZPC-Process</span>
-                                            @endif
-                                        @endforeach
+                                </li>
+                                <li>
+                                    <a href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-cloud font-warning"></i></div>
+                                        <h6>Marine Weather(Open Meteo)</h6>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://open-meteo.com/en/docs#latitude=-6.1639&longitude=39.1979&current=temperature_2m&hourly=temperature_2m&daily=weather_code&timezone=auto&past_days=92" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-cloud font-warning"></i></div>
+                                        <h6>Weather Forecast(Open Meteo)</h6>
+                                    </a>
+                                </li>
 
-                                    @elseif($conceptnote_item->process_status == 6)
-                                        <span class="badge badge-success">Approved</span>
-                                    @else
-                                        <span class="badge badge-warning">Created</span>
-                                    @endif
-                                </td>
+                                <li>
+                                    <a href="https://dashboard.openweather.co.uk/dashboard" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-cloud font-warning"></i></div>
+                                        <h6>Weather Forecast(Open Weather Map)</h6>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://satellites.pro/carte_de_la_Tanzanie#-5.777234,38.133545,8" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-cloud font-warning"></i></div>
+                                        <h6>Early Warning System(DE-WETRA)</h6>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.mydewetra.world/" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-cloud font-warning"></i></div>
+                                        <h6>Early Warning System(myDEWETRA)</h6>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://rsoe-edis.org/eventMap" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-cloud font-warning"></i></div>
+                                        <h6> EDIS System</h6>
+                                    </a>
+                                </li>
 
-                                <td style="display: flex; gap: 5px;">
-                                    <!-- Link to the View page -->
-                                    @can('view concept note')
-                                        <a href="{{ route('concept-note-view', $conceptnote_item->id) }}" class="btn btn-sm btn-info">View</a>
-                                    @endcan
+                              </ul>
+                              <br /><br />
+                              <h5 class="mb-2">Ocean Satellite Visualization</h5>
+                              <ul class="quick-file d-flex flex-row">
+                                <li>
+                                    <a href="https://open-meteo.com/en/docs/air-quality-api#hourly=pm10,pm2_5,dust,uv_index" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-anchor font-success"></i></div>
+                                        <h6>IORIS Emergency reporting & Disaster Alert</h6>
+                                    </a>
 
-                                    <!-- Link to the Edit page -->
-                                    @can('edit  concept note')
-                                        @if($conceptnote_item->process_status == 0 ||  $conceptnote_item->process_status == 10 || $conceptnote_item->return_status ==1)
-                                            <a href="{{ route('concept-note-edit', $conceptnote_item->id) }}" class="btn btn-sm btn-success">Edit</a>
-                                        @endif
-                                    @endcan
+                                </li>
 
-                                    @can('delete  concept note')
-                                        @if($conceptnote_item->process_status == 0 ||  $conceptnote_item->process_status == 10 || $conceptnote_item->return_status ==1)
-                                            <a href="#" class="btn btn-sm btn-danger"
-                                            wire:click="deleteConfirm({{$conceptnote_item->id}})"
-                                            data-bs-toggle="modal" data-bs-target="#deleteConceptNote">
-                                                Delete </a>
-                                        @endif
-                                    @endcan
+                                <li>
+                                    <a href="https://seavision.volpe.dot.gov/auth/login" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-anchor font-success"></i></div>
+                                        <h6>SEA VISION</h6>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.marinetraffic.com/en/ais/home/centerx:-12.0/centery:25.0/zoom:4#google_vignette" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-anchor font-success"></i></div>
+                                        <h6>MARINE TRAFFIC</h6>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://open-meteo.com/en/docs#latitude=-6.1639&longitude=39.1979&current=temperature_2m&hourly=temperature_2m&daily=weather_code&timezone=auto&past_days=92" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-anchor font-success"></i></div>
+                                        <h6>FULCRUM</h6>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.vesselfinder.com/vessels/details/9790971" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-anchor font-success"></i></div>
+                                        <h6>VESSEL FINDER</h6>
+                                    </a>
+                                </li>
+                              </ul>
+                              <br /><br />
+                              <h5 class="mb-2">Health Visualization</h5>
+                              <ul class="quick-file d-flex flex-row">
+                                <li>
+                                    <a href="https://open-meteo.com/en/docs/air-quality-api#hourly=pm10,pm2_5,dust,uv_index" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-heartbeat font-primary"></i></div>
+                                        <h6>SORMAS (Surveillance Outbreak Response Management and Analysis System)</h6>
+                                    </a>
 
-                                    @can('initiate concept note')
-                                        @if($conceptnote_item->process_status == 0 ||  $conceptnote_item->process_status == 10 || $conceptnote_item->return_status ==1)
-                                            <a href="#" wire:click="Initiate({{ $conceptnote_item->id }})"
-                                                class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#modal-initiateconcept">
-                                                Initiate </a>
-                                        @endif
-                                    @endcan
+                                </li>
+                                <li>
+                                    <a href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-heartbeat font-primary"></i></div>
+                                        <h6>DHIS2 (District Health Information Software 2)</h6>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://open-meteo.com/en/docs#latitude=-6.1639&longitude=39.1979&current=temperature_2m&hourly=temperature_2m&daily=weather_code&timezone=auto&past_days=92" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-heartbeat font-primary"></i></div>
+                                        <h6>TerraMA² ( environmental and public health risks)</h6>
+                                    </a>
+                                </li>
 
-                                    @can('verify concept note')
-                                        @if($conceptnote_item->process_status == 1)
-                                            <a href="#" wire:click="Initiate({{ $conceptnote_item->id }})"
-                                                class="btn btn-sm btn-secondary" data-bs-toggle="modal"
-                                                data-bs-target="#modal-verifyconcept">
-                                                Verify </a>
-                                        @endif
-                                    @endcan
+                                <li>
+                                    <a href="https://dashboard.openweather.co.uk/dashboard" target="_blank">
+                                        <div class="quick-box"><i class="fa fa-heartbeat font-primary"></i></div>
+                                        <h6>EIOS (Epidemic Intelligence from Open Sources)</h6>
+                                    </a>
+                                </li>
 
-                                    @can('submit concept note')
-                                        @if($conceptnote_item->process_status == 2)
-                                            <a href="#" wire:click="Initiate({{ $conceptnote_item->id }})"
-                                                class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#modal-submitconcept">
-                                                Submit </a>
-                                        @endif
-                                    @endcan
 
-                                    @can('receive concept note')
-                                        @if($conceptnote_item->process_status == 3)
-                                            <a href="#" wire:click="Initiate({{ $conceptnote_item->id }})"
-                                                class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                                data-bs-target="#modal-receiveconcept">
-                                                Receive </a>
-                                        @endif
-                                    @endcan
-
-                                    @can('open concept note')
-                                        @if($conceptnote_item->process_status == 4)
-                                        <a href="#" wire:click="Initiate({{ $conceptnote_item->id }})"
-                                            class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#modal-open">
-                                            Open </a>
-                                        @endif
-                                    @endcan
-
-                                     @can('approve concept note')
-                                        @if($conceptnote_item->process_status == 50)
-                                            <a href="#" wire:click="Initiate({{ $conceptnote_item->id }})"
-                                                class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#modal-approveconcept">
-                                                Approve </a>
-                                        @endif
-                                     @endcan
-
-                                     @can('screening concept note')
-                                        @if($conceptnote_item->process_status == 5)
-                                        <a href="{{ route('concept-note-screening', $conceptnote_item->id) }}"
-                                            class="btn btn-sm btn-info">Screening</a>
-                                        @endif
-                                    @endcan
-
-                                    @can('screening concept note')
-                                            <a href="{{ route('concept-note-decision', $conceptnote_item->id) }}"
-                                                class="btn btn-sm btn-warning">Feedback</a>
-
-                                    @endcan
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-danger text-center"> No Concept Note Found</td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-                    </table>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     {{-- {{ $appraisalquestions->links() }} --}}
                 </div>
             </div>

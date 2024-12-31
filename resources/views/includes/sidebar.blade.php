@@ -169,7 +169,7 @@
 
                     @canany(["long term","middle term","short term", 'international plan', 'regional plan'])
                         <li class="sidebar-main-title">
-                            <div><h6>Plan</h6></div>
+                            <div><h6>Incident Reporting</h6></div>
                         </li>
                         @canany(['long term', 'short term', 'middle term'])
                             <li class="sidebar-list">
@@ -181,7 +181,7 @@
                                     <svg class="fill-icon">
                                         <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
                                     </svg>
-                                    <span>National Plan</span>
+                                    <span>Incident Logging</span>
                                 </a>
                             </li>
                         @endcanany
@@ -195,7 +195,7 @@
                                     <svg class="fill-icon">
                                         <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
                                     </svg>
-                                    <span>Regional Plan</span>
+                                    <span>Automated Notifications</span>
                                 </a>
                             </li>
                         @endcan
@@ -209,7 +209,21 @@
                                     <svg class="fill-icon">
                                         <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
                                     </svg>
-                                    <span>Internation Plan</span>
+                                    <span>Incident Status Tracking</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('international plan')
+                            <li class="sidebar-list">
+                                <i class="fa fa-thumb-tack"></i>
+                                <a class="sidebar-link sidebar-title link-nav" href="{{ route('internation-plan') }}">
+                                    <svg class="stroke-icon">
+                                        <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
+                                    </svg>
+                                    <svg class="fill-icon">
+                                        <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
+                                    </svg>
+                                    <span>Review and Reporting</span>
                                 </a>
                             </li>
                         @endcan
@@ -217,7 +231,7 @@
 
                     @canany(["view concept note", "view concept note approval", "view project proposal"])
                         <li class="sidebar-main-title">
-                            <div><h6>Project Management</h6></div>
+                            <div><h6>Weather Data </h6></div>
                         </li>
                         @canany(["view concept note", "view concept note approval"])
                             <li class="sidebar-list">
@@ -229,14 +243,14 @@
                                     <svg class="fill-icon">
                                         <use href="../assets/svg/icon-sprite.svg#fill-to-do"></use>
                                     </svg>
-                                    <span class="">Concept Notes</span>
+                                    <span class="">Forecast</span>
                                 </a>
                                 <ul class="sidebar-submenu">
                                     @can('view concept note')
-                                    <li><a href="{{ route('concept-note-list') }}">Concept Note List</a></li>
+                                    <li><a href="{{ route('forecast-list') }}">Forecast Monitoring</a></li>
                                     @endcan
                                     @can('view concept note approval')
-                                    <li><a href="{{ route('concept-note-approved')}}">Concept Note Approved</a></li>
+                                    <li><a href="{{ route('concept-note-approved')}}">Forecast Evaluation</a></li>
                                     @endcan
                                     {{-- <li><a href="{{ route('concept-note-screening-list') }}">Screening List</a></li> --}}
                                     {{-- <li><a href="{{ route('concept-note-decision') }}">Concept Note Decision</a></li> --}}
@@ -253,66 +267,21 @@
                                     <svg class="fill-icon">
                                         <use href="../assets/svg/icon-sprite.svg#fill-to-do"></use>
                                     </svg>
-                                    <span class="">Project Proposal</span>
+                                    <span class="">Alert Reporting</span>
                                 </a>
                                 <ul class="sidebar-submenu">
                                     @can('view project proposal')
-                                        <li><a href="{{ route('proposal-list')}}">Project Proposal List</a></li>
+                                        <li><a href="{{ route('proposal-list')}}">Reporting</a></li>
                                     @endcan
                                     @can('view project proposal appraisal')
-                                        <li><a href="{{ route('proposal-appraisal') }}">Project Proposal Appraisal</a></li>
+                                        <li><a href="{{ route('proposal-appraisal') }}">Review and Analysis</a></li>
                                     @endcan
-                                    <li><a href="{{ route('proposal-appraisal-list') }}">Appraisal List</a></li>
-                                    @can('view proposal decision')
-                                        <li><a href="{{ route('proposal-decision')}}">Project Proposal Decision</a></li>
-                                    @endcan
+                                    <li><a href="{{ route('proposal-appraisal-list') }}">Visualize</a></li>
+
                                 </ul>
                             </li>
                         @endcanany
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="#">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-layout"></use>
-                                </svg>
-                                <span class="">Projects</span>
-                            </a>
-                            <ul class="sidebar-submenu">
-                                <li><a href="#">National Project</a></li>
-                                <li><a href="#">LGA's Project</a></li>
-                                <li><a href="{{ route('lga-challeges') }}">LGA's Challenge</a></li>
-                                <li><a href="{{ route('lga-project-concept-note') }}">LGA's Concept Note</a></li>
-                                <li><a href="{{ route('lga-approve-list') }}">Approve List</a></li>
-                                <li><a href="#">PPP Project</a></li>
-                                <li><a href="#">Investment Project</a></li>
-                                <li><a href="#">Wabunge & Wawakilishi Project</a></li>
-                                <li><a href="#">OFF Budget</a></li>
-                            </ul>
-                        </li>
 
-                        @can('request implementation')
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="#">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-to-do"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-to-do"></use>
-                                </svg>
-                                <span class="">Implementation</span></a>
-                            <ul class="sidebar-submenu">
-                                @can('view implementation request')
-                                    <li><a href="{{ route('view-request-implementations') }}">Request Implementation</a></li>
-                                @endcan
-                                <li><a href="{{ route('request-extension') }}">Request Extension</a></li>
-                                <li><a href="{{ route('manage-extension') }}">Manage Extension</a></li>
-                            </ul>
-                        </li>
-                        @endcan
                     @endcanany
 
 {{--                        @canany(['view region', 'view district', 'view shehia'])--}}
@@ -344,7 +313,7 @@
 
                     @canany(['view project financial'])
                     <li class="sidebar-main-title">
-                        <div><h6>Project Financing</h6></div>
+                        <div><h6>Communication</h6></div>
                     </li>
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
@@ -355,7 +324,7 @@
                             <svg class="fill-icon">
                                 <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
                             </svg>
-                            <span class="">Project Budget</span>
+                            <span class="">ZDMIS Bulk SMS</span>
                         </a>
                     </li>
                     <li class="sidebar-list">
@@ -367,7 +336,7 @@
                             <svg class="fill-icon">
                                 <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
                             </svg>
-                            <span class="">Development Partner</span>
+                            <span class="">ZDMIS Chart</span>
                         </a>
                     </li>
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
@@ -378,7 +347,7 @@
                             <svg class="fill-icon">
                                 <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
                             </svg>
-                            <span class="">Financing Agreement</span>
+                            <span class="">ZDMIS Toll-Free</span>
                         </a>
                     </li>
                     <li class="sidebar-list">
@@ -390,7 +359,7 @@
                             <svg class="fill-icon">
                                 <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
                             </svg>
-                            <span class="">Disbursing Amount</span>
+                            <span class="">AI-Powered</span>
                         </a>
                         <ul class="sidebar-submenu">
                                 <li><a href="{{ route('view-request-disbursings') }}">Request Disbursing</a></li>
@@ -410,116 +379,6 @@
                         </a>
                     </li> --}}
                     @endcanany
-
-                    @can('view project monitoring')
-                        <li class="sidebar-main-title">
-                            <div><h6>Project Monitoring</h6></div>
-                        </li>
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title link-nav" href="{{ route('m-e-plans') }}">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-animation"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-animation"></use>
-                                </svg>
-                                <span class="">M&E Plan</span>
-                            </a>
-                        </li>
-                        {{-- <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="{{ route('resource-lists') }}">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-widget"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-widget"></use>
-                                </svg>
-                                <span class="">Resource Tracking</span>
-                            </a>
-                        </li> --}}
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            @can('add monitoring')
-                            <a class="sidebar-link sidebar-title link-nav" href="{{ route('monitoring-form') }}">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-animation"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-animation"></use>
-                                </svg>
-                                <span class="">Monitoring Form</span>
-                            </a>
-                            @endcan
-
-                        </li>
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title link-nav" href="{{ route('resource-lists') }}">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-animation"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-animation"></use>
-                                </svg>
-                                <span class="">Implementation Rep..</span>
-                            </a>
-                        </li>
-                    @endcan
-
-                    @can('view project evaluation')
-                        <li class="sidebar-main-title">
-                            <div><h6>Project Evaluation</h6></div>
-                        </li>
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="#">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-builders"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-builders"></use>
-                                </svg>
-                                <span class="">Project Evaluation</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="#">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-builders"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-builders"></use>
-                                </svg>
-                                <span class="">Plan Evaluation</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="{{ route('users') }}">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-builders"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-builders"></use>
-                                </svg>
-                                <span class="">Org Evaluation</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="{{ route('roles') }}">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-builders"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-builders"></use>
-                                </svg>
-                                <span class="">Risks & Challenges</span>
-                            </a>
-                        </li>
-                    @endcan
 
                     @canany(['view user authentication', 'view user ministry', 'view user institution', 'view user department', 'view user municipal', 'view user rd committee', 'view role'])
                         <li class="sidebar-main-title">
@@ -584,81 +443,6 @@
                         @endcan
                     @endcanany
 
-                    @canany(['view program/project report', 'view stakeholder report', 'view monitoring report', 'view financing report', "view LGA's report"])
-                        <li class="sidebar-main-title">
-                            <div><h6>Reports</h6></div>
-                        </li>
-                        @can('view program/project report')
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="#">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-file"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-file"></use>
-                                </svg>
-                                <span class="">Program/Project</span>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('view stakeholder report')
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="#">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-file"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-file"></use>
-                                </svg>
-                                <span class="">Stakeholders</span>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('view stakeholder')
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="{{ route('users') }}">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-file"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-file"></use>
-                                </svg>
-                                <span class="">Monitoring</span>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('view monitoring report')
-                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="{{ route('roles') }}">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-file"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-file"></use>
-                                </svg>
-                                <span class="">Financing</span>
-                            </a>
-
-                        </li>
-                        @endcan
-                        @can('view financing report')
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="{{ route('roles') }}">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-file"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-file"></use>
-                                </svg>
-                                <span class="">LGAs</span>
-                            </a>
-                        </li>
-                        @endcan
-                    @endcanany
                 </ul>
             </div>
             <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>

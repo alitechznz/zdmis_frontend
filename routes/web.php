@@ -152,7 +152,7 @@ Route::middleware('auth')->prefix('v1')->group(function () {
 
 
     #Concept note
-    Route::get('concept-note-list', ConceptNoteComponent::class)->name('concept-note-list');
+    Route::get('forecast-list', ConceptNoteComponent::class)->name('forecast-list');
     Route::get('concept-note-form', ConceptNoteFormComponent::class)->name('concept-note-form');
     Route::get('concept-note-view/{id}', ConceptNoteFormViewComponentw::class)->name('concept-note-view');
     Route::get('concept-note-approved', ConceptNoteApprovalComponent::class)->name('concept-note-approved');
