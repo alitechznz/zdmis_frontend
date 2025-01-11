@@ -8,6 +8,6 @@ class WeatherDataFeedComponent extends Component
 {
     public function render()
     {
-        return view('livewire.weather-data-feed-component');
+        return view('livewire.weather-data-feed-component')->layout('layouts.app');;
     }
 }

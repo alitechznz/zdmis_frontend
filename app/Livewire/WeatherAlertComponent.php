@@ -8,6 +8,6 @@ class WeatherAlertComponent extends Component
 {
     public function render()
     {
-        return view('livewire.weather-alert-component');
+        return view('livewire.weather-alert-component')->layout('layouts.app');;
     }
 }
