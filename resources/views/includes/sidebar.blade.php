@@ -106,10 +106,22 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     @can('view screening question')
-                                        <li><a href="">Disaster Type</a></li>
+                                        <li><a href="">Hazard Type</a></li>
+                                    @endcan
+                                    @can('view screening question')
+                                        <li><a href="">Hazard Source</a></li>
                                     @endcan
                                     @can('view appraisal question')
-                                        <li><a href="">Progress Status</a></li>
+                                        <li><a href="">Hazard Status</a></li>
+                                    @endcan
+                                    @can('view appraisal question')
+                                        <li><a href="">Hazard Category</a></li>
+                                    @endcan
+                                    @can('view appraisal question')
+                                        <li><a href="">Weather Source</a></li>
+                                    @endcan
+                                    @can('view appraisal question')
+                                        <li><a href="">Measurement Unit</a></li>
                                     @endcan
 
                                 </ul>
