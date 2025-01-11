@@ -142,7 +142,7 @@
               stroke: none;
               fill: var(--theme-default);
               transition: all 0.5s ease;
-              path {  
+              path {
                 color: $header-wrapper-nav-icon-color;
               }
             }
@@ -1262,7 +1262,7 @@
           z-index: 9;
           height: auto;
           line-height: inherit;
-          background: $sidebar-background;
+          background: #334628;
           width: $sidebar-width;
           text-align: left;
           transition: 0.3s;
@@ -2577,7 +2577,7 @@
               fill: $theme-body-sub-title-color;
             }
           }
-        } 
+        }
       }
     }
   }
