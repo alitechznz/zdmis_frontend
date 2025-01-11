@@ -109,7 +109,7 @@
                                                 <div class="text-end mt-3">
                                                     <button class="btn btn-success btn-block w-40" type="submit">Sign in</button>
                                                     <button class="btn btn-info btn-block w-40" type="button">Register</button>
-                                                    <button class="btn btn-primary btn-block w-40" type="button">Report Incident</button>
+
                                                 </div>
                                             </div>
                                         </form>
