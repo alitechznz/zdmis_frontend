@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'dashboard' => 'Dashibodi',
+    'national_project' => 'Mradi wa Kitaifa',
+    'international_plan' => 'Mpango wa Kimataifa',
+    'regional_project' => 'Mradi wa Kikanda',
+    'Region' => 'Mkoa',
+    'Setup' => 'Mpangilio',
+    'BasicSetup' => 'Mipangilio Msingi',
+    'District' => 'Wilaya',
+    'lgas_project' => 'Mradi wa LGA',
+    'ppp' => 'Ubia wa Umma na Binafsi',
+    'location' => 'Mahali',
+    'basic_setup' => 'Mipangilio Msingi',
+    'incident_logging' => 'Kuingia Matukio',
+    'automated_notifications' => 'Taarifa Zinazotumwa Automatic',
+    'incident_status_tracking' => 'Ufuatiliaji wa Hali ya Tukio',
+    'forecast' => 'Tathmini',
+    'alert_reporting' => 'Ripoti ya Tahadhari',
+    'user_management' => 'Usimamizi wa Watumiaji',
+    'system_users' => 'Watumiaji wa Mfumo',
+    'Hazard_Type'=> 'Aina za Janga',
+    'Hazard_Source' => 'Vyanzo vya Janga',
+    'Hazard_Status' => 'Hali za Janga',
+    'Hazard_Category' => 'Janga Mchanganuo',
+    'Weather_Source' => 'Hali ya Hewa Vyanzo',
+    'Measurement_Unit' => 'Kipimo kiwango',
+    'role_and_permission' => 'Majukumu na Ruhusa'
+];

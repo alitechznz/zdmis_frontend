@@ -5,13 +5,16 @@
         }
     </style>
 @endpush
-<div class="sidebar-wrapper" data-layout="fill-svg">
+<div class="sidebar-wrapper" data-layout="fill-svg" style="background: #334628;">
     <div>
         <div class="logo-wrapper">
             <a href="#">
                 <img class="img-fluid" src="{{ asset('logo/logo.png') }}" alt="">
             </a>
             <div class="toggle-sidebar">
+                <a href="{{ route('switchLang', 'en') }}"><img src="{{ asset('icons/en.png') }}" alt="English"></a>
+                <a href="{{ route('switchLang', 'sw') }}"><img src="{{ asset('icons/sw.png') }}" alt="Swahili"></a>
+
                 <svg class="sidebar-toggle">
                     <use href="../assets/svg/icon-sprite.svg#toggle-icon"></use>
                 </svg>
@@ -38,7 +41,7 @@
                         </div>
                     </li>
                     <li class="pin-title sidebar-main-title">
-                        <div><h6>Pinned</h6></div>
+                        <div><h6 style="background: #334628;">Pinned</h6></div>
                     </li>
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
@@ -49,38 +52,32 @@
                             <svg class="fill-icon">
                                 <use href="../assets/svg/icon-sprite.svg#fill-home"></use>
                             </svg>
-                            <span>Dashboard </span>
+                            <span>{{ __('menu.dashboard') }}</span>
                         </a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="{{ route('home') }}">National Project</a></li>
-                            <li><a href="#">International Plan</a></li>
-                            <li><a href="#">Regional Project</a></li>
-                            <li><a href="#">LGA's Project</a></li>
-                            <li><a href="#">PPP</a></li>
-                        </ul>
+                       
                     </li>
 
                     @canany(['view region', 'view district', 'view shehia'])
                         <li class="sidebar-list">
                             <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title @if(request()->routeIs('regions')) active @endif" href="#">
+                            <a class="sidebar-link sidebar-title" href="#">
                                 <svg class="stroke-icon">
                                     <use href="../assets/svg/icon-sprite.svg#stroke-maps"></use>
                                 </svg>
                                 <svg class="fill-icon">
                                     <use href="../assets/svg/icon-sprite.svg#fill-maps"></use>
                                 </svg>
-                                <span >Location</span>
+                                <span>{{ __('menu.location') }}</span>
                             </a>
                             <ul class="sidebar-submenu">
                                 @can('view region')
-                                    <li><a href="{{ route('regions') }}" @if(request()->routeIs('regions')) class="active" @endif>Region</a></li>
+                                    <li><a href="">{{ __('menu.Region') }}</a></li>
                                 @endcan
                                 @can('view district')
-                                    <li><a href="{{ route('districts') }}">District</a></li>
+                                    <li><a href="">{{ __('menu.District') }}</a></li>
                                 @endcan
                                 @can('view shehia')
-                                    <li><a href="{{ route('shehias') }}">Shehia</a></li>
+                                    <li><a href="">Shehia</a></li>
                                 @endcan
                             </ul>
                         </li>
@@ -90,7 +87,7 @@
 
                     {{-- @canany(['view ministry', 'view department', 'view institution', 'view rd committee', 'view municipal council','view screening question', 'view appraisal question', 'view source of finance', 'view zpc calendar', 'view budget form', 'view unit value', 'view financial particular', 'view sector']) --}}
                         <li class="sidebar-main-title">
-                            <div><h6>Setup</h6></div>
+                            <div><h6 style="background: #334628;">{{ __('menu.Setup') }}</h6></div>
                         </li>
                         {{-- @canany(['view screening question', 'view appraisal question', 'view source of finance', 'view zpc calendar', 'view budget form', 'view unit value', 'view financial particular', 'view sector']) --}}
                             <li class="sidebar-list">
@@ -102,26 +99,26 @@
                                     <svg class="fill-icon">
                                         <use href="../assets/svg/icon-sprite.svg#fill-knowledgebase"></use>
                                     </svg>
-                                    <span class="">Basic Setup</span>
+                                    <span class="">{{ __('menu.BasicSetup') }}</span>
                                 </a>
                                 <ul class="sidebar-submenu">
                                     @can('view screening question')
-                                        <li><a href="">Hazard Type</a></li>
+                                        <li><a href="">{{ __('menu.basic_setup') }}</a></li>
                                     @endcan
                                     @can('view screening question')
-                                        <li><a href="">Hazard Source</a></li>
+                                        <li><a href="">{{ __('menu.Hazard_Source') }}</a></li>
                                     @endcan
                                     @can('view appraisal question')
-                                        <li><a href="">Hazard Status</a></li>
+                                        <li><a href="">{{ __('menu.Hazard_Status') }}</a></li>
                                     @endcan
                                     @can('view appraisal question')
-                                        <li><a href="">Hazard Category</a></li>
+                                        <li><a href="">{{ __('menu.Hazard_Category') }}</a></li>
                                     @endcan
                                     @can('view appraisal question')
-                                        <li><a href="">Weather Source</a></li>
+                                        <li><a href="">{{ __('menu.Weather_Source') }}</a></li>
                                     @endcan
                                     @can('view appraisal question')
-                                        <li><a href="">Measurement Unit</a></li>
+                                        <li><a href="">{{ __('menu.Measurement_Unit') }}</a></li>
                                     @endcan
 
                                 </ul>
@@ -141,20 +138,20 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 @can('view ministry')
-                                <li><a href="{{ route('ministry') }}">Ministries</a></li>
+                                <li><a href="">Ministries</a></li>
                                 @endcan
                                 @can('view institution')
-                                <li><a href="{{ route('institutions') }}">Institutions</a></li>
+                                <li><a href="">Institutions</a></li>
                                 @endcan
                                 @can('view department')
-                                <li><a href="{{ route('departments') }}">Departments</a></li>
+                                <li><a href="">Departments</a></li>
                                 @endcan
                                 @can('view rd committee')
                                 {{-- <li><a href="{{ route('divisions') }}">Division</a></li> --}}
-                                <li><a href="{{ route('rd-committees') }}">RD Committees</a></li>
+                                <li><a href="">RD Committees</a></li>
                                 @endcan
                                 @can('view municipal council')
-                                <li><a href="{{ route('municipal-council') }}">Municipal Council</a></li>
+                                <li><a href="">Municipal Council</a></li>
                                 @endcan
                                 {{-- <li><a href="{{ route('shehia-committees') }}">Shehia Committee</a></li> --}}
                             </ul>
@@ -164,7 +161,7 @@
 
                     {{-- @canany(["long term","middle term","short term", 'international plan', 'regional plan']) --}}
                         <li class="sidebar-main-title">
-                            <div><h6>Incident Reporting</h6></div>
+                            <div><h6 style="background: #334628;">Incident Reporting</h6></div>
                         </li>
                         {{-- @canany(['long term', 'short term', 'middle term']) --}}
                             <li class="sidebar-list">
@@ -226,7 +223,7 @@
 
                     {{-- @canany(["view concept note", "view concept note approval", "view project proposal"]) --}}
                         <li class="sidebar-main-title">
-                            <div><h6>Weather Data </h6></div>
+                            <div><h6 style="background: #334628;">Weather Data </h6></div>
                         </li>
                         {{-- @canany(["view concept note", "view concept note approval"]) --}}
                             <li class="sidebar-list">
@@ -242,7 +239,7 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     {{-- @can('view concept note') --}}
-                                    <li><a href="{{ route('forecast-list') }}">Forecast Monitoring</a></li>
+                                    <li><a href="">Forecast Monitoring</a></li>
                                     {{-- @endcan --}}
                                     {{-- @can('view concept note approval') --}}
                                     <li><a href="">Forecast Evaluation</a></li>
@@ -308,7 +305,7 @@
 
                     @canany(['view project financial'])
                     <li class="sidebar-main-title">
-                        <div><h6>Communication</h6></div>
+                        <div><h6 style="background: #334628;">Communication</h6></div>
                     </li>
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
@@ -377,12 +374,12 @@
 
                     @canany(['view user authentication', 'view user ministry', 'view user institution', 'view user department', 'view user municipal', 'view user rd committee', 'view role'])
                         <li class="sidebar-main-title">
-                            <div><h6>User Management</h6></div>
+                            <div><h6 style="background: #334628;">User Management</h6></div>
                         </li>
                         @can('view user authentication')
                             <li class="sidebar-list">
                                 <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="{{ route('users') }}">
+                                <a class="sidebar-link sidebar-title link-nav" href="">
                                     <svg class="stroke-icon">
                                         <use href="../assets/svg/icon-sprite.svg#stroke-user"></use>
                                     </svg>
@@ -405,17 +402,17 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 @can('view user ministry')
-                                <li><a href="{{ route('ministry.users') }}">Ministry User</a></li>
+                                <li><a href="">Ministry User</a></li>
                                 @endcan
                                 @can('view user institution')
-                                <li><a href="{{ route('institution.users') }}">Institution User</a></li>
+                                <li><a href="">Institution User</a></li>
                                 @endcan
                                 @can('view user department')
-                                <li><a href="{{ route('department.users') }}">Department User</a></li>
+                                <li><a href="">Department User</a></li>
                                 @endcan
                                 @can('view user municipal')
                                 {{-- <li><a href="{{ route('division.users') }}">Division User</a></li> --}}
-                                <li><a href="{{ route('municipal.users') }}">Municipal User</a></li>
+                                <li><a href="">Municipal User</a></li>
                                 @endcan
                                 @can('view user rd committee')
                                 <li><a href="">RD Committee User</a></li>
@@ -425,7 +422,7 @@
                         @can('view role')
                         <li class="sidebar-list">
                             <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title link-nav" href="{{ route('roles') }}">
+                            <a class="sidebar-link sidebar-title link-nav" href="">
                                 <svg class="stroke-icon">
                                     <use href="../assets/svg/icon-sprite.svg#stroke-others"></use>
                                 </svg>
