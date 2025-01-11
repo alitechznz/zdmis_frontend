@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\ConceptNoteComponent;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\WeatherDataFeedComponent;
+use App\Livewire\WeatherDataFeedComponent;
+use App\Livewire\WeatherAlertComponent;
+use App\Livewire\DocumentDownloadComponent;
 
 
 /*
@@ -21,7 +23,7 @@ use App\Http\Controllers\WeatherDataFeedComponent;
 
 Auth::routes();
 Route::get('/', [HomeController::class, 'index']);
-// Route::get('/download-pdf/{id}', [DocumentDownloadComponent::class, 'downloadPdf'])->name('download.pdf');
+Route::get('/download-pdf/{id}', [DocumentDownloadComponent::class, 'downloadPdf'])->name('download.pdf');
 
 Route::middleware('auth')->prefix('v1')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -54,19 +56,20 @@ Route::middleware('auth')->prefix('v1')->group(function () {
 
 
     #Concept note
-    Route::get('forecast-list', ConceptNoteComponent::class)->name('forecast-list');
-    // Route::get('reporting-data', WeatherDataFeedComponent::class)->name('reporting-data');
+    Route::get('/forecast-list', ConceptNoteComponent::class)->name('forecast-list');
+    Route::get('/reporting-data', WeatherDataFeedComponent::class)->name('reporting-data');
+    Route::get('/reporting-alerts', WeatherAlertComponent::class)->name('reporting-alerts');
 
     // Route::get('unit-values', UnitValueComponent::class)->name('unit-values');
     // Route::get('/concept-notes/{id}/view', [ConceptNoteComponent::class, 'view'])->name('concept-notes.view');
     // Route::get('/concept-notes/{id}/edit', [ConceptNoteComponent::class, 'edit'])->name('concept-notes.edit');
 
 
-    Route::get('lang/{language}', function ($language) {
-        Session::put('locale', $language);
-        return back();
-    })->name('switchLang');
-    
+    // Route::get('lang/{language}', function ($language) {
+    //     Session::put('locale', $language);
+    //     return back();
+    // })->name('switchLang');
+
 
 
     # PROJECT FINANCING

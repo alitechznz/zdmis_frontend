@@ -36,7 +36,7 @@
                                 </form>
                                 <div class="flex-grow-1 text-end">
                                   <form class="d-inline-flex" action="#" method="POST" enctype="multipart/form-data" name="myForm">
-                                    <div class="btn btn-primary" onclick="getFile()"> <i data-feather="plus-square"></i>Data Reporting</div> 
+                                    <a class="btn btn-primary" href=""> <i data-feather="plus-square"></i>Data Reporting</a>
                                     <div class="btn btn-warning" onclick="getFile()"> <i data-feather="plus-square"></i>Generate Alert</div>
                                     <div style="height: 0px;width: 0px; overflow:hidden;">
                                       <input id="upfile" type="file" onchange="sub(this)">

@@ -12,8 +12,8 @@
                 <img class="img-fluid" src="{{ asset('logo/logo.png') }}" alt="">
             </a>
             <div class="toggle-sidebar">
-                <a href="{{ route('switchLang', 'en') }}"><img src="{{ asset('icons/en.png') }}" alt="English"></a>
-                <a href="{{ route('switchLang', 'sw') }}"><img src="{{ asset('icons/sw.png') }}" alt="Swahili"></a>
+                {{-- <a href="{{ route('switchLang', 'en') }}"><img src="{{ asset('icons/en.png') }}" alt="English"></a>
+                <a href="{{ route('switchLang', 'sw') }}"><img src="{{ asset('icons/sw.png') }}" alt="Swahili"></a> --}}
 
                 <svg class="sidebar-toggle">
                     <use href="../assets/svg/icon-sprite.svg#toggle-icon"></use>
@@ -54,7 +54,7 @@
                             </svg>
                             <span>{{ __('menu.dashboard') }}</span>
                         </a>
-                       
+
                     </li>
 
                     @canany(['view region', 'view district', 'view shehia'])
