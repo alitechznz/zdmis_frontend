@@ -228,7 +228,7 @@
                         {{-- @canany(["view concept note", "view concept note approval"]) --}}
                             <li class="sidebar-list">
                                 <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title" href="{{ route('forecast-list') }}">
+                                <a class="sidebar-link sidebar-title" href="">
                                     <svg class="stroke-icon">
                                         <use href="../assets/svg/icon-sprite.svg#stroke-to-do"></use>
                                     </svg>
@@ -239,7 +239,7 @@
                                 </a>
                                 <ul class="sidebar-submenu">
                                     {{-- @can('view concept note') --}}
-                                    <li><a href="">Forecast Monitoring</a></li>
+                                    <li><a href="{{ route('forecast-list') }}">Forecast Monitoring</a></li>
                                     {{-- @endcan --}}
                                     {{-- @can('view concept note approval') --}}
                                     <li><a href="">Forecast Evaluation</a></li>

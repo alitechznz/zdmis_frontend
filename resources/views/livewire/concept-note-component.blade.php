@@ -36,13 +36,14 @@
                                 </form>
                                 <div class="flex-grow-1 text-end">
                                   <form class="d-inline-flex" action="#" method="POST" enctype="multipart/form-data" name="myForm">
-                                    <a class="btn btn-primary" href=""> <i data-feather="plus-square"></i>Data Reporting</a>
-                                    <div class="btn btn-warning" onclick="getFile()"> <i data-feather="plus-square"></i>Generate Alert</div>
+                                    <a class="btn btn-primary" href="{{ route('reporting-data')}}"> <i data-feather="plus-square"></i>Data Reporting</a>
+                                    <a class="btn btn-warning" href="{{ route('reporting-alerts')}}"> <i data-feather="plus-square"></i>Generate Alert</a>
+                                    <a class="btn btn-secondary" href="{{ route('import-tma-pdf')}}"> <i data-feather="plus-square"></i>Import TMA PDF</a>
                                     <div style="height: 0px;width: 0px; overflow:hidden;">
                                       <input id="upfile" type="file" onchange="sub(this)">
                                     </div>
                                   </form>
-                                  <div class="btn btn-outline-primary ms-2"><i data-feather="upload">   </i>TMA Dashboard   </div>
+                                  <a class="btn btn-outline-primary ms-2" href="{{ route('tma-dashboard')}}"><i data-feather="upload">   </i>TMA Dashboard   </a>
                                 </div>
                               </div>
                             </div>

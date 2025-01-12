@@ -8,7 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Livewire\WeatherDataFeedComponent;
 use App\Livewire\WeatherAlertComponent;
 use App\Livewire\DocumentDownloadComponent;
-
+use App\Livewire\ImportWeatherPdf;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +59,8 @@ Route::middleware('auth')->prefix('v1')->group(function () {
     Route::get('/forecast-list', ConceptNoteComponent::class)->name('forecast-list');
     Route::get('/reporting-data', WeatherDataFeedComponent::class)->name('reporting-data');
     Route::get('/reporting-alerts', WeatherAlertComponent::class)->name('reporting-alerts');
+    Route::get('/tma-dashboard', WeatherAlertComponent::class)->name('tma-dashboard');
+    Route::get('/import-tma-pdf', ImportWeatherPdf::class)->name('import-tma-pdf');
 
     // Route::get('unit-values', UnitValueComponent::class)->name('unit-values');
     // Route::get('/concept-notes/{id}/view', [ConceptNoteComponent::class, 'view'])->name('concept-notes.view');
