@@ -228,7 +228,7 @@
                         {{-- @canany(["view concept note", "view concept note approval"]) --}}
                             <li class="sidebar-list">
                                 <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title" href="">
+                                <a class="sidebar-link sidebar-title" href="#">
                                     <svg class="stroke-icon">
                                         <use href="../assets/svg/icon-sprite.svg#stroke-to-do"></use>
                                     </svg>

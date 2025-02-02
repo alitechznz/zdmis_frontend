@@ -50,5 +50,8 @@ class ImportWeatherPdf extends Component
                 'warnings'      => $warnings[1] ?? null,
             ]);
         }
+
+        // Refresh the $weatherData property to update the front end
+        $this->weatherData = WeatherData::latest()->take(10)->get();
     }
 }

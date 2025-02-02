@@ -33,13 +33,10 @@
     <div class="card">
         <div class="card-body">
             <div class="row mb-3">
-                <div class="col-6">
-                    <div class="input-group">
-                        <input type="search" wire:model.live="search_keyword" class="form-control form-control-sm w-auto"
-                               placeholder="Search district...">
-                    </div>
+                <div class="col-4">
+
                 </div>
-                <div class="col-6">
+                <div class="col-8">
                     <div class="float-end">
                         <form wire:submit.prevent="saveData">
                             <input type="file" wire:model="pdf">
@@ -87,7 +84,7 @@
             </div>
         </div>
     </div>
-   
+
     <script>
         function data() {
             return {
