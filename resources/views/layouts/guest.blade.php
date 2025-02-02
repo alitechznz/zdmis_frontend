@@ -53,9 +53,12 @@
             background-color: #000; /* Black background for better visibility */
         }
     </style>
+        @stack('styles')
+        @livewireStyles
 </head>
 <body>
     @yield('content')
+
     <!-- latest jquery-->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <!-- Bootstrap js-->
@@ -70,5 +73,7 @@
     <!-- Plugins JS Ends-->
     <!-- Theme js-->
     <script src="{{ asset('assets/js/script.js') }}"></script>
+    @stack('scripts')
+    @livewireScripts
 </body>
 </html>

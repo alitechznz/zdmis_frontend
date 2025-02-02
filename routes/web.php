@@ -5,11 +5,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\ConceptNoteComponent;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WeatherDataFeedController;
 use App\Livewire\WeatherDataFeedComponent;
+use App\Http\Controllers\WeatherAlertController;
 use App\Livewire\WeatherAlertComponent;
 use App\Livewire\DocumentDownloadComponent;
 use App\Livewire\ImportWeatherPdf;
 use App\Livewire\WeatherSatelliteComponent;
+use App\Livewire\Login;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,59 +25,81 @@ use App\Livewire\WeatherSatelliteComponent;
 |
 */
 
-Auth::routes();
-Route::get('/', [HomeController::class, 'index']);
+// Auth::routes();
+ Route::get('/', [HomeController::class, 'index']);
+// Route for the Login page
+// Route::get('/', Login::class)->name('/');
 Route::get('/download-pdf/{id}', [DocumentDownloadComponent::class, 'downloadPdf'])->name('download.pdf');
 
-Route::middleware('auth')->prefix('v1')->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+// Route::middleware('auth')->prefix('v1')->group(function () {
+//     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
 
-    # user setup
-    // Route::get('ministry', MinistryComponent::class)->name('ministry');
-    // Route::get('institutions', InstitutionComponent::class)->name('institutions');
-    // Route::get('departments', DepartmentComponent::class)->name('departments');
-    // Route::get('divisions', UnitComponent::class)->name('divisions');
-    // Route::get('rd-committees', RegionalAuthorityComponent::class)->name('rd-committees');
-    // Route::get('municipal-councils', MunicipalCouncilComponent::class)->name('municipal-council');
-    // Route::get('shehia-committees', ShehiaCommitteeComponent::class)->name('shehia-committees');
-    # user management
-    // Route::get('ministry/users', MinistryUserComponent::class)->name('ministry.users');
-    // Route::get('institution/users', InstitutionUserComponent::class)->name('institution.users');
-    // Route::get('department/users', DepartmentUserComponent::class)->name('department.users');
-    // Route::get('division/user', UnitUserComponent::class)->name('division.users');
-    // Route::get('municipal/users', MunicipalUserComponent::class)->name('municipal.users');
-    // Route::get('rd-committee/users', RdcUserComponent::class)->name('rd-committee.users');
+//     # user setup
+//     // Route::get('ministry', MinistryComponent::class)->name('ministry');
+//     // Route::get('institutions', InstitutionComponent::class)->name('institutions');
+//     // Route::get('departments', DepartmentComponent::class)->name('departments');
+//     // Route::get('divisions', UnitComponent::class)->name('divisions');
+//     // Route::get('rd-committees', RegionalAuthorityComponent::class)->name('rd-committees');
+//     // Route::get('municipal-councils', MunicipalCouncilComponent::class)->name('municipal-council');
+//     // Route::get('shehia-committees', ShehiaCommitteeComponent::class)->name('shehia-committees');
+//     # user management
+//     // Route::get('ministry/users', MinistryUserComponent::class)->name('ministry.users');
+//     // Route::get('institution/users', InstitutionUserComponent::class)->name('institution.users');
+//     // Route::get('department/users', DepartmentUserComponent::class)->name('department.users');
+//     // Route::get('division/user', UnitUserComponent::class)->name('division.users');
+//     // Route::get('municipal/users', MunicipalUserComponent::class)->name('municipal.users');
+//     // Route::get('rd-committee/users', RdcUserComponent::class)->name('rd-committee.users');
 
-    // Route::get('users', UserComponent::class)->name('users');
-    // Route::get('roles', RoleComponent::class)->name('roles');
-    // # location
-    // Route::get('regions', RegionComponent::class)->name('regions');
-    // Route::get('districts', DistrictComponent::class)->name('districts');
-    // Route::get('shehias', ShehiaComponent::class)->name('shehias');
-
-
-
-    #Concept note
-    Route::get('/forecast-list', WeatherSatelliteComponent::class)->name('forecast-list');
-    Route::get('/reporting-data', WeatherDataFeedComponent::class)->name('reporting-data');
-    Route::get('/reporting-alerts', WeatherAlertComponent::class)->name('reporting-alerts');
-    Route::get('/tma-dashboard', WeatherAlertComponent::class)->name('tma-dashboard');
-    Route::get('/import-tma-pdf', ImportWeatherPdf::class)->name('import-tma-pdf');
-
-    // Route::get('unit-values', UnitValueComponent::class)->name('unit-values');
-    // Route::get('/concept-notes/{id}/view', [ConceptNoteComponent::class, 'view'])->name('concept-notes.view');
-    // Route::get('/concept-notes/{id}/edit', [ConceptNoteComponent::class, 'edit'])->name('concept-notes.edit');
-
-
-    // Route::get('lang/{language}', function ($language) {
-    //     Session::put('locale', $language);
-    //     return back();
-    // })->name('switchLang');
+//     // Route::get('users', UserComponent::class)->name('users');
+//     // Route::get('roles', RoleComponent::class)->name('roles');
+//     // # location
+//     // Route::get('regions', RegionComponent::class)->name('regions');
+//     // Route::get('districts', DistrictComponent::class)->name('districts');
+//     // Route::get('shehias', ShehiaComponent::class)->name('shehias');
 
 
 
-    # PROJECT FINANCING
+//     #Concept note
+//     Route::get('/forecast-list', WeatherSatelliteComponent::class)->name('forecast-list');
+//     // Route::get('/reporting-data', WeatherDataFeedController::class)->name('reporting-data');
+//     Route::get('/reporting-data', WeatherDataFeedComponent::class)->name('reporting-data');
+//     Route::get('/reporting-alerts', WeatherAlertComponent::class)->name('reporting-alerts');
+//     Route::get('/tma-dashboard', WeatherAlertComponent::class)->name('tma-dashboard');
+//     Route::get('/import-tma-pdf', ImportWeatherPdf::class)->name('import-tma-pdf');
 
-});
+
+//     // Fetch all posts
+//     Route::get('/posts', [WeatherDataFeedController::class, 'getPosts']);
+//     Route::get('/posts', [WeatherDataFeedController::class, 'getPosts']);
+//     Route::get('/posts', [WeatherDataFeedController::class, 'getPosts']);
+
+//     // Fetch a single post
+//     Route::get('/posts/{id}', [WeatherDataFeedController::class, 'getPost']);
+//     Route::get('/posts/{id}', [WeatherDataFeedController::class, 'getPost']);
+
+//     // Create a new post
+//     Route::post('/posts', [WeatherDataFeedController::class, 'createPost']);
+
+//     // Update an existing post
+//     Route::put('/posts/{id}', [WeatherDataFeedController::class, 'updatePost']);
+
+//     // Delete a post
+//     Route::delete('/posts/{id}', [WeatherDataFeedController::class, 'deletePost']);
+
+//     // Route::get('unit-values', UnitValueComponent::class)->name('unit-values');
+//     // Route::get('/concept-notes/{id}/view', [ConceptNoteComponent::class, 'view'])->name('concept-notes.view');
+//     // Route::get('/concept-notes/{id}/edit', [ConceptNoteComponent::class, 'edit'])->name('concept-notes.edit');
+
+
+//     // Route::get('lang/{language}', function ($language) {
+//     //     Session::put('locale', $language);
+//     //     return back();
+//     // })->name('switchLang');
+
+
+
+//     # PROJECT FINANCING
+
+// });
