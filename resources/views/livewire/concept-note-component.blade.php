@@ -165,7 +165,8 @@
                               <h5 class="mb-2">Health Visualization</h5>
                               <ul class="quick-file d-flex flex-row">
                                 <li>
-                                    <a href="https://open-meteo.com/en/docs/air-quality-api#hourly=pm10,pm2_5,dust,uv_index" target="_blank">
+                                    {{-- https://github.com/SORMAS-Foundation/SORMAS-Project?tab=readme-ov-file --}}
+                                    <a href="https://demo.sormas.org/sormas-ui/login" target="_blank">
                                         <div class="quick-box"><i class="fa fa-heartbeat font-primary"></i></div>
                                         <h6>SORMAS (Surveillance Outbreak Response Management and Analysis System)</h6>
                                     </a>

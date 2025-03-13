@@ -1,8 +1,6 @@
 <div>
-    {{-- @extends('layouts.guest')
 
-     --}}
-     @section('content')
+
     <style>
         /* General Carousel Styling */
         #login-main {
@@ -88,11 +86,11 @@
                                                 <h3 style="text-align:center;">Zanzibar Disaster Management Commission</h3>
                                                 <h2 style="text-align:center;">ZDMIS System</h2>
                                                 <div class="form-group">
-                                                    <input class="form-control @error('email') is-invalid @enderror" type="email" wire:model="email" required="" placeholder="Enter your email" style="background-color: white;">
+                                                    <input class="form-control @error('email') is-invalid @enderror" type="text" wire:model="email" required="" placeholder="Enter your email" style="background-color: white;">
                                                     @error('email')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
@@ -132,5 +130,13 @@
                 </div>
             </div>
         </div>
-        @endsection
+        @push('scripts')
+        <script>
+            document.addEventListener('livewire:load', function () {
+                Livewire.on('loginSuccess', () => {
+                    window.location.href = '/home'; // JavaScript-based redirection
+                });
+            });
+        </script>
+    @endpush
 </div>

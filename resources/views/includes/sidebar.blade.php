@@ -57,7 +57,7 @@
 
                     </li>
 
-                    @canany(['view region', 'view district', 'view shehia'])
+                    {{-- @canany(['view region', 'view district', 'view shehia']) --}}
                         <li class="sidebar-list">
                             <i class="fa fa-thumb-tack"></i>
                             <a class="sidebar-link sidebar-title" href="#">
@@ -70,18 +70,18 @@
                                 <span>{{ __('menu.location') }}</span>
                             </a>
                             <ul class="sidebar-submenu">
-                                @can('view region')
+                                {{-- @can('view region') --}}
                                     <li><a href="">{{ __('menu.Region') }}</a></li>
-                                @endcan
-                                @can('view district')
+                                {{-- @endcan --}}
+                                {{-- @can('view district') --}}
                                     <li><a href="">{{ __('menu.District') }}</a></li>
-                                @endcan
-                                @can('view shehia')
+                                {{-- @endcan --}}
+                                {{-- @can('view shehia') --}}
                                     <li><a href="">Shehia</a></li>
-                                @endcan
+                                {{-- @endcan --}}
                             </ul>
                         </li>
-                    @endcanany
+                    {{-- @endcanany --}}
 
 
 
@@ -102,24 +102,25 @@
                                     <span class="">{{ __('menu.BasicSetup') }}</span>
                                 </a>
                                 <ul class="sidebar-submenu">
-                                    @can('view screening question')
+                                    {{-- @can('view screening question') --}}
+                                        <li><a href="{{ route('/majukumu')}}">Majukumu</a></li>
                                         <li><a href="">{{ __('menu.basic_setup') }}</a></li>
-                                    @endcan
-                                    @can('view screening question')
+                                    {{-- @endcan --}}
+                                    {{-- @can('view screening question') --}}
                                         <li><a href="">{{ __('menu.Hazard_Source') }}</a></li>
-                                    @endcan
-                                    @can('view appraisal question')
+                                    {{-- @endcan --}}
+                                    {{-- @can('view appraisal question') --}}
                                         <li><a href="">{{ __('menu.Hazard_Status') }}</a></li>
-                                    @endcan
-                                    @can('view appraisal question')
+                                    {{-- @endcan --}}
+                                    {{-- @can('view appraisal question') --}}
                                         <li><a href="">{{ __('menu.Hazard_Category') }}</a></li>
-                                    @endcan
-                                    @can('view appraisal question')
+                                    {{-- @endcan --}}
+                                    {{-- @can('view appraisal question') --}}
                                         <li><a href="">{{ __('menu.Weather_Source') }}</a></li>
-                                    @endcan
-                                    @can('view appraisal question')
+                                    {{-- @endcan --}}
+                                    {{-- @can('view appraisal question') --}}
                                         <li><a href="">{{ __('menu.Measurement_Unit') }}</a></li>
-                                    @endcan
+                                    {{-- @endcan --}}
 
                                 </ul>
                             </li>
@@ -137,43 +138,81 @@
                                 <span class="">M<small>DA</small> / L<small>GA</small>'s Setup</span>
                             </a>
                             <ul class="sidebar-submenu">
-                                @can('view ministry')
+                                {{-- @can('view ministry') --}}
                                 <li><a href="">Ministries</a></li>
-                                @endcan
-                                @can('view institution')
+                                {{-- @endcan --}}
+                                {{-- @can('view institution') --}}
                                 <li><a href="">Institutions</a></li>
-                                @endcan
-                                @can('view department')
+                                {{-- @endcan --}}
+                                {{-- @can('view department') --}}
                                 <li><a href="">Departments</a></li>
-                                @endcan
-                                @can('view rd committee')
+                                {{-- @endcan --}}
+                                {{-- @can('view rd committee') --}}
                                 {{-- <li><a href="{{ route('divisions') }}">Division</a></li> --}}
                                 <li><a href="">RD Committees</a></li>
-                                @endcan
-                                @can('view municipal council')
+                                {{-- @endcan --}}
+                                {{-- @can('view municipal council') --}}
                                 <li><a href="">Municipal Council</a></li>
-                                @endcan
+                                {{-- @endcan --}}
                                 {{-- <li><a href="{{ route('shehia-committees') }}">Shehia Committee</a></li> --}}
                             </ul>
                         </li>
                         {{-- @endcanany --}}
                     {{-- @endcanany --}}
-
+                    <li class="sidebar-main-title">
+                        <div><h6 style="background: #334628;">Matayarisho (Preparation)</h6></div>
+                    </li>
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist')}}">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
+                            </svg>
+                            <span>Elimu na Mafunzo</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist')}}">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
+                            </svg>
+                            <span>Machapisho</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist')}}">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
+                            </svg>
+                            <span>Resource Inventory</span>
+                        </a>
+                    </li>
                     {{-- @canany(["long term","middle term","short term", 'international plan', 'regional plan']) --}}
                         <li class="sidebar-main-title">
-                            <div><h6 style="background: #334628;">Incident Reporting</h6></div>
+                            <div><h6 style="background: #334628;"> Response </h6></div>
                         </li>
                         {{-- @canany(['long term', 'short term', 'middle term']) --}}
                             <li class="sidebar-list">
                                 <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="">
+                                <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist')}}">
                                     <svg class="stroke-icon">
                                         <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
                                     </svg>
                                     <svg class="fill-icon">
                                         <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
                                     </svg>
-                                    <span>Incident Logging</span>
+                                    <span>Orodha ya Matukio</span>
                                 </a>
                             </li>
                         {{-- @endcanany --}}
@@ -187,7 +226,7 @@
                                     <svg class="fill-icon">
                                         <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
                                     </svg>
-                                    <span>Automated Notifications</span>
+                                    <span>Tuma Tukio</span>
                                 </a>
                             </li>
                         {{-- @endcan --}}
@@ -201,12 +240,12 @@
                                     <svg class="fill-icon">
                                         <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
                                     </svg>
-                                    <span>Incident Status Tracking</span>
+                                    <span>Fatilia Tukio</span>
                                 </a>
                             </li>
                         {{-- @endcan --}}
                         {{-- @can('international plan') --}}
-                            <li class="sidebar-list">
+                            {{-- <li class="sidebar-list">
                                 <i class="fa fa-thumb-tack"></i>
                                 <a class="sidebar-link sidebar-title link-nav" href="">
                                     <svg class="stroke-icon">
@@ -217,14 +256,12 @@
                                     </svg>
                                     <span>Review and Reporting</span>
                                 </a>
-                            </li>
+                            </li> --}}
                         {{-- @endcan --}}
                     {{-- @endcanany --}}
 
                     {{-- @canany(["view concept note", "view concept note approval", "view project proposal"]) --}}
-                        <li class="sidebar-main-title">
-                            <div><h6 style="background: #334628;">Weather Data </h6></div>
-                        </li>
+
                         {{-- @canany(["view concept note", "view concept note approval"]) --}}
                             <li class="sidebar-list">
                                 <i class="fa fa-thumb-tack"></i>
@@ -235,11 +272,12 @@
                                     <svg class="fill-icon">
                                         <use href="../assets/svg/icon-sprite.svg#fill-to-do"></use>
                                     </svg>
-                                    <span class="">Forecast</span>
+                                    <span class="">Utabiri (Forecast)</span>
                                 </a>
                                 <ul class="sidebar-submenu">
                                     {{-- @can('view concept note') --}}
                                     <li><a href="{{ route('forecast-list') }}">Forecast Monitoring</a></li>
+                                    {{-- <li><a href="">Forecast Monitoring</a></li> --}}
                                     {{-- @endcan --}}
                                     {{-- @can('view concept note approval') --}}
                                     <li><a href="">Forecast Evaluation</a></li>
@@ -302,7 +340,21 @@
 {{--                            </li>--}}
 {{--                        @endcanany--}}
 
-
+                    <li class="sidebar-main-title">
+                        <div><h6 style="background: #334628;">Recovery </h6></div>
+                    </li>
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist')}}">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
+                            </svg>
+                            <span>Damage Assessment</span>
+                        </a>
+                    </li>
                     @canany(['view project financial'])
                     <li class="sidebar-main-title">
                         <div><h6 style="background: #334628;">Communication</h6></div>

@@ -15,7 +15,7 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-sm-6 p-0">
-                    <h3>Kuweka Taarifa </h3>
+                    <h3>Orodha ya Matukio </h3>
                 </div>
                 {{-- <div class="col-sm-6 p-0">
                     <ol class="breadcrumb">
@@ -42,8 +42,8 @@
                 <div class="col-6">
                     <div class="float-end">
                         {{-- @can('add shehia') --}}
-                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-shehia" wire:click='create'
-                        ><i class="fa fa-plus"></i> Weka Taarifa </a>
+                        {{-- <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-shehia" wire:click='create'
+                        ><i class="fa fa-plus"></i> Weka Taarifa </a> --}}
                         {{-- @endcan --}}
 
                     </div>
@@ -55,12 +55,12 @@
                     <thead class="table-light">
                     <tr class="text-capitalize">
                         <th>SN</th>
-                        <th @click="sortByColumn" class="cursor-pointer select-none">Chanzo <span class="float-end text-secondary">&#8645;</span>
-                        </th><th @click="sortByColumn" class="cursor-pointer select-none">Aina <span class="float-end text-secondary">&#8645;</span>
-                        </th><th @click="sortByColumn" class="cursor-pointer select-none">Thamani (Value) <span class="float-end text-secondary">&#8645;</span>
-                        </th><th @click="sortByColumn" class="cursor-pointer select-none">Kipimo (SI Unit) <span class="float-end text-secondary">&#8645;</span>
+                        <th @click="sortByColumn" class="cursor-pointer select-none">Aina ya Tukio <span class="float-end text-secondary">&#8645;</span>
+                        </th><th @click="sortByColumn" class="cursor-pointer select-none">Maelezo <span class="float-end text-secondary">&#8645;</span>
+                        </th><th @click="sortByColumn" class="cursor-pointer select-none">Mahala <span class="float-end text-secondary">&#8645;</span>
+                        </th><th @click="sortByColumn" class="cursor-pointer select-none">Tarehe iliyowasilishwa <span class="float-end text-secondary">&#8645;</span>
                         </th><th @click="sortByColumn" class="cursor-pointer select-none">Imewasilishwa <span class="float-end text-secondary">&#8645;</span>
-                        </th><th @click="sortByColumn" class="cursor-pointer select-none">Hali <span class="float-end text-secondary">&#8645;</span>
+                        </th><th @click="sortByColumn" class="cursor-pointer select-none">Hali (status) <span class="float-end text-secondary">&#8645;</span>
                         </th>
                         <th width="220">Hatua</th>
                     </tr>
