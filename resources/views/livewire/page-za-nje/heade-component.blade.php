@@ -275,7 +275,7 @@
         </div>
         <div class="col-lg-10">
             <div class="marquee">
-                <p>✶ 2022 - Zanzibar Population: 1,889,773; Male Population: 630,677; Female Population: 672,892 ✶ ✶ 2023 - Zanzibar Annual GDP: 6% ✶ Recent Updates as example ocgs.mjeda.me ✶</p>
+                <p>✶ March 2025 - Mvua Kubwa za masika zinatarajiwa; ✶ ✶ 2025 - Chemsa Maji na safisha  mazingira yaliyokuzunga ✶ Maradhi ya MPOX yapo Epuka kugusana na kupeyana mikono na kukusanyika ✶</p>
             </div>
         </div>
 
