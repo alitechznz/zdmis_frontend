@@ -8,6 +8,6 @@ class WeatherSatelliteComponent extends Component
 {
     public function render()
     {
-        return view('livewire.weather-satellite-component');
+        return view('livewire.weather-satellite-component')->layout('layouts.app');
     }
 }

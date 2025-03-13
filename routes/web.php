@@ -5,10 +5,25 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\ConceptNoteComponent;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WeatherDataFeedController;
 use App\Livewire\WeatherDataFeedComponent;
+use App\Http\Controllers\WeatherAlertController;
 use App\Livewire\WeatherAlertComponent;
+use App\Livewire\MatukioComponent;
 use App\Livewire\DocumentDownloadComponent;
-
+use App\Livewire\ImportWeatherPdf;
+use App\Livewire\WeatherSatelliteComponent;
+use App\Livewire\Login;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\mainPageController;
+use App\Http\Controllers\majukumuController;
+use App\Http\Controllers\ElimuMafunzoController;
+use App\Http\Controllers\NjeDashibodiController;
+use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\WasilishaTukioController;
+use App\Livewire\ElimuMafunzo;
+use Mpdf\Shaper\Indic;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,57 +36,34 @@ use App\Livewire\DocumentDownloadComponent;
 |
 */
 
-Auth::routes();
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/login', [mainPageController::class, 'index'])->name('login');
+Route::get('/', [HomeController::class, 'index'])->name('/');
+
+Route::get('/elimu', [ElimuMafunzoController::class, 'index'])->name('elimu');
+Route::get('/tukio', [WasilishaTukioController::class, 'index'])->name('tukio');
+Route::get('/nje', [NjeDashibodiController::class, 'index'])->name('nje');
+Route::get('/subscriber', [SubscriberController::class, 'index'])->name('subscriber');
+
+
 Route::get('/download-pdf/{id}', [DocumentDownloadComponent::class, 'downloadPdf'])->name('download.pdf');
+Route::middleware(['auth.token'])->group(function () {
+    Route::get('/dashboard', [dashboardController::class, 'index'])->name('/dashboard');
 
-Route::middleware('auth')->prefix('v1')->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    //usajili wa majukumu
+    Route::get('/majukumu',[majukumuController::class, 'index'])->name('/majukumu');
+    Route::get('/majukumu/create',[majukumuController::class, 'create'])->name('create');
 
+    // Web Routes
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+    //weather
+    Route::get('/import-tma-pdf', ConceptNoteComponent::class)->name('import-tma-pdf');
 
-    # user setup
-    // Route::get('ministry', MinistryComponent::class)->name('ministry');
-    // Route::get('institutions', InstitutionComponent::class)->name('institutions');
-    // Route::get('departments', DepartmentComponent::class)->name('departments');
-    // Route::get('divisions', UnitComponent::class)->name('divisions');
-    // Route::get('rd-committees', RegionalAuthorityComponent::class)->name('rd-committees');
-    // Route::get('municipal-councils', MunicipalCouncilComponent::class)->name('municipal-council');
-    // Route::get('shehia-committees', ShehiaCommitteeComponent::class)->name('shehia-committees');
-    # user management
-    // Route::get('ministry/users', MinistryUserComponent::class)->name('ministry.users');
-    // Route::get('institution/users', InstitutionUserComponent::class)->name('institution.users');
-    // Route::get('department/users', DepartmentUserComponent::class)->name('department.users');
-    // Route::get('division/user', UnitUserComponent::class)->name('division.users');
-    // Route::get('municipal/users', MunicipalUserComponent::class)->name('municipal.users');
-    // Route::get('rd-committee/users', RdcUserComponent::class)->name('rd-committee.users');
-
-    // Route::get('users', UserComponent::class)->name('users');
-    // Route::get('roles', RoleComponent::class)->name('roles');
-    // # location
-    // Route::get('regions', RegionComponent::class)->name('regions');
-    // Route::get('districts', DistrictComponent::class)->name('districts');
-    // Route::get('shehias', ShehiaComponent::class)->name('shehias');
-
-
-
-    #Concept note
-    Route::get('/forecast-list', ConceptNoteComponent::class)->name('forecast-list');
+    Route::get('/forecast-list', WeatherSatelliteComponent::class)->name('forecast-list');
     Route::get('/reporting-data', WeatherDataFeedComponent::class)->name('reporting-data');
     Route::get('/reporting-alerts', WeatherAlertComponent::class)->name('reporting-alerts');
+    Route::get('/tma-dashboard', WeatherAlertComponent::class)->name('tma-dashboard');
 
-    // Route::get('unit-values', UnitValueComponent::class)->name('unit-values');
-    // Route::get('/concept-notes/{id}/view', [ConceptNoteComponent::class, 'view'])->name('concept-notes.view');
-    // Route::get('/concept-notes/{id}/edit', [ConceptNoteComponent::class, 'edit'])->name('concept-notes.edit');
-
-
-    // Route::get('lang/{language}', function ($language) {
-    //     Session::put('locale', $language);
-    //     return back();
-    // })->name('switchLang');
-
-
-
-    # PROJECT FINANCING
+    Route::get('/matukiolist', MatukioComponent::class)->name('matukiolist');
 
 });

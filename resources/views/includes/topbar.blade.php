@@ -1,7 +1,7 @@
 <div class="page-header">
     <div class="header-wrapper row m-0">
       <div class="header-logo-wrapper col-auto p-0">
-        <div class="logo-wrapper"><a href="{{ route('home') }}"><img class="img-fluid for-light" src="../assets/images/logo/logo-1.png" alt=""><img class="img-fluid for-dark" src="../assets/images/logo/logo.png" alt=""></a></div>
+        <div class="logo-wrapper"><a href="{{ route('/dashboard') }}"><img class="img-fluid for-light" src="../assets/images/logo/logo-1.png" alt=""><img class="img-fluid for-dark" src="../assets/images/logo/logo.png" alt=""></a></div>
         <div class="toggle-sidebar">
           <svg class="sidebar-toggle">
             <use href="../assets/svg/icon-sprite.svg#stroke-animation"></use>
@@ -65,7 +65,7 @@
           </li>
           <li class="profile-nav onhover-dropdown p-0">
             <div class="d-flex align-items-center profile-media"><img class="b-r-10 img-40" src="../assets/images/dashboard/profile.png" alt="">
-              <div class="flex-grow-1"><span>{{ auth()->user()->name }}</span>
+              <div class="flex-grow-1"><span>Name</span>
                 <p class="mb-0">UI Designer </p>
               </div>
             </div>
@@ -78,7 +78,7 @@
                       <a href="{{ route('logout') }}"
                          onclick="event.preventDefault(); this.closest('form').submit();">
                           <i data-feather="log-out"></i>
-                          {{ __('Logout') }}
+                          logout
                       </a>
                   </form>
               </li>

@@ -4,9 +4,6 @@ namespace App\Livewire;
 
 use App\Models\User;
 use App\Models\ConceptNote;
-use App\Models\DecisionFlow;
-use App\Models\RequestImplementation;
-use App\Models\ProjectCalender;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -21,8 +18,8 @@ class HomeComponent extends Component
     public $ConceptNote;
     public function render()
     {
-        $this->t_concept = ConceptNote::whereIn('process_status', [0, 1, 2, 3, 4, 5, 10])->count();
-        $this->t_proposal = ConceptNote::where('process_status', 6)->count();
+        // $this->t_concept = ConceptNote::whereIn('process_status', [0, 1, 2, 3, 4, 5, 10])->count();
+        // $this->t_proposal = ConceptNote::where('process_status', 6)->count();
 
         // $this->ConceptNote = ConceptNote::with([
         //     'sector',
@@ -40,33 +37,30 @@ class HomeComponent extends Component
         // $this->administrative_unit = auth()->user()->ministryUser?->ministry->name;
 
 
-        //upcomming
-        $today = Carbon::now();
-        $upcomingDeadlines = ProjectCalender::select([
-            'startdate',
-            'enddate',
-            'activity',
-            DB::raw('DATEDIFF(startdate, CURDATE()) AS days_remaining') // Calculates days remaining until startdate
-        ])->where('startdate', '>', $today)->get();
+        // //upcomming
+        // $today = Carbon::now();
+        // $upcomingDeadlines = ProjectCalender::select([
+        //     'startdate',
+        //     'enddate',
+        //     'activity',
+        //     DB::raw('DATEDIFF(startdate, CURDATE()) AS days_remaining') // Calculates days remaining until startdate
+        // ])->where('startdate', '>', $today)->get();
 
-        foreach ($upcomingDeadlines as $deadline) {
-            $totalDuration = $deadline->enddate->diffInDays($deadline->startdate);
-            $daysRemaining = $deadline->days_remaining;
+        // foreach ($upcomingDeadlines as $deadline) {
+        //     $totalDuration = $deadline->enddate->diffInDays($deadline->startdate);
+        //     $daysRemaining = $deadline->days_remaining;
 
-            // Avoid division by zero
-            if ($totalDuration > 0) {
-                $percentageRemaining = ($daysRemaining / $totalDuration) * 100;
-            } else {
-                $percentageRemaining = 0; // Handle cases where startdate and enddate might be the same
-            }
+        //     // Avoid division by zero
+        //     if ($totalDuration > 0) {
+        //         $percentageRemaining = ($daysRemaining / $totalDuration) * 100;
+        //     } else {
+        //         $percentageRemaining = 0; // Handle cases where startdate and enddate might be the same
+        //     }
 
-            $deadline->percentage_remaining = round($percentageRemaining, 2);
-        }
+        //     $deadline->percentage_remaining = round($percentageRemaining, 2);
+        // }
 
 
-        return view('livewire.home-component', [
-            'upcomingDeadlines' => $upcomingDeadlines,
-            // 'deadline'=> $deadline,
-        ]);
+        return view('livewire.home-component');
     }
 }

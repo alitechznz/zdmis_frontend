@@ -22,6 +22,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\LocaleMiddleware::class,
+        
     ];
 
     /**
@@ -71,5 +72,10 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+    ];
+
+    protected $routeMiddleware = [
+        // existing middleware...
+        'auth.token' => \App\Http\Middleware\AuthToken::class,
     ];
 }

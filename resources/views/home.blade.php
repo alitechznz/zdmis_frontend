@@ -1,5 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.guest')
 
 @section('content')
-    @livewire('home-component')
+    @livewire('main-page-component')
 @endsection

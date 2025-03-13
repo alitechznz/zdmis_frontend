@@ -13,7 +13,7 @@ use App\Models\DepartmentUser;
 use App\Models\Ministry;
 use App\Models\Institution;
 use App\Models\Department;
-use App\Models\DecisionFlow;
+// use App\Models\DecisionFlow;
 
 class ConceptNote extends Model
 {
@@ -33,50 +33,17 @@ class ConceptNote extends Model
     {
         return $this->belongsTo(Sector::class, 'sector_id');
     }
-    public function explaination(){
-        return $this->hasOne(ConceptNoteExplanation::class, 'conceptNote_id');
-    }
-    public function finacialAggrement(){
-        return $this->hasOne(ConceptNoteFinanceArrangement::class, 'concept_note_id');
-    }
-    public function plans()
-    {
-        return $this->hasMany(Plan::class, 'id', 'selected_plans');
-    }
-    public function outcome() : HasOne {
-        return $this->hasOne(ConceptNoteOutcome::class, 'conceptnote_id');
-    }
-    public function projectLocations() : HasMany {
-        return $this->hasMany(ConceptNoteLocation::class, 'concept_note_id');
-    }
-    public function projectPrograms() : HasMany {
-        return $this->hasMany(ConceptNoteProgramProject::class, 'concept_note_id');
-    }
-    public function projectProposalOutcomes() : HasMany {
-        return $this->hasMany(ProjectProposalOutcome::class, 'concept_note_id');
-    }
-    public function projectProposalOutputs() : HasMany {
-        return $this->hasMany(ProjectProposalOutput::class, 'concept_note_id');
-    }
-    public function projectProposalActivities() : HasMany {
-        return $this->hasMany(ProjectProposalActivity::class, 'concept_note_id');
-    }
-    public function projectProposalIndicators() : HasMany {
-        return $this->hasMany(ProjectProposalIndicator::class, 'concept_note_id');
-    }
-    public function projectProposalAttachments() : HasMany {
-        return $this->hasMany(ProjectProposalAttachment::class, 'concept_note_id');
-    }
+
+
+
+
 
     public function organization() : BelongsTo {
         return $this->belongsTo(Ministry::class, 'organization_name');
     }
 
     // In ConceptNote model
-    public function decisionFlows()
-    {
-        return $this->hasMany(DecisionFlow::class, 'conceptnote_id');
-    }
+
      protected static function boot()
      {
          parent::boot();

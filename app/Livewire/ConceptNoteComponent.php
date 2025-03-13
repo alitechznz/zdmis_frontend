@@ -403,9 +403,8 @@ class ConceptNoteComponent extends Component
             $ConceptNote->where('id', $this->search_keyword)
                 ->orWhere('projectname', 'like', '%' . $this->search_keyword . '%');
         }
-        $ConceptNote = $ConceptNote->paginate();
+        // $ConceptNote = $ConceptNote->paginate();
 
-        return view('livewire.concept-note-component', ['conceptnote' => $ConceptNote
-        ])->layout('layouts.app');
+        return view('livewire.concept-note-component')->layout('layouts.app');
     }
 }
