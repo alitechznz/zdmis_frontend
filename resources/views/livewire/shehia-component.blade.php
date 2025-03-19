@@ -35,64 +35,76 @@
             <div class="row mb-3">
                 <div class="col-6">
                     <div class="input-group">
-                        <input type="search" wire:model.live="search_keyword" class="form-control form-control-sm w-auto"
-                               placeholder="Search shehia...">
+                        <input type="search" wire:model.live="search_keyword"
+                            class="form-control form-control-sm w-auto" placeholder="Search shehia...">
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="float-end">
-                        @can('add shehia')
-                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-shehia" wire:click='create'
-                        ><i class="fa fa-plus"></i> Add New </a>
-                        @endcan
-                      
+
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#modal-shehia" wire:click='create'><i class="fa fa-plus"></i> Add New </a>
+
+
                     </div>
 
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered table-sm table-hover table-striped table-responsive custom-scrollbar-sm">
+                <table
+                    class="table table-bordered table-sm table-hover table-striped table-responsive custom-scrollbar-sm">
                     <thead class="table-light">
-                    <tr class="text-capitalize">
-                        <th>SN</th>
-                        <th @click="sortByColumn" class="cursor-pointer select-none">Name <span class="float-end text-secondary">&#8645;</span>
-                        </th><th @click="sortByColumn" class="cursor-pointer select-none">District <span class="float-end text-secondary">&#8645;</span>
-                        </th><th @click="sortByColumn" class="cursor-pointer select-none">Status <span class="float-end text-secondary">&#8645;</span>
-                        </th>
-                        <th width="220">Actions</th>
-                    </tr>
+                        <tr class="text-capitalize">
+                            <th>SN</th>
+                            <th @click="sortByColumn" class="cursor-pointer select-none">Name <span
+                                    class="float-end text-secondary">&#8645;</span>
+                            </th>
+                            {{-- <th @click="sortByColumn" class="cursor-pointer select-none">District <span
+                                    class="float-end text-secondary">&#8645;</span>
+                            </th> --}}
+                            <th @click="sortByColumn" class="cursor-pointer select-none">Status <span
+                                    class="float-end text-secondary">&#8645;</span>
+                            </th>
+                            <th width="220">Actions</th>
+                        </tr>
                     </thead>
                     <tbody x-ref="tbody">
-                    @php $sn = 1; @endphp
-                    @forelse ($shehias as $shehia)
+                        @php $sn = 1; @endphp
+                        @forelse ($shehias as $shehia)
+                            <tr>
+                                <td>{{ $sn }}</td>
+                                <td>{{ $shehia->shehiaName }}</td>
+                                {{-- <td>{{ $shehia->district->name }}</td> --}}
+                                <td>
+                                    <span
+                                        class="badge {{ $shehia->status == 'active' ? 'badge-light-success' : 'badge-light-danger' }}">
+                                        {{ ucfirst($shehia->status) }}
+                                    </span>
+                                </td>
+                                <td style="display: flex; gap: 5px;">
 
-                        <tr>
-                            <td>{{ $sn }}</td>
-                            <td>{{ $shehia->name }}</td>
-                            <td>{{ $shehia->district->name }}</td>
-                            <td><span class="badge badge-light-success">{{ ucfirst($shehia->status) }}</td>
-                            <td style="display: flex; gap: 5px;">
-                                @can('edit shehia')
-                                <a href="#" wire:click="edit({{ $shehia->id }})"
-                                    class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modal-shehia">
-                                     Edit </a>
-                                @endcan
+                                    <a href="#" wire:click="edit({{ $shehia->id }})"
+                                        class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#modal-shehia">
+                                        Edit </a>
 
-                                @can('delete shehia')
-                                <a href="#" class="btn btn-sm btn-danger" wire:click="deleteConfirm({{$shehia->id}})"
-                                    data-bs-toggle="modal" data-bs-target="#deleteModalshehia">
-                                     Delete </a>
-                                @endcan
-                               
-                               
-                            </td>
-                        </tr>
-                        @php $sn++; @endphp
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-danger text-center"> No Shehia Found</td>
-                        </tr>
-                    @endforelse
+
+
+                                    <a href="#" class="btn btn-sm btn-danger"
+                                        wire:click="destroy({{ $shehia->id }})" data-bs-toggle="modal"
+                                        data-bs-target="">
+                                        Delete </a>
+
+
+
+                                </td>
+                            </tr>
+                            @php $sn++; @endphp
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-danger text-center"> No Shehia Found</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
                 {{ $shehias->links() }}
@@ -100,54 +112,68 @@
         </div>
     </div>
     <!-- Modal Content -->
-    <div class="modal fade" wire:ignore.self id="modal-shehia" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal fade" wire:ignore.self id="modal-shehia" tabindex="-1" role="dialog"
+        aria-labelledby="modal-default" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="h6 modal-title">@if($update) Update @else Add @endif Shehia</h2>
+                    <h2 class="h6 modal-title">
+                        @if ($update)
+                            Update
+                        @else
+                            Add
+                        @endif Shehia
+                    </h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div  class="row">
+                    <div class="row">
                         <div class="mb-4">
                             <label for="name">Shehia Name <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="name" class="form-control @error("name") is-invalid @enderror" id="name" placeholder="Enter Shehia Name">
-                            @error("name")
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                            <input type="text" wire:model="name"
+                                class="form-control @error('name') is-invalid @enderror" id="name"
+                                placeholder="Enter Shehia Name">
+                            @error('name')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                         <div class="mb-4">
                             <label for="district">District <span class="text-danger">*</span></label>
-                            <select wire:model="district" class="form-control @error("district") is-invalid @enderror" id="district">
+                            <select wire:model="district" class="form-control @error('district') is-invalid @enderror"
+                                id="district">
                                 <option value="">--Choose--</option>
-                                @foreach($districts as $district)
+                                @foreach ($districts as $district)
                                     <option value="{{ $district->id }}">{{ $district->name }}</option>
                                 @endforeach
                             </select>
-                            @error("district")
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                            @error('district')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                         <div class="mb-4">
                             <label for="status">Status <span class="text-danger">*</span></label>
-                            <select wire:model="status" class="form-control @error("status") is-invalid @enderror" id="status">
+                            <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
+                                id="status">
                                 <option value="">--Choose--</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
                             </select>
-                            @error("status")
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                            @error('status')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal" wire:click='create'>Close</button>
-                            <button type="button" wire:click.prevent="store" class="{{ $update ? 'btn btn-success' : 'btn btn-primary' }}">  {{ $update ? 'Update' : 'Add' }}</button>
+                            <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal"
+                                wire:click='create'>Close</button>
+                            <button type="button" wire:click.prevent="store"
+                                class="{{ $update ? 'btn btn-success' : 'btn btn-primary' }}">
+                                {{ $update ? 'Update' : 'Add' }}</button>
                         </div>
                     </div>
                 </div>
@@ -157,18 +183,23 @@
     <!-- End of Modal Content -->
 
     <!-- Delete Modal -->
-    <div wire:ignore.self class="modal fade" id="deleteModalshehia" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="deleteModalshehia" data-backdrop="false" tabindex="-1"
+        role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Delete Confirm </h5>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure want to delete <strong>{{ $delete_confirm? $delete_confirm->name: ''  }}</strong> ?</p>
+                    <p>Are you sure want to delete <strong>{{ $delete_confirm ? $delete_confirm->name : '' }}</strong>
+                        ?
+                    </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" wire:click.prevent="destroy()" class="btn btn-danger close-modal" data-bs-dismiss="modal">Yes, Delete</button>
+                    <button type="button" class="btn btn-secondary close-btn"
+                        data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" wire:click.prevent="destroy()" class="btn btn-danger close-modal"
+                        data-bs-dismiss="modal">Yes, Delete</button>
                 </div>
             </div>
         </div>
@@ -213,11 +244,11 @@
                     return (a, b) =>
                         ((row1, row2) => {
                             return row1 !== "" &&
-                            row2 !== "" &&
-                            !isNaN(row1) &&
-                            !isNaN(row2)
-                                ? row1 - row2
-                                : row1.toString().localeCompare(row2);
+                                row2 !== "" &&
+                                !isNaN(row1) &&
+                                !isNaN(row2) ?
+                                row1 - row2 :
+                                row1.toString().localeCompare(row2);
                         })(
                             this.getCellValue(this.sortAsc ? a : b, index),
                             this.getCellValue(this.sortAsc ? b : a, index)
