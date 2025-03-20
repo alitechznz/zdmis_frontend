@@ -1,7 +1,8 @@
 @push('styles')
     <style>
         .bg-active {
-            background-color: #56540B !important; /* This will change the text color to the specified greenish-yellow when active */
+            background-color: #56540B !important;
+            /* This will change the text color to the specified greenish-yellow when active */
         }
     </style>
 @endpush
@@ -41,7 +42,9 @@
                         </div>
                     </li>
                     <li class="pin-title sidebar-main-title">
-                        <div><h6 style="background: #334628;">Pinned</h6></div>
+                        <div>
+                            <h6 style="background: #334628;">Pinned</h6>
+                        </div>
                     </li>
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
@@ -58,113 +61,117 @@
                     </li>
 
                     {{-- @canany(['view region', 'view district', 'view shehia']) --}}
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="#">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-maps"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-maps"></use>
-                                </svg>
-                                <span>{{ __('menu.location') }}</span>
-                            </a>
-                            <ul class="sidebar-submenu">
-                                {{-- @can('view region') --}}
-                                    <li><a href="">{{ __('menu.Region') }}</a></li>
-                                {{-- @endcan --}}
-                                {{-- @can('view district') --}}
-                                    <li><a href="">{{ __('menu.District') }}</a></li>
-                                {{-- @endcan --}}
-                                {{-- @can('view shehia') --}}
-                                    <li><a href="">Shehia</a></li>
-                                {{-- @endcan --}}
-                            </ul>
-                        </li>
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-maps"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-maps"></use>
+                            </svg>
+                            <span>{{ __('menu.location') }}</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            {{-- @can('view region') --}}
+                            <li><a href="{{ route('region') }}">{{ __('menu.Region') }}</a></li>
+                            {{-- @endcan --}}
+                            {{-- @can('view district') --}}
+                            <li><a href="{{ route('district') }}">{{ __('menu.District') }}</a></li>
+                            {{-- @endcan --}}
+                            {{-- @can('view shehia') --}}
+                            <li><a href="{{ route('shehia') }}">Shehia</a></li>
+                            {{-- @endcan --}}
+                        </ul>
+                    </li>
                     {{-- @endcanany --}}
 
 
 
-                    {{-- @canany(['view ministry', 'view department', 'view institution', 'view rd committee', 'view municipal council','view screening question', 'view appraisal question', 'view source of finance', 'view zpc calendar', 'view budget form', 'view unit value', 'view financial particular', 'view sector']) --}}
-                        <li class="sidebar-main-title">
-                            <div><h6 style="background: #334628;">{{ __('menu.Setup') }}</h6></div>
-                        </li>
-                        {{-- @canany(['view screening question', 'view appraisal question', 'view source of finance', 'view zpc calendar', 'view budget form', 'view unit value', 'view financial particular', 'view sector']) --}}
-                            <li class="sidebar-list">
-                                <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <svg class="stroke-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#stroke-knowledgebase"></use>
-                                    </svg>
-                                    <svg class="fill-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#fill-knowledgebase"></use>
-                                    </svg>
-                                    <span class="">{{ __('menu.BasicSetup') }}</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    {{-- @can('view screening question') --}}
-                                        <li><a href="{{ route('/majukumu')}}">Majukumu</a></li>
-                                        <li><a href="">{{ __('menu.basic_setup') }}</a></li>
-                                    {{-- @endcan --}}
-                                    {{-- @can('view screening question') --}}
-                                        <li><a href="">{{ __('menu.Hazard_Source') }}</a></li>
-                                    {{-- @endcan --}}
-                                    {{-- @can('view appraisal question') --}}
-                                        <li><a href="">{{ __('menu.Hazard_Status') }}</a></li>
-                                    {{-- @endcan --}}
-                                    {{-- @can('view appraisal question') --}}
-                                        <li><a href="">{{ __('menu.Hazard_Category') }}</a></li>
-                                    {{-- @endcan --}}
-                                    {{-- @can('view appraisal question') --}}
-                                        <li><a href="">{{ __('menu.Weather_Source') }}</a></li>
-                                    {{-- @endcan --}}
-                                    {{-- @can('view appraisal question') --}}
-                                        <li><a href="">{{ __('menu.Measurement_Unit') }}</a></li>
-                                    {{-- @endcan --}}
+                    {{-- @canany(['view ministry', 'view department', 'view institution', 'view rd committee', 'view municipal council', 'view screening question', 'view appraisal question', 'view source of finance', 'view zpc calendar', 'view budget form', 'view unit value', 'view financial particular', 'view sector']) --}}
+                    <li class="sidebar-main-title">
+                        <div>
+                            <h6 style="background: #334628;">{{ __('menu.Setup') }}</h6>
+                        </div>
+                    </li>
+                    {{-- @canany(['view screening question', 'view appraisal question', 'view source of finance', 'view zpc calendar', 'view budget form', 'view unit value', 'view financial particular', 'view sector']) --}}
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-knowledgebase"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-knowledgebase"></use>
+                            </svg>
+                            <span class="">{{ __('menu.BasicSetup') }}</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            {{-- @can('view screening question') --}}
+                            <li><a href="{{ route('/majukumu') }}">Majukumu</a></li>
+                            <li><a href="">{{ __('menu.basic_setup') }}</a></li>
+                            {{-- @endcan --}}
+                            {{-- @can('view screening question') --}}
+                            <li><a href="">{{ __('menu.Hazard_Source') }}</a></li>
+                            {{-- @endcan --}}
+                            {{-- @can('view appraisal question') --}}
+                            <li><a href="">{{ __('menu.Hazard_Status') }}</a></li>
+                            {{-- @endcan --}}
+                            {{-- @can('view appraisal question') --}}
+                            <li><a href="">{{ __('menu.Hazard_Category') }}</a></li>
+                            {{-- @endcan --}}
+                            {{-- @can('view appraisal question') --}}
+                            <li><a href="">{{ __('menu.Weather_Source') }}</a></li>
+                            {{-- @endcan --}}
+                            {{-- @can('view appraisal question') --}}
+                            <li><a href="">{{ __('menu.Measurement_Unit') }}</a></li>
+                            {{-- @endcan --}}
 
-                                </ul>
-                            </li>
-                        {{-- @endcanany --}}
-                        {{-- @canany(['view ministry', 'view institution', 'view department', 'view rd committee', 'view municipal council']) --}}
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title " href="#">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-knowledgebase"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-knowledgebase"></use>
-                                </svg>
-                                <span class="">M<small>DA</small> / L<small>GA</small>'s Setup</span>
-                            </a>
-                            <ul class="sidebar-submenu">
-                                {{-- @can('view ministry') --}}
-                                <li><a href="">Ministries</a></li>
-                                {{-- @endcan --}}
-                                {{-- @can('view institution') --}}
-                                <li><a href="">Institutions</a></li>
-                                {{-- @endcan --}}
-                                {{-- @can('view department') --}}
-                                <li><a href="">Departments</a></li>
-                                {{-- @endcan --}}
-                                {{-- @can('view rd committee') --}}
-                                {{-- <li><a href="{{ route('divisions') }}">Division</a></li> --}}
-                                <li><a href="">RD Committees</a></li>
-                                {{-- @endcan --}}
-                                {{-- @can('view municipal council') --}}
-                                <li><a href="">Municipal Council</a></li>
-                                {{-- @endcan --}}
-                                {{-- <li><a href="{{ route('shehia-committees') }}">Shehia Committee</a></li> --}}
-                            </ul>
-                        </li>
-                        {{-- @endcanany --}}
+                        </ul>
+                    </li>
+                    {{-- @endcanany --}}
+                    {{-- @canany(['view ministry', 'view institution', 'view department', 'view rd committee', 'view municipal council']) --}}
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title " href="#">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-knowledgebase"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-knowledgebase"></use>
+                            </svg>
+                            <span class="">M<small>DA</small> / L<small>GA</small>'s Setup</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            {{-- @can('view ministry') --}}
+                            <li><a href="">Ministries</a></li>
+                            {{-- @endcan --}}
+                            {{-- @can('view institution') --}}
+                            <li><a href="">Institutions</a></li>
+                            {{-- @endcan --}}
+                            {{-- @can('view department') --}}
+                            <li><a href="">Departments</a></li>
+                            {{-- @endcan --}}
+                            {{-- @can('view rd committee') --}}
+                            {{-- <li><a href="{{ route('divisions') }}">Division</a></li> --}}
+                            <li><a href="">RD Committees</a></li>
+                            {{-- @endcan --}}
+                            {{-- @can('view municipal council') --}}
+                            <li><a href="">Municipal Council</a></li>
+                            {{-- @endcan --}}
+                            {{-- <li><a href="{{ route('shehia-committees') }}">Shehia Committee</a></li> --}}
+                        </ul>
+                    </li>
+                    {{-- @endcanany --}}
                     {{-- @endcanany --}}
                     <li class="sidebar-main-title">
-                        <div><h6 style="background: #334628;">Matayarisho (Preparation)</h6></div>
+                        <div>
+                            <h6 style="background: #334628;">Matayarisho (Preparation)</h6>
+                        </div>
                     </li>
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist')}}">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist') }}">
                             <svg class="stroke-icon">
                                 <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
                             </svg>
@@ -176,7 +183,7 @@
                     </li>
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist')}}">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist') }}">
                             <svg class="stroke-icon">
                                 <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
                             </svg>
@@ -188,7 +195,7 @@
                     </li>
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist')}}">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist') }}">
                             <svg class="stroke-icon">
                                 <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
                             </svg>
@@ -198,54 +205,56 @@
                             <span>Resource Inventory</span>
                         </a>
                     </li>
-                    {{-- @canany(["long term","middle term","short term", 'international plan', 'regional plan']) --}}
-                        <li class="sidebar-main-title">
-                            <div><h6 style="background: #334628;"> Response </h6></div>
-                        </li>
-                        {{-- @canany(['long term', 'short term', 'middle term']) --}}
-                            <li class="sidebar-list">
-                                <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist')}}">
-                                    <svg class="stroke-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
-                                    </svg>
-                                    <svg class="fill-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
-                                    </svg>
-                                    <span>Orodha ya Matukio</span>
-                                </a>
-                            </li>
-                        {{-- @endcanany --}}
-                        {{-- @can('regional plan') --}}
-                            <li class="sidebar-list">
-                                <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="">
-                                    <svg class="stroke-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
-                                    </svg>
-                                    <svg class="fill-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
-                                    </svg>
-                                    <span>Tuma Tukio</span>
-                                </a>
-                            </li>
-                        {{-- @endcan --}}
-                        {{-- @can('international plan') --}}
-                            <li class="sidebar-list">
-                                <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="">
-                                    <svg class="stroke-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
-                                    </svg>
-                                    <svg class="fill-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
-                                    </svg>
-                                    <span>Fatilia Tukio</span>
-                                </a>
-                            </li>
-                        {{-- @endcan --}}
-                        {{-- @can('international plan') --}}
-                            {{-- <li class="sidebar-list">
+                    {{-- @canany(['long term', 'middle term', 'short term', 'international plan', 'regional plan']) --}}
+                    <li class="sidebar-main-title">
+                        <div>
+                            <h6 style="background: #334628;"> Response </h6>
+                        </div>
+                    </li>
+                    {{-- @canany(['long term', 'short term', 'middle term']) --}}
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist') }}">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
+                            </svg>
+                            <span>Orodha ya Matukio</span>
+                        </a>
+                    </li>
+                    {{-- @endcanany --}}
+                    {{-- @can('regional plan') --}}
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
+                            </svg>
+                            <span>Tuma Tukio</span>
+                        </a>
+                    </li>
+                    {{-- @endcan --}}
+                    {{-- @can('international plan') --}}
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
+                            </svg>
+                            <span>Fatilia Tukio</span>
+                        </a>
+                    </li>
+                    {{-- @endcan --}}
+                    {{-- @can('international plan') --}}
+                    {{-- <li class="sidebar-list">
                                 <i class="fa fa-thumb-tack"></i>
                                 <a class="sidebar-link sidebar-title link-nav" href="">
                                     <svg class="stroke-icon">
@@ -257,95 +266,97 @@
                                     <span>Review and Reporting</span>
                                 </a>
                             </li> --}}
-                        {{-- @endcan --}}
+                    {{-- @endcan --}}
                     {{-- @endcanany --}}
 
-                    {{-- @canany(["view concept note", "view concept note approval", "view project proposal"]) --}}
+                    {{-- @canany(['view concept note', 'view concept note approval', 'view project proposal']) --}}
 
-                        {{-- @canany(["view concept note", "view concept note approval"]) --}}
-                            <li class="sidebar-list">
-                                <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <svg class="stroke-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#stroke-to-do"></use>
-                                    </svg>
-                                    <svg class="fill-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#fill-to-do"></use>
-                                    </svg>
-                                    <span class="">Utabiri (Forecast)</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    {{-- @can('view concept note') --}}
-                                    <li><a href="{{ route('forecast-list') }}">Forecast Monitoring</a></li>
-                                    {{-- <li><a href="">Forecast Monitoring</a></li> --}}
-                                    {{-- @endcan --}}
-                                    {{-- @can('view concept note approval') --}}
-                                    <li><a href="">Forecast Evaluation</a></li>
-                                    {{-- @endcan --}}
-                                    {{-- <li><a href="{{ route('concept-note-screening-list') }}">Screening List</a></li> --}}
-                                    {{-- <li><a href="{{ route('concept-note-decision') }}">Concept Note Decision</a></li> --}}
-                                </ul>
-                            </li>
-                        {{-- @endcanany --}}
-                        {{-- @canany(['view project proposal']) --}}
-                            <li class="sidebar-list">
-                                <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title" href="#">
-                                    <svg class="stroke-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#stroke-to-do"></use>
-                                    </svg>
-                                    <svg class="fill-icon">
-                                        <use href="../assets/svg/icon-sprite.svg#fill-to-do"></use>
-                                    </svg>
-                                    <span class="">Alert Reporting</span>
-                                </a>
-                                <ul class="sidebar-submenu">
-                                    @can('view project proposal')
-                                        <li><a href="">Reporting</a></li>
-                                    @endcan
-                                    @can('view project proposal appraisal')
-                                        <li><a href="">Review and Analysis</a></li>
-                                    @endcan
-                                    <li><a href="">Visualize</a></li>
+                    {{-- @canany(['view concept note', 'view concept note approval']) --}}
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-to-do"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-to-do"></use>
+                            </svg>
+                            <span class="">Utabiri (Forecast)</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            {{-- @can('view concept note') --}}
+                            <li><a href="{{ route('forecast-list') }}">Forecast Monitoring</a></li>
+                            {{-- <li><a href="">Forecast Monitoring</a></li> --}}
+                            {{-- @endcan --}}
+                            {{-- @can('view concept note approval') --}}
+                            <li><a href="">Forecast Evaluation</a></li>
+                            {{-- @endcan --}}
+                            {{-- <li><a href="{{ route('concept-note-screening-list') }}">Screening List</a></li> --}}
+                            {{-- <li><a href="{{ route('concept-note-decision') }}">Concept Note Decision</a></li> --}}
+                        </ul>
+                    </li>
+                    {{-- @endcanany --}}
+                    {{-- @canany(['view project proposal']) --}}
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-to-do"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-to-do"></use>
+                            </svg>
+                            <span class="">Alert Reporting</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            @can('view project proposal')
+                                <li><a href="">Reporting</a></li>
+                            @endcan
+                            @can('view project proposal appraisal')
+                                <li><a href="">Review and Analysis</a></li>
+                            @endcan
+                            <li><a href="">Visualize</a></li>
 
-                                </ul>
-                            </li>
-                        {{-- @endcanany --}}
+                        </ul>
+                    </li>
+                    {{-- @endcanany --}}
 
                     {{-- @endcanany --}}
 
-{{--                        @canany(['view region', 'view district', 'view shehia'])--}}
-{{--                            <li class="sidebar-list">--}}
-{{--                                <i class="fa fa-thumb-tack"></i>--}}
-{{--                                <a class="sidebar-link sidebar-title @if(request()->routeIs('regions')) active @endif" href="#">--}}
-{{--                                    <svg class="stroke-icon">--}}
-{{--                                        <use href="../assets/svg/icon-sprite.svg#stroke-maps"></use>--}}
-{{--                                    </svg>--}}
-{{--                                    <svg class="fill-icon">--}}
-{{--                                        <use href="../assets/svg/icon-sprite.svg#fill-maps"></use>--}}
-{{--                                    </svg>--}}
-{{--                                    <span >LGAs Project</span>--}}
-{{--                                </a>--}}
-{{--                                <ul class="sidebar-submenu">--}}
-{{--                                    @can('view region')--}}
-{{--                                        <li><a href="{{ route('lga-challenges') }}" >Add Challenges</a></li>--}}
-{{--                                    @endcan--}}
-{{--                                    @can('view district')--}}
-{{--                                        <li><a href="{{ route('lga-concept-note') }}">Concept Note</a></li>--}}
-{{--                                    @endcan--}}
-{{--                                    @can('view shehia')--}}
-{{--                                        <li><a href="{{ route('lga-project-list') }}">Approval Project</a></li>--}}
-{{--                                    @endcan--}}
-{{--                                </ul>--}}
-{{--                            </li>--}}
-{{--                        @endcanany--}}
+                    {{--                        @canany(['view region', 'view district', 'view shehia']) --}}
+                    {{--                            <li class="sidebar-list"> --}}
+                    {{--                                <i class="fa fa-thumb-tack"></i> --}}
+                    {{--                                <a class="sidebar-link sidebar-title @if (request()->routeIs('regions')) active @endif" href="#"> --}}
+                    {{--                                    <svg class="stroke-icon"> --}}
+                    {{--                                        <use href="../assets/svg/icon-sprite.svg#stroke-maps"></use> --}}
+                    {{--                                    </svg> --}}
+                    {{--                                    <svg class="fill-icon"> --}}
+                    {{--                                        <use href="../assets/svg/icon-sprite.svg#fill-maps"></use> --}}
+                    {{--                                    </svg> --}}
+                    {{--                                    <span >LGAs Project</span> --}}
+                    {{--                                </a> --}}
+                    {{--                                <ul class="sidebar-submenu"> --}}
+                    {{--                                    @can('view region') --}}
+                    {{--                                        <li><a href="{{ route('lga-challenges') }}" >Add Challenges</a></li> --}}
+                    {{--                                    @endcan --}}
+                    {{--                                    @can('view district') --}}
+                    {{--                                        <li><a href="{{ route('lga-concept-note') }}">Concept Note</a></li> --}}
+                    {{--                                    @endcan --}}
+                    {{--                                    @can('view shehia') --}}
+                    {{--                                        <li><a href="{{ route('lga-project-list') }}">Approval Project</a></li> --}}
+                    {{--                                    @endcan --}}
+                    {{--                                </ul> --}}
+                    {{--                            </li> --}}
+                    {{--                        @endcanany --}}
 
                     <li class="sidebar-main-title">
-                        <div><h6 style="background: #334628;">Recovery </h6></div>
+                        <div>
+                            <h6 style="background: #334628;">Recovery </h6>
+                        </div>
                     </li>
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist')}}">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist') }}">
                             <svg class="stroke-icon">
                                 <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
                             </svg>
@@ -356,62 +367,64 @@
                         </a>
                     </li>
                     @canany(['view project financial'])
-                    <li class="sidebar-main-title">
-                        <div><h6 style="background: #334628;">Communication</h6></div>
-                    </li>
-                    <li class="sidebar-list">
-                        <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="#">
-                            <svg class="stroke-icon">
-                                <use href="../assets/svg/icon-sprite.svg#stroke-message"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
-                            </svg>
-                            <span class="">ZDMIS Bulk SMS</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-list">
-                        <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="">
-                            <svg class="stroke-icon">
-                                <use href="../assets/svg/icon-sprite.svg#stroke-message"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
-                            </svg>
-                            <span class="">ZDMIS Chart</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="">
-                            <svg class="stroke-icon">
-                                <use href="../assets/svg/icon-sprite.svg#stroke-message"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
-                            </svg>
-                            <span class="">ZDMIS Toll-Free</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-list">
-                        <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title" href="#">
-                            <svg class="stroke-icon">
-                                <use href="../assets/svg/icon-sprite.svg#stroke-message"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
-                            </svg>
-                            <span class="">AI-Powered</span>
-                        </a>
-                        <ul class="sidebar-submenu">
+                        <li class="sidebar-main-title">
+                            <div>
+                                <h6 style="background: #334628;">Communication</h6>
+                            </div>
+                        </li>
+                        <li class="sidebar-list">
+                            <i class="fa fa-thumb-tack"></i>
+                            <a class="sidebar-link sidebar-title link-nav" href="#">
+                                <svg class="stroke-icon">
+                                    <use href="../assets/svg/icon-sprite.svg#stroke-message"></use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
+                                </svg>
+                                <span class="">ZDMIS Bulk SMS</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-list">
+                            <i class="fa fa-thumb-tack"></i>
+                            <a class="sidebar-link sidebar-title link-nav" href="">
+                                <svg class="stroke-icon">
+                                    <use href="../assets/svg/icon-sprite.svg#stroke-message"></use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
+                                </svg>
+                                <span class="">ZDMIS Chart</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
+                            <a class="sidebar-link sidebar-title link-nav" href="">
+                                <svg class="stroke-icon">
+                                    <use href="../assets/svg/icon-sprite.svg#stroke-message"></use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
+                                </svg>
+                                <span class="">ZDMIS Toll-Free</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-list">
+                            <i class="fa fa-thumb-tack"></i>
+                            <a class="sidebar-link sidebar-title" href="#">
+                                <svg class="stroke-icon">
+                                    <use href="../assets/svg/icon-sprite.svg#stroke-message"></use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="../assets/svg/icon-sprite.svg#fill-message"></use>
+                                </svg>
+                                <span class="">AI-Powered</span>
+                            </a>
+                            <ul class="sidebar-submenu">
                                 <li><a href="">Request Disbursing</a></li>
                                 <li><a href="">Domestic Financing</a></li>
                                 <li><a href="">External Financing</a></li>
-                        </ul>
-                    </li>
-                    {{-- <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
+                            </ul>
+                        </li>
+                        {{-- <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                         <a class="sidebar-link sidebar-title" href="{{ route('roles') }}">
                             <svg class="stroke-icon">
                                 <use href="../assets/svg/icon-sprite.svg#stroke-widget"></use>
@@ -424,9 +437,20 @@
                     </li> --}}
                     @endcanany
 
-                    @canany(['view user authentication', 'view user ministry', 'view user institution', 'view user department', 'view user municipal', 'view user rd committee', 'view role'])
+                    @canany([
+                        'view user authentication',
+                        'view user ministry',
+                        'view user institution',
+                        'view user
+                        department',
+                        'view user municipal',
+                        'view user rd committee',
+                        'view role',
+                        ])
                         <li class="sidebar-main-title">
-                            <div><h6 style="background: #334628;">User Management</h6></div>
+                            <div>
+                                <h6 style="background: #334628;">User Management</h6>
+                            </div>
                         </li>
                         @can('view user authentication')
                             <li class="sidebar-list">
@@ -442,7 +466,7 @@
                                 </a>
                             </li>
                         @endcan
-                        <li class="sidebar-list"    ><i class="fa fa-thumb-tack"></i>
+                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                             <a class="sidebar-link sidebar-title" href="#">
                                 <svg class="stroke-icon">
                                     <use href="../assets/svg/icon-sprite.svg#stroke-user"></use>
@@ -454,36 +478,36 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 @can('view user ministry')
-                                <li><a href="">Ministry User</a></li>
+                                    <li><a href="">Ministry User</a></li>
                                 @endcan
                                 @can('view user institution')
-                                <li><a href="">Institution User</a></li>
+                                    <li><a href="">Institution User</a></li>
                                 @endcan
                                 @can('view user department')
-                                <li><a href="">Department User</a></li>
+                                    <li><a href="">Department User</a></li>
                                 @endcan
                                 @can('view user municipal')
-                                {{-- <li><a href="{{ route('division.users') }}">Division User</a></li> --}}
-                                <li><a href="">Municipal User</a></li>
+                                    {{-- <li><a href="{{ route('division.users') }}">Division User</a></li> --}}
+                                    <li><a href="">Municipal User</a></li>
                                 @endcan
                                 @can('view user rd committee')
-                                <li><a href="">RD Committee User</a></li>
+                                    <li><a href="">RD Committee User</a></li>
                                 @endcan
                             </ul>
                         </li>
                         @can('view role')
-                        <li class="sidebar-list">
-                            <i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title link-nav" href="">
-                                <svg class="stroke-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#stroke-others"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="../assets/svg/icon-sprite.svg#fill-others"></use>
-                                </svg>
-                                <span class="">Role and permission</span>
-                            </a>
-                        </li>
+                            <li class="sidebar-list">
+                                <i class="fa fa-thumb-tack"></i>
+                                <a class="sidebar-link sidebar-title link-nav" href="">
+                                    <svg class="stroke-icon">
+                                        <use href="../assets/svg/icon-sprite.svg#stroke-others"></use>
+                                    </svg>
+                                    <svg class="fill-icon">
+                                        <use href="../assets/svg/icon-sprite.svg#fill-others"></use>
+                                    </svg>
+                                    <span class="">Role and permission</span>
+                                </a>
+                            </li>
                         @endcan
                     @endcanany
 
@@ -497,7 +521,7 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Function to normalize the path and remove query parameters or hashes
             function normalizePath(path) {
                 var url = new URL(path, window.location.origin);
@@ -513,7 +537,7 @@
             var bestMatchLength = 0;
 
             // Iterate over each link in the sidebar
-            $('.sidebar-wrapper a').each(function () {
+            $('.sidebar-wrapper a').each(function() {
                 var linkPath = normalizePath($(this).attr('href'));
                 console.log("Link Path:", linkPath); // Log each link path
 
@@ -529,7 +553,8 @@
                 $(bestMatch).closest('a').addClass('active'); // Add active class to the closest li
                 $(bestMatch).closest('span').addClass('text-light'); // Add active class to the closest li
                 $(bestMatch).parents('.sidebar-submenu').slideDown('normal'); // Open all parent submenus
-                $(bestMatch).parents('.sidebar-submenu').prev('.sidebar-title').addClass('active'); // Mark the parent titles as active
+                $(bestMatch).parents('.sidebar-submenu').prev('.sidebar-title').addClass(
+                    'active'); // Mark the parent titles as active
                 // $(bestMatch).parents('.sidebar-list').addClass('bg-light'); // Mark the parent titles as active
             }
         });

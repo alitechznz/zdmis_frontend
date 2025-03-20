@@ -22,7 +22,10 @@ use App\Http\Controllers\ElimuMafunzoController;
 use App\Http\Controllers\NjeDashibodiController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\WasilishaTukioController;
+use App\Livewire\DistrictComponent;
 use App\Livewire\ElimuMafunzo;
+use App\Livewire\RegionComponent;
+use App\Livewire\ShehiaComponent;
 use Mpdf\Shaper\Indic;
 
 /*
@@ -50,8 +53,8 @@ Route::middleware(['auth.token'])->group(function () {
     Route::get('/dashboard', [dashboardController::class, 'index'])->name('/dashboard');
 
     //usajili wa majukumu
-    Route::get('/majukumu',[majukumuController::class, 'index'])->name('/majukumu');
-    Route::get('/majukumu/create',[majukumuController::class, 'create'])->name('create');
+    Route::get('/majukumu', [majukumuController::class, 'index'])->name('/majukumu');
+    Route::get('/majukumu/create', [majukumuController::class, 'create'])->name('create');
 
     // Web Routes
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -66,4 +69,12 @@ Route::middleware(['auth.token'])->group(function () {
 
     Route::get('/matukiolist', MatukioComponent::class)->name('matukiolist');
 
+    #Region
+    Route::get('/region', RegionComponent::class)->name('region');
+
+    #District
+    Route::get('/district', DistrictComponent::class)->name('district');
+
+    #Shehia
+    Route::get('/shehia', ShehiaComponent::class)->name('shehia');
 });
