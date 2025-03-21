@@ -36,7 +36,7 @@
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="card">
-                    <h2><i class="fas fa-sms icon" style="color: #4CAF50;"></i> Simu ya Mkononi</h2>
+                    <h2><i class="fas fa-phone icon" style="color: #4CAF50;"></i> Simu ya Mkononi</h2>
                     <form wire:submit.prevent="createSubscriber_phone">
                         <div class="form-group">
                             <input class="form-control" type="text" wire:model="phone" required="" placeholder="Weka nambari yako ya simu">
