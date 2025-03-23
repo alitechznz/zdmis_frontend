@@ -125,7 +125,7 @@
             color: #dc3545;
         }
         .police-emergency .number {
-            color: #007bff;
+            color: 1395d0;
         }
 
         h2 {
@@ -214,7 +214,7 @@
         .tahadhari-button {
             margin-left: 20px;
             padding: 10px 20px;
-            background-color: #dc3545; /* Red button for warnings */
+            background-color:black; /* Red button for warnings */
             color: white;
             border: none;
             border-radius: 5px;
@@ -229,9 +229,9 @@
 
     </style>
         <!-- login page start-->
-        <div class="container-fluid" style="padding-left: 10px; padding-right: 10px;">
+        <div class="container-fluid" style="padding-left: 10px; padding-right: 10px; background-color: #1395d0;">
             <!-- Header Section -->
-            <div class="row bg-dark text-white text-center py-3" style="height: 140px;">
+            <div class="row text-white text-center py-3" style="height: 140px; background-color: #1395d0;">
                 <div class="col-md-2">
                     {{-- <img src="{{ asset('assets/images/smzlogoe.png') }}" class="d-block" alt="..." style="width: 70%;" /> --}}
                     <img src="{{ asset('assets/images/smzlogoe.png') }}" alt="Logo" class="img-fluid">
@@ -249,19 +249,19 @@
         </div>
 
          <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: darkolivegreen; padding-left: 10px; padding-right: 10px;">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black; padding-left: 10px; padding-right: 10px;">
         <div class="container-fluid" style="background-color: darkolivegreen;">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav" style="background-color: darkolivegreen;">
+            <div class="collapse navbar-collapse" id="navbarNav" style="background-color: black;">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link text-white" href="{{ route('/')}}"><i class="fas fa-home"></i> Nyumbani</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="{{ route('tukio')}}"><i class="fas fa-exclamation-triangle"></i>Wasilisha Tukio</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="{{ route('elimu')}}"><i class="fas fa-tools"></i>Elimu & Mafunzo</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="{{ route('nje')}}"><i class="fas fa-tachometer-alt"></i>Dashibodi</a></li>
                 </ul>
-
+                <div class="gtranslate_wrapper"></div>
                 <div class="d-flex">
                     <a href="{{ route('login') }}" class="btn btn-success">Staff Login</a>
                 </div></nav>
