@@ -366,6 +366,25 @@
                             <span>Damage Assessment</span>
                         </a>
                     </li>
+
+                    <li class="sidebar-main-title">
+                        <div>
+                            <h6 style="background: #334628;">Users </h6>
+                        </div>
+                    </li>
+
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-user"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-user"></use>
+                            </svg>
+                            <span class="">System Users</span>
+                        </a>
+                    </li>
                     @canany(['view project financial'])
                         <li class="sidebar-main-title">
                             <div>
