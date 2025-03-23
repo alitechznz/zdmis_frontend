@@ -29,6 +29,11 @@ class DistrictComponent extends Component
         $this->resetField();
     }
 
+    private function getBaseUrl()
+    {
+        return config('services.api.base_url');
+    }
+
 
     public function store()
     {
@@ -39,15 +44,22 @@ class DistrictComponent extends Component
         ]);
 
         // Determine if this is a create or update operation based on $this->region_id
-        $url = $this->district_id ? "http://41.59.105.130:3000/districts/{$this->district_id}" : 'http://41.59.105.130:3000/districts';
+        $baseUrl = $this->getBaseUrl();
+        $url = $this->district_id ? "{$baseUrl}/district/{$this->district_id}" : "{$baseUrl}/district";
         $method = $this->district_id ? 'put' : 'post';
 
-        // API request to external endpoint
-        $response = Http::$method($url, [
+        $token = session('token');
+
+        $payload = [
             'districtName' => $this->name,
-            'regionId' => $this->region,
-            'status' => $this->status,
-        ]);
+            'region' => $this->region,
+            'status' => in_array(strtolower($this->status), ['active', 'true', '1']), // safely cast to true/false
+        ];
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])->$method($url, $payload);
+
 
         if ($response->successful()) {
             logger()->info("URL requested: {$url}");
@@ -57,6 +69,8 @@ class DistrictComponent extends Component
             $this->resetField();
             $this->dispatch('closeModal'); // Ensure you have the listeners set up for this event
         } else {
+            logger()->error("Failed to update or create the district: {$response->body()}");
+            $this->dispatch('swal:info', title: $this->district_id ? 'Error while updating District.' : 'Error while creating District');
             session()->flash('error', 'Failed to create or update the region on the external server.');
         }
     }
@@ -69,38 +83,51 @@ class DistrictComponent extends Component
         $this->district_id = $district_id;
 
         // Construct the URL for the API request
-        $url = "http://41.59.105.130:3000/districts/{$district_id}";
-        $response = Http::get($url);
+        $baseUrl = $this->getBaseUrl();
+        $url = "{$baseUrl}/district/{$district_id}";
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->get($url);
+
 
         if ($response->successful()) {
-            $districtData = $response->json();
+            $responseBody = $response->json();
+            logger()->info('Districts Data:', $responseBody);
 
-            // Check if the array is not empty and the keys exist
-            if (!empty($districtData) && isset($districtData[0]['districtName'], $districtData[0]['status'], $districtData[0]['regionId'])) {
-                $this->name = $districtData[0]['districtName'];
-                $this->region = $districtData[0]['regionId'];
-                $this->status = $districtData[0]['status'];
+            if (!empty($responseBody['data']) && is_array($responseBody['data'])) {
+                $districtData = $responseBody['data']; // Assuming the first element is what you want
+
+                $this->name = $districtData['districtName'] ?? 'No district name provided';
+                $this->name = $districtData['region'] ?? 'No region provided';
+                $this->status = $districtData['status'] ?? 'No status provided';
+
+                logger()->info('Districts Data:', [
+                    'districtName' => $this->name,
+                    'region' => $this->region,
+                    'status' => $this->status,
+                ]);
             } else {
-                // Handle the case where the expected keys are not present or the array is empty
-                session()->flash('error', 'The expected data keys are not present in the API response.');
-                return; // Stop further execution if the necessary data is missing
+                logger()->error("Failed to load load district: {$response->body()}");
+                session()->flash('error', 'No district data found or structure is incorrect.');
             }
         } else {
-            // Log error or handle the situation when the region is not found or the API call fails
+            logger()->error("Failed to load region: {$response->body()}");
             session()->flash('error', 'Failed to fetch district details. Error: ' . $response->body());
-            return; // Stop further execution if the API call was unsuccessful
         }
     }
 
-    public function deleteConfirm(District $district)
-    {
-        $this->delete_confirm = $district;
-    }
+
+
 
     public function destroy($districtId)
     {
-        $url = "http://41.59.105.130:3000/districts/{$districtId}";
-        $response = Http::delete($url);
+        $baseUrl = $this->getBaseUrl();
+        $url = "{$baseUrl}/district/{$districtId}";
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->delete($url);
 
         if ($response->successful()) {
             $this->dispatch('swal:info', title: 'District Deleted');
@@ -109,6 +136,7 @@ class DistrictComponent extends Component
             $this->dispatch('swal:info', title: 'Failed to delete the district.');
         }
     }
+
 
 
     private function resetField()
@@ -134,52 +162,68 @@ class DistrictComponent extends Component
 
     public function render()
     {
-        // $districts = District::query()->with('region')->latest();
-        // if ($this->search_keyword) {
-        //     $districts->where('id', $this->search_keyword)
-        //         ->orWhere('name', 'like', '%' . $this->search_keyword . '%')->orWhere('region_id', 'like', '%' . $this->search_keyword . '%')->orWhere('status', 'like', '%' . $this->search_keyword . '%');
-        // }
+        $baseUrl = $this->getBaseUrl();
 
-        // $districts = $districts->paginate();
+        $regionResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->get("{$baseUrl}/region");
 
-
-        // Fetch regions from the API
-        $response = Http::get('http://41.59.105.130:3000/regions');
         $regions = collect([]);
-
-        if ($response->successful()) {
-            $regionsData = $response->json();
-            // Assuming the API returns an array of regions
-            $regions = collect($regionsData)->map(function ($region) {
-                return (object)[
-                    'id' => $region['id'], // Adjust keys based on the actual API response
-                    'name' => $region['regionName']
+        if ($regionResponse->successful()) {
+            $regionData = $regionResponse->json()['data'];
+            $regions = collect($regionData)->map(function ($region) {
+                return (object) [
+                    'id' => $region['id'],
+                    'name' => $region['regionName'],
                 ];
             });
         } else {
-            // Handle the error or log it
-            session()->flash('error', 'Failed to fetch regions.');
+            logger()->error('Error Fetching region Types:', ['response' => $regionResponse->body()]);
         }
+
 
 
 
         $query = [];
-
         if ($this->search_keyword) {
             $query['search'] = $this->search_keyword;
         }
 
-        $response = Http::get('http://41.59.105.130:3000/districts', $query);
+
+        // Assuming the token is stored in the session, you can retrieve it like this:
+        $token = session('token'); // Ensure you have set this session variable when you login
+
+        if (!$token) {
+            session()->flash('error', 'No authentication token available. Please login again.');
+            return view('livewire.district-component', ['regions' => collect([])])->layout('layouts.app');
+        }
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])->get("{$baseUrl}/district", $query);
+
         $districts = collect([]);
 
         if ($response->successful()) {
-            $districtsData = $response->json();
+            $districtsData = $response->json()['data'];
+            logger()->info('Fetched districts:', $districtsData);
             $districts = collect($districtsData)->map(function ($district) {
-                return (object)$district;
+                return (object) [
+                    'id' => $district['id'],
+                    'name' => $district['districtName'],
+                    'status' => $district['status'],
+                ];
             });
-            // Now paginate the collection
-            $districts = $this->paginateCollection($districts, 10); // Adjust '10' to however many items per page you want
+
+            // Apply pagination
+            $districts = $this->paginateCollection($districts, 10);
+        } else {
+            session()->flash('error', 'Failed to fetch districts from the server.');
+            logger()->error('Error Fetching districts:', ['response' => $response->body()]);
         }
+
 
         return view('livewire.district-component', [
             'districts' => $districts,

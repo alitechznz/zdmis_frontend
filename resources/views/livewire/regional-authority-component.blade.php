@@ -36,18 +36,17 @@
                 <div class="col-6">
                     <div class="input-group">
                         <input type="search" wire:model.live="search_keyword"
-                               class="form-control form-control-sm w-auto"
-                               placeholder="Search rd committee ...">
+                            class="form-control form-control-sm w-auto" placeholder="Search rd committee ...">
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="float-end">
-                        @can('add rd committee')
+
                         <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#modal-regionalauthority" wire:click='create'
-                     ><i class="fa fa-plus"></i> Add New </a>
-                        @endcan
-                       
+                            data-bs-target="#modal-regionalauthority" wire:click='create'><i class="fa fa-plus"></i> Add
+                            New </a>
+
+
                     </div>
 
                 </div>
@@ -56,59 +55,60 @@
                 <table
                     class="table table-bordered table-sm table-hover table-striped table-responsive custom-scrollbar-sm">
                     <thead class="table-light">
-                    <tr class="text-capitalize">
-                        <th scope="col">SN </th>
-                        <th scope="col">RD_Committee_Name </th>
-                        <th scope="col">Region </th>
-                        <th width="220">Actions</th>
-                    </tr>
+                        <tr class="text-capitalize">
+                            <th scope="col">SN </th>
+                            <th scope="col">RD_Committee_Name </th>
+                            <th scope="col">Region </th>
+                            <th width="220">Actions</th>
+                        </tr>
                     </thead>
                     <tbody x-ref="tbody">
-                    @forelse ($regional_authorities as $regionalauthority)
+                        {{-- @forelse ($regional_authorities as $regionalauthority)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $regionalauthority->name }}</td>
+                                <td>{{ $regionalauthority->region->name }}</td>
+                                <td style="display: flex; gap: 5px;">
+                                    @can('edit rd committee')
+                                        <a href="#" wire:click="edit({{ $regionalauthority->id }})"
+                                            class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#modal-regionalauthority">
+                                            Edit </a>
+                                    @endcan
+                                    @can('delete rd committee')
+                                        <a href="#" class="btn btn-sm btn-danger"
+                                            wire:click="deleteConfirm({{ $regionalauthority->id }})" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModalregionalauthority">
+                                            Delete </a>
+                                    @endcan
 
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $regionalauthority->name }}</td>
-                            <td>{{ $regionalauthority->region->name }}</td>
-                            <td style="display: flex; gap: 5px;">
-                                @can('edit rd committee')
-                                <a href="#" wire:click="edit({{ $regionalauthority->id }})"
-                                    class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#modal-regionalauthority">
-                                     Edit </a>
-                                @endcan
-                                @can('delete rd committee')
-                                <a href="#" class="btn btn-sm btn-danger"
-                                wire:click="deleteConfirm({{$regionalauthority->id}})"
-                                data-bs-toggle="modal" data-bs-target="#deleteModalregionalauthority">
-                                 Delete </a>
-                                @endcan
-                               
-                               
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-danger text-center"> No RD Committee Found</td>
-                        </tr>
-                    @endforelse
+
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-danger text-center"> No RD Committee Found</td>
+                            </tr>
+                        @endforelse --}}
                     </tbody>
                 </table>
-                {{ $regional_authorities->links() }}
+                {{-- {{ $regional_authorities->links() }} --}}
             </div>
         </div>
     </div>
     <!-- Modal Content -->
     <div class="modal fade" wire:ignore.self id="modal-regionalauthority" tabindex="-1" role="dialog"
-         aria-labelledby="modal-default" aria-hidden="true">
+        aria-labelledby="modal-default" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="h6 modal-title">@if($update)
+                    <h2 class="h6 modal-title">
+                        @if ($update)
                             Update
                         @else
                             Add
-                        @endif RD Committee</h2>
+                        @endif RD Committee
+                    </h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -116,35 +116,37 @@
                         <div class="mb-4 col-sm-12 col-md-12 col-lg-12">
                             <label for="name">RD Committee Name <span class="text-danger">*</span></label>
                             <input type="text" wire:model="name"
-                                   class="form-control @error("name") is-invalid @enderror" id="name"
-                                   placeholder="Enter RD Committee Name">
-                            @error("name")
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                                class="form-control @error('name') is-invalid @enderror" id="name"
+                                placeholder="Enter RD Committee Name">
+                            @error('name')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                         <div class="mb-4 col-sm-12 col-md-12 col-lg-12">
                             <label for="region">Region <span class="text-danger">*</span></label>
-                            <select wire:model="region" class="form-control @error("region") is-invalid @enderror"
-                                    id="region">
+                            <select wire:model="region" class="form-control @error('region') is-invalid @enderror"
+                                id="region">
                                 <option value="">--Choose--</option>
-                                @foreach($regions as $region)
+                                {{-- @foreach ($regions as $region)
                                     <option value="{{ $region->id }}">{{ $region->name }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
-                            @error("region")
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                            @error('region')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
-                        
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">
                                 Close
                             </button>
-                            <button type="button" wire:click.prevent="store" class="{{ $update ? 'btn btn-success' : 'btn btn-primary' }}">  {{ $update ? 'Update' : 'Add' }}</button>
+                            <button type="button" wire:click.prevent="store"
+                                class="{{ $update ? 'btn btn-success' : 'btn btn-primary' }}">
+                                {{ $update ? 'Update' : 'Add' }}</button>
                         </div>
                     </div>
                 </div>
@@ -155,20 +157,21 @@
 
     <!-- Delete Modal -->
     <div wire:ignore.self class="modal fade" id="deleteModalregionalauthority" data-backdrop="false" tabindex="-1"
-         role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Delete Confirm </h5>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure want to delete <strong>{{ $delete_confirm? $delete_confirm->name: ''  }}</strong> ?
+                    <p>Are you sure want to delete <strong>{{ $delete_confirm ? $delete_confirm->name : '' }}</strong>
+                        ?
                     </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" wire:click.prevent="destroy()" class="btn btn-danger close-modal"
-                            data-bs-dismiss="modal">Yes, Delete
+                        data-bs-dismiss="modal">Yes, Delete
                     </button>
                 </div>
             </div>
@@ -214,11 +217,11 @@
                     return (a, b) =>
                         ((row1, row2) => {
                             return row1 !== "" &&
-                            row2 !== "" &&
-                            !isNaN(row1) &&
-                            !isNaN(row2)
-                                ? row1 - row2
-                                : row1.toString().localeCompare(row2);
+                                row2 !== "" &&
+                                !isNaN(row1) &&
+                                !isNaN(row2) ?
+                                row1 - row2 :
+                                row1.toString().localeCompare(row2);
                         })(
                             this.getCellValue(this.sortAsc ? a : b, index),
                             this.getCellValue(this.sortAsc ? b : a, index)

@@ -16,7 +16,7 @@ class PermissionComponent extends Component
     public function setRole(\App\Models\Role $role)
     {
         $this->role =  $role;
-        foreach($role->permissions as $userPermission){
+        foreach ($role->permissions as $userPermission) {
             $this->selected_permissions[] = $userPermission->name;
         }
     }
