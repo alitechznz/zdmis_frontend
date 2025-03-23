@@ -147,7 +147,7 @@ class WasilishaTukio extends Component
         }
     }
 
-    public function submit()
+    public function sisi()
     {
         $this->validate([
             'contact_person' => 'required|string|max:255',
