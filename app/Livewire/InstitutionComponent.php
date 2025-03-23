@@ -79,18 +79,18 @@ class InstitutionComponent extends Component
 
     public function render()
     {
-        $institutions = Institution::query()->latest();
-        if ($this->search_keyword) {
-            $institutions->where('id', $this->search_keyword)
-                ->orWhere('name', 'like', '%' . $this->search_keyword . '%')->orWhere('ministry_id', 'like', '%' . $this->search_keyword . '%')->orWhere('address', 'like', '%' . $this->search_keyword . '%');
-        }
+        // $institutions = Institution::query()->latest();
+        // if ($this->search_keyword) {
+        //     $institutions->where('id', $this->search_keyword)
+        //         ->orWhere('name', 'like', '%' . $this->search_keyword . '%')->orWhere('ministry_id', 'like', '%' . $this->search_keyword . '%')->orWhere('address', 'like', '%' . $this->search_keyword . '%');
+        // }
 
-        $institutions = $institutions->paginate();
+        // $institutions = $institutions->paginate();
 
 
         return view('livewire.institution-component', [
-            'institutions' => $institutions,
-            'ministries' => Ministry::all(),
+            // 'institutions' => $institutions,
+            // 'ministries' => Ministry::all(),
         ])->layout('layouts.app');
     }
 }

@@ -73,7 +73,7 @@
                         @forelse ($districts as $district)
                             <tr>
                                 <td>{{ $sn }}</td>
-                                <td>{{ $district->districtName }}</td>
+                                <td>{{ $district->name }}</td>
                                 {{-- <td>{{ $district->region->name }}</td> --}}
                                 <td>
                                     <span
@@ -107,7 +107,7 @@
                         @endforelse
                     </tbody>
                 </table>
-                {{ $districts->links() }}
+                {{-- {{ $districts->links() }} --}}
             </div>
         </div>
     </div>

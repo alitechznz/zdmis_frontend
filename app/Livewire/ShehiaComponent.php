@@ -27,6 +27,11 @@ class ShehiaComponent extends Component
         $this->resetField();
     }
 
+    private function getBaseUrl()
+    {
+        return config('services.api.base_url');
+    }
+
 
     public function store()
     {
@@ -36,16 +41,22 @@ class ShehiaComponent extends Component
             'status' => 'required',
         ]);
 
-        // Determine if this is a create or update operation based on $this->region_id
-        $url = $this->shehia_id ? "http://41.59.105.130:3000/shehias/{$this->shehia_id}" : 'http://41.59.105.130:3000/shehias';
+        $baseUrl = $this->getBaseUrl();
+        $url = $this->shehia_id ? "{$baseUrl}/shehia/{$this->shehia_id}" : "{$baseUrl}/shehia";
         $method = $this->shehia_id ? 'put' : 'post';
 
-        // API request to external endpoint
-        $response = Http::$method($url, [
+        $token = session('token');
+
+        $payload = [
             'shehiaName' => $this->name,
-            'districtId' => $this->district,
-            'status' => $this->status,
-        ]);
+            'district' => $this->district,
+            'status' => in_array(strtolower($this->status), ['active', 'true', '1']), // safely cast to true/false
+        ];
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])->$method($url, $payload);
+
 
         if ($response->successful()) {
             logger()->info("URL requested: {$url}");
@@ -55,21 +66,12 @@ class ShehiaComponent extends Component
             $this->resetField();
             $this->dispatch('closeModal'); // Ensure you have the listeners set up for this event
         } else {
-            session()->flash('error', 'Failed to create or update the Shehia on the external server.');
+            logger()->error("Failed to update or create the district: {$response->body()}");
+            $this->dispatch('swal:info', title: $this->shehia_id ? 'Error while updating Shehia.' : 'Error while creating Shehia');
+            session()->flash('error', 'Failed to create or update the region on the external server.');
         }
     }
 
-    // public function edit($shehia_id)
-    // {
-    //     $this->resetErrorBag();
-    //     $this->update  = true;
-    //     $this->shehia_id = $shehia_id;
-
-    //     $shehia = Shehia::findOrFail($shehia_id);
-    //     $this->name = $shehia->name;
-    //     $this->district = $shehia->district_id;
-    //     $this->status = $shehia->status;
-    // }
 
     public function edit($shehia_id)
     {
@@ -78,44 +80,49 @@ class ShehiaComponent extends Component
         $this->shehia_id = $shehia_id;
 
         // Construct the URL for the API request
-        $url = "http://41.59.105.130:3000/shehias/{$shehia_id}";
-        $response = Http::get($url);
+        $baseUrl = $this->getBaseUrl();
+        $url = "{$baseUrl}/shehia/{$shehia_id}";
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->get($url);
+
 
         if ($response->successful()) {
-            $shehiaData = $response->json();
+            $responseBody = $response->json();
+            logger()->info('Shehia Data:', $responseBody);
 
-            // Check if the array is not empty and the keys exist
-            if (!empty($shehiaData) && isset($shehiaData[0]['shehiaName'], $shehiaData[0]['status'], $shehiaData[0]['districtId'])) {
-                $this->name = $shehiaData[0]['shehiaName'];
-                $this->district = $shehiaData[0]['districtId'];
-                $this->status = $shehiaData[0]['status'];
+            if (!empty($responseBody['data']) && is_array($responseBody['data'])) {
+                $districtData = $responseBody['data']; // Assuming the first element is what you want
+
+                $this->name = $districtData['shehiaName'] ?? 'No shehia name provided';
+                $this->district = $districtData['district'] ?? 'No district provided';
+                $this->status = $districtData['status'] ?? 'No status provided';
+
+                logger()->info('Districts Data:', [
+                    'shehiaName' => $this->name,
+                    'district' => $this->district,
+                    'status' => $this->status,
+                ]);
             } else {
-                // Handle the case where the expected keys are not present or the array is empty
-                session()->flash('error', 'The expected data keys are not present in the API response.');
-                return; // Stop further execution if the necessary data is missing
+                logger()->error("Failed to load load shehia: {$response->body()}");
+                session()->flash('error', 'No shehia data found or structure is incorrect.');
             }
         } else {
-            // Log error or handle the situation when the region is not found or the API call fails
+            logger()->error("Failed to load shehia: {$response->body()}");
             session()->flash('error', 'Failed to fetch shehia details. Error: ' . $response->body());
-            return; // Stop further execution if the API call was unsuccessful
         }
     }
 
-    public function deleteConfirm(Shehia $shehia)
-    {
-        $this->delete_confirm = $shehia;
-    }
 
-    // public function destroy()
-    // {
-    //     $this->delete_confirm->delete();
-    //     $this->dispatch('swal:info', title: 'Shehia Deleted');
-    // }
-
-    public function destroy($shehiaId)
+    public function destroy($districtId)
     {
-        $url = "http://41.59.105.130:3000/shehias/{$shehiaId}";
-        $response = Http::delete($url);
+        $baseUrl = $this->getBaseUrl();
+        $url = "{$baseUrl}/shehia/{$districtId}";
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->delete($url);
 
         if ($response->successful()) {
             $this->dispatch('swal:info', title: 'Shehia Deleted');
@@ -145,48 +152,65 @@ class ShehiaComponent extends Component
 
     public function render()
     {
-        $response = Http::get('http://41.59.105.130:3000/districts');
-        $districts = collect([]);
+        $baseUrl = $this->getBaseUrl();
 
-        if ($response->successful()) {
-            $districtsData = $response->json();
-            // Assuming the API returns an array of districts
-            $districts = collect($districtsData)->map(function ($district) {
-                return (object)[
-                    'id' => $district['id'], // Adjust keys based on the actual API response
-                    'name' => $district['districtName']
+        $districtResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->get("{$baseUrl}/district");
+
+        $districts = collect([]);
+        if ($districtResponse->successful()) {
+            $districtData = $districtResponse->json()['data'];
+            $districts = collect($districtData)->map(function ($district) {
+                return (object) [
+                    'id' => $district['id'],
+                    'name' => $district['districtName'],
                 ];
             });
         } else {
-            // Handle the error or log it
-            session()->flash('error', 'Failed to fetch regions.');
+            logger()->error('Error Fetching district Types:', ['response' => $districtResponse->body()]);
         }
 
-        $query = [];
 
+        $query = [];
         if ($this->search_keyword) {
             $query['search'] = $this->search_keyword;
         }
 
-        $response = Http::get('http://41.59.105.130:3000/shehias', $query);
+
+        // Assuming the token is stored in the session, you can retrieve it like this:
+        $token = session('token'); // Ensure you have set this session variable when you login
+
+        if (!$token) {
+            session()->flash('error', 'No authentication token available. Please login again.');
+            return view('livewire.shehia-component', ['shehias' => collect([])])->layout('layouts.app');
+        }
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])->get("{$baseUrl}/shehia", $query);
+
         $shehias = collect([]);
 
         if ($response->successful()) {
-            $shehiasData = $response->json();
+            $shehiasData = $response->json()['data'];
+            logger()->info('Fetched shehias:', $shehiasData);
             $shehias = collect($shehiasData)->map(function ($shehia) {
-                return (object)$shehia;
+                return (object) [
+                    'id' => $shehia['id'],
+                    'name' => $shehia['shehiaName'],
+                    'status' => $shehia['status'],
+                ];
             });
-            // Now paginate the collection
-            $shehias = $this->paginateCollection($shehias, 10); // Adjust '10' to however many items per page you want
+
+            // Apply pagination
+            $shehias = $this->paginateCollection($shehias, 10);
+        } else {
+            session()->flash('error', 'Failed to fetch shehias from the server.');
+            logger()->error('Error Fetching shehias:', ['response' => $response->body()]);
         }
-
-        // $shehias = Shehia::query()->latest();
-        // if ($this->search_keyword) {
-        //     $shehias->where('id', $this->search_keyword)
-        //         ->orWhere('name', 'like', '%' . $this->search_keyword . '%')->orWhere('district_id', 'like', '%' . $this->search_keyword . '%')->orWhere('status', 'like', '%' . $this->search_keyword . '%');
-        // }
-
-        // $shehias = $shehias->paginate();
 
 
         return view('livewire.shehia-component', [
