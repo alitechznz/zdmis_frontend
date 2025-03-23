@@ -112,19 +112,19 @@
                             <li><a href="">{{ __('menu.basic_setup') }}</a></li>
                             {{-- @endcan --}}
                             {{-- @can('view screening question') --}}
-                            <li><a href="">{{ __('menu.Hazard_Source') }}</a></li>
+                            <li><a href="{{ route('disaster-source') }}">{{ __('menu.Hazard_Source') }}</a></li>
                             {{-- @endcan --}}
                             {{-- @can('view appraisal question') --}}
-                            <li><a href="">{{ __('menu.Hazard_Status') }}</a></li>
+                            <li><a href="{{ route('disaster-situation') }}">{{ __('menu.Hazard_Status') }}</a></li>
                             {{-- @endcan --}}
                             {{-- @can('view appraisal question') --}}
-                            <li><a href="">{{ __('menu.Hazard_Category') }}</a></li>
+                            <li><a href="{{ route('disaster-analysis') }}">{{ __('menu.Hazard_Category') }}</a></li>
                             {{-- @endcan --}}
                             {{-- @can('view appraisal question') --}}
-                            <li><a href="">{{ __('menu.Weather_Source') }}</a></li>
+                            <li><a href="{{ route('weather-source') }}">{{ __('menu.Weather_Source') }}</a></li>
                             {{-- @endcan --}}
                             {{-- @can('view appraisal question') --}}
-                            <li><a href="">{{ __('menu.Measurement_Unit') }}</a></li>
+                            <li><a href="{{ route('standard') }}">{{ __('menu.Measurement_Unit') }}</a></li>
                             {{-- @endcan --}}
 
                         </ul>
@@ -144,20 +144,20 @@
                         </a>
                         <ul class="sidebar-submenu">
                             {{-- @can('view ministry') --}}
-                            <li><a href="">Ministries</a></li>
+                            <li><a href="{{ route('ministry') }}">Ministries</a></li>
                             {{-- @endcan --}}
                             {{-- @can('view institution') --}}
-                            <li><a href="">Institutions</a></li>
+                            <li><a href="{{ route('institutions') }}">Institutions</a></li>
                             {{-- @endcan --}}
                             {{-- @can('view department') --}}
-                            <li><a href="">Departments</a></li>
+                            <li><a href="{{ route('departments') }}">Departments</a></li>
                             {{-- @endcan --}}
                             {{-- @can('view rd committee') --}}
                             {{-- <li><a href="{{ route('divisions') }}">Division</a></li> --}}
-                            <li><a href="">RD Committees</a></li>
+                            <li><a href="{{ route('rd-committees') }}">RD Committees</a></li>
                             {{-- @endcan --}}
                             {{-- @can('view municipal council') --}}
-                            <li><a href="">Municipal Council</a></li>
+                            <li><a href="{{ route('municipal-council') }}">Municipal Council</a></li>
                             {{-- @endcan --}}
                             {{-- <li><a href="{{ route('shehia-committees') }}">Shehia Committee</a></li> --}}
                         </ul>
@@ -364,6 +364,25 @@
                                 <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
                             </svg>
                             <span>Damage Assessment</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-main-title">
+                        <div>
+                            <h6 style="background: #334628;">Users </h6>
+                        </div>
+                    </li>
+
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="">
+                            <svg class="stroke-icon">
+                                <use href="../assets/svg/icon-sprite.svg#stroke-user"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="../assets/svg/icon-sprite.svg#fill-user"></use>
+                            </svg>
+                            <span class="">System Users</span>
                         </a>
                     </li>
                     @canany(['view project financial'])

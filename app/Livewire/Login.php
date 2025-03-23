@@ -19,38 +19,39 @@ class Login extends Component
         // dd($baseUrl);
 
         $payload = [
-            'email' => trim($this->email),  // Assuming this property holds the correct value
+            'username' => trim($this->email),  // Assuming this property holds the correct value
             'password' => trim($this->password),
         ];
 
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json', // Make sure the server expects and handles JSON properly
-        ])->post("{$baseUrl}/users/login", $payload);
+        ])->post("{$baseUrl}/auth/login", $payload);
+
+
 
 
         // dd($response->body(), $response->status(), $response->json(), $payload);
-
-        // if ($response->successful()) {
-        //     $data = $response->json();
-        //     $token = $data['data']['tokenData']['token'];
-        //     session(['token' => $token]); // Store the token in the session
-        //     // session(['token' => $data['data']['token']]);
-        //     // $this->emit('loginSuccess');
-        //     return redirect()->to('/dashboard');
-        // } else {
-        //     $this->addError('email', 'The provided credentials are incorrect or authentication failed.');
-        // }
-
         if ($response->successful()) {
             $data = $response->json();
-            $token = $data['token']; // Directly access the token
+            $token = $data['data']['tokenData']['token'];
             session(['token' => $token]); // Store the token in the session
-            // $this->emit('loginSuccess'); // Uncomment if you need to emit an event
+            // session(['token' => $data['data']['token']]);
+            // $this->emit('loginSuccess');
             return redirect()->to('/dashboard');
         } else {
             $this->addError('email', 'The provided credentials are incorrect or authentication failed.');
         }
+
+        // if ($response->successful()) {
+        //     $data = $response->json();
+        //     $token = $data['token']; // Directly access the token
+        //     session(['token' => $token]); // Store the token in the session
+        //     // $this->emit('loginSuccess'); // Uncomment if you need to emit an event
+        //     return redirect()->to('/dashboard');
+        // } else {
+        //     $this->addError('email', 'The provided credentials are incorrect or authentication failed.');
+        // }
     }
 
 

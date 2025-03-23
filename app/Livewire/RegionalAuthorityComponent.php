@@ -71,18 +71,18 @@ class RegionalAuthorityComponent extends Component
 
     public function render()
     {
-        $regional_authorities = RegionalAuthority::query()->with('region')->latest();
-        if ($this->search_keyword) {
-            $regional_authorities->where('id', $this->search_keyword)
-                ->orWhere('name', 'like', '%' . $this->search_keyword . '%')->orWhere('region_id', 'like', '%' . $this->search_keyword . '%')->orWhere('type', 'like', '%' . $this->search_keyword . '%');
-        }
+        // $regional_authorities = RegionalAuthority::query()->with('region')->latest();
+        // if ($this->search_keyword) {
+        //     $regional_authorities->where('id', $this->search_keyword)
+        //         ->orWhere('name', 'like', '%' . $this->search_keyword . '%')->orWhere('region_id', 'like', '%' . $this->search_keyword . '%')->orWhere('type', 'like', '%' . $this->search_keyword . '%');
+        // }
 
-        $regional_authorities = $regional_authorities->paginate();
+        // $regional_authorities = $regional_authorities->paginate();
 
 
         return view('livewire.regional-authority-component', [
-            'regional_authorities' => $regional_authorities,
-            'regions' => Region::all(),
+            // 'regional_authorities' => $regional_authorities,
+            // 'regions' => Region::all(),
         ])->layout('layouts.app');
     }
 }

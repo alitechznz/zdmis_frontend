@@ -74,18 +74,18 @@ class MunicipalCouncilComponent extends Component
 
     public function render()
     {
-        $municipal_councils = MunicipalCouncil::query()->with(['regionalAuthority'])->latest();
-        if ($this->search_keyword) {
-            $municipal_councils->where('id', $this->search_keyword)
-                ->orWhere('name', 'like', '%' . $this->search_keyword . '%')->orWhere('regional_authority_id', 'like', '%' . $this->search_keyword . '%')->orWhere('status', 'like', '%' . $this->search_keyword . '%');
-        }
+        // $municipal_councils = MunicipalCouncil::query()->with(['regionalAuthority'])->latest();
+        // if ($this->search_keyword) {
+        //     $municipal_councils->where('id', $this->search_keyword)
+        //         ->orWhere('name', 'like', '%' . $this->search_keyword . '%')->orWhere('regional_authority_id', 'like', '%' . $this->search_keyword . '%')->orWhere('status', 'like', '%' . $this->search_keyword . '%');
+        // }
 
-        $municipal_councils = $municipal_councils->paginate();
+        // $municipal_councils = $municipal_councils->paginate();
 
 
         return view('livewire.municipal-council-component', [
-            'municipal_councils' => $municipal_councils,
-            'regional_authorities' => RegionalAuthority::all(),
+            // 'municipal_councils' => $municipal_councils,
+            // 'regional_authorities' => RegionalAuthority::all(),
         ])->layout('layouts.app');
     }
 }

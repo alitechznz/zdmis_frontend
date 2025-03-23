@@ -37,25 +37,27 @@
                 <div class="col mb-4">
                     <label for="role_name">Jina La Jukumu <span class="text-danger">*</span></label>
                     <input type="text" wire:model.defer="role_name"
-                           class="form-control @error("role_name") is-invalid @enderror" id="role_name" placeholder="Ingiza jukumu">
-                    @error("role_name")
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
+                        class="form-control @error('role_name') is-invalid @enderror" id="role_name"
+                        placeholder="Ingiza jukumu">
+                    @error('role_name')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
 
                 <div class="mb-4 col-md-4">
                     <label for="municipal_council">Hali <span class="text-danger">*</span></label>
-                    <select wire:model.defer="status" class="form-control @error("municipal_council") is-invalid @enderror" id="municipal_council">
+                    <select wire:model.defer="status"
+                        class="form-control @error('municipal_council') is-invalid @enderror" id="municipal_council">
                         <option value="">--Chagua--</option>
                         <option value="true">Hai</option>
                         <option value="false">Sio Hai</option>
                     </select>
-                    @error("municipal_council")
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
+                    @error('municipal_council')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
 
@@ -63,13 +65,18 @@
                 <div class="col mb-4 text-end" style="margin-top: 7px;">
                     <a wire:click="storeRole" class="btn btn-secondary mt-4">
                         <i class="fa fa-plus"></i>
-                        @if($update) Badilisha @else Sajili @endif
+                        @if ($update)
+                            Badilisha
+                        @else
+                            Sajili
+                        @endif
                         Jukumu
                     </a>
                 </div>
             </div>
             <div class="table-responsive custom-scrollbar">
-                <table class="table table-bordered table-sm table-hover table-striped table-responsive custom-scrollbar-sm">
+                <table
+                    class="table table-bordered table-sm table-hover table-striped table-responsive custom-scrollbar-sm">
                     <tr class="text-uppercase">
                         <th width="35">#</th>
                         <th scope="col">Jukumu</th>
@@ -82,7 +89,7 @@
                             <td>{{ $loop->index + 1 }}</td>
                             <td>{{ $r['roleName'] }}</td>
                             <td>
-                                @if($r['status'])
+                                @if ($r['status'])
                                     <i class="fa fa-check" aria-hidden="true" style="color: green;"></i>
                                 @else
                                     <i class="fa fa-times" aria-hidden="true" style="color: red;"></i>
@@ -91,22 +98,26 @@
                             <td class="text-end" style="display: flex; gap: 5px;">
                                 <div class="btn-group-sm">
 
-                                        <a href="#" class="btn btn-sm btn-warning" wire:click="$dispatch('perms', {role: {{ $r['id'] }}})" data-bs-toggle="modal" data-bs-target="#modal-permission">
-                                            <i class="fa fa-lock"></i> Ruhusa
-                                        </a>
+                                    <a href="#" class="btn btn-sm btn-warning"
+                                        wire:click="$dispatch('perms', {role: {{ $r['id'] }}})"
+                                        data-bs-toggle="modal" data-bs-target="#modal-permission">
+                                        <i class="fa fa-lock"></i> Ruhusa
+                                    </a>
 
 
-                                    {{-- @if($r->roleName != "Super admin" and $r->roleName != "Admin" and $r->roleName != "ZPC Officer" and $r->roleName != "Minister" and $r->name != "DPPR" and $r->name != "PS" and $r->name != "Chairman ZPS") --}}
-                                        {{-- @can('edit role') --}}
-                                            <a wire:click="editRole({{ $r['id'] }})" class="btn btn-primary btn-sm">
-                                                <i class="fa fa-edit"></i> Badilisha
-                                            </a>
-                                        {{-- @endcan --}}
-                                        {{-- @can('delete role') --}}
-                                            <a href="#" class="btn btn-sm btn-danger" wire:click="deleteConfirm({{$r['id']}})" data-bs-toggle="modal" data-bs-target="#deleteModalrole">
-                                                <i class="fa fa-trash"></i> Futa
-                                            </a>
-                                        {{-- @endcan --}}
+                                    {{-- @if ($r->roleName != 'Super admin' and $r->roleName != 'Admin' and $r->roleName != 'ZPC Officer' and $r->roleName != 'Minister' and $r->name != 'DPPR' and $r->name != 'PS' and $r->name != 'Chairman ZPS') --}}
+                                    {{-- @can('edit role') --}}
+                                    <a wire:click="editRole({{ $r['id'] }})" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-edit"></i> Badilisha
+                                    </a>
+                                    {{-- @endcan --}}
+                                    {{-- @can('delete role') --}}
+                                    <a href="#" class="btn btn-sm btn-danger"
+                                        wire:click="deleteConfirm({{ $r['id'] }})" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModalrole">
+                                        <i class="fa fa-trash"></i> Futa
+                                    </a>
+                                    {{-- @endcan --}}
                                     {{-- @endif --}}
                                 </div>
                             </td>
@@ -120,8 +131,7 @@
 
     <!-- Permission Modal Content -->
     <div class="modal fade" wire:ignore.self id="modal-permission" tabindex="-1" role="dialog"
-         aria-labelledby="modal-default"
-         aria-hidden="true">
+        aria-labelledby="modal-default" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -129,7 +139,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body bg-light" style="max-height: 75vh; overflow-y: auto;">
-                    @livewire('permission-component')
+                    {{-- @livewire('permission-component') --}}
                 </div>
             </div>
         </div>
@@ -138,21 +148,21 @@
 
     <!-- Delete Modal -->
     <div wire:ignore.self class="modal fade" id="deleteModalrole" data-backdrop="false" tabindex="-1" role="dialog"
-         aria-labelledby="deleteModalLabel" aria-hidden="true">
+        aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Hakiki Kufuta </h5>
                 </div>
                 <div class="modal-body">
-                    <p>Je unataka kufuta <strong>{{ $delete_confirm? $delete_confirm->name: ''  }}</strong> ?
+                    <p>Je unataka kufuta <strong>{{ $delete_confirm ? $delete_confirm->name : '' }}</strong> ?
                     </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Ondosha
                     </button>
                     <button type="button" wire:click.prevent="destroy()" class="btn btn-danger close-modal"
-                            data-bs-dismiss="modal">Ndio, Futa
+                        data-bs-dismiss="modal">Ndio, Futa
                     </button>
                 </div>
             </div>
@@ -198,11 +208,11 @@
                     return (a, b) =>
                         ((row1, row2) => {
                             return row1 !== "" &&
-                            row2 !== "" &&
-                            !isNaN(row1) &&
-                            !isNaN(row2)
-                                ? row1 - row2
-                                : row1.toString().localeCompare(row2);
+                                row2 !== "" &&
+                                !isNaN(row1) &&
+                                !isNaN(row2) ?
+                                row1 - row2 :
+                                row1.toString().localeCompare(row2);
                         })(
                             this.getCellValue(this.sortAsc ? a : b, index),
                             this.getCellValue(this.sortAsc ? b : a, index)

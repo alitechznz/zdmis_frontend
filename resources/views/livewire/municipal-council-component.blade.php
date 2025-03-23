@@ -37,84 +37,86 @@
                 <div class="col-6">
                     <div class="input-group">
                         <input type="search" wire:model.live="search_keyword"
-                               class="form-control form-control-sm w-auto"
-                               placeholder="Search municipal council...">
+                            class="form-control form-control-sm w-auto" placeholder="Search municipal council...">
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="float-end">
-                        @can('view municipal council')
+
                         <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#modal-municipalcouncil" wire:click='create'
-                     ><i class="fa fa-plus"></i> Add New </a>
-                        @endcan
-                      
+                            data-bs-target="#modal-municipalcouncil" wire:click='create'><i class="fa fa-plus"></i> Add
+                            New </a>
+
+
                     </div>
 
                 </div>
             </div>
             <div class="table-responsive custom-scrollbar">
-                <table class="table table-bordered table-sm table-hover table-striped table-responsive custom-scrollbar-sm">
+                <table
+                    class="table table-bordered table-sm table-hover table-striped table-responsive custom-scrollbar-sm">
                     <thead class="table-light">
-                    <tr class="text-capitalize">
-                        <th scope="col">SN</th>
-                        <th scope="col">Municipal_Council_Name</th>
-                        <th scope="col">Regional_Authority</th>
-                        <th scope="col">Status</th>
-                        <th width="220">Actions</th>
-                    </tr>
+                        <tr class="text-capitalize">
+                            <th scope="col">SN</th>
+                            <th scope="col">Municipal_Council_Name</th>
+                            <th scope="col">Regional_Authority</th>
+                            <th scope="col">Status</th>
+                            <th width="220">Actions</th>
+                        </tr>
                     </thead>
                     <tbody x-ref="tbody">
-                    @forelse ($municipal_councils as $municipalcouncil)
+                        {{-- @forelse ($municipal_councils as $municipalcouncil)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $municipalcouncil->name }}</td>
+                                <td>{{ $municipalcouncil->regionalAuthority->name }}</td>
+                                <td>
+                                    <span
+                                        class="badge {{ $municipalcouncil->status == 'active' ? 'bg-success' : 'bg-danger' }}">
+                                        {{ ucfirst($municipalcouncil->status) }}
+                                    </span>
+                                </td>
+                                <td style="display: flex; gap: 5px;">
+                                    @can('edit municipal council')
+                                        <a href="#" wire:click="edit({{ $municipalcouncil->id }})"
+                                            class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#modal-municipalcouncil">
+                                            Edit </a>
+                                    @endcan
+                                    @can('delete municipal council')
+                                        <a href="#" class="btn btn-sm btn-danger"
+                                            wire:click="deleteConfirm({{ $municipalcouncil->id }})" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModalmunicipalcouncil">
+                                            Delete </a>
+                                    @endcan
 
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $municipalcouncil->name }}</td>
-                            <td>{{ $municipalcouncil->regionalAuthority->name }}</td>
-                            <td>
-                                <span class="badge {{ $municipalcouncil->status == 'active' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ ucfirst($municipalcouncil->status) }}
-                                </span>
-                            </td>
-                            <td style="display: flex; gap: 5px;">
-                                @can('edit municipal council')
-                                <a href="#" wire:click="edit({{ $municipalcouncil->id }})"
-                                    class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#modal-municipalcouncil">
-                                     Edit </a>
-                                @endcan
-                                @can('delete municipal council')
-                                <a href="#" class="btn btn-sm btn-danger"
-                                wire:click="deleteConfirm({{$municipalcouncil->id}})"
-                                data-bs-toggle="modal" data-bs-target="#deleteModalmunicipalcouncil">
-                                 Delete </a>
-                                @endcan
-                               
-                               
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="10" class="text-danger text-center"> No Municipal Council Found</td>
-                        </tr>
-                    @endforelse
+
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="10" class="text-danger text-center"> No Municipal Council Found</td>
+                            </tr>
+                        @endforelse --}}
                     </tbody>
                 </table>
-                {{ $municipal_councils->links() }}
+                {{-- {{ $municipal_councils->links() }} --}}
             </div>
         </div>
     </div>
     <!-- Modal Content -->
     <div class="modal fade" wire:ignore.self id="modal-municipalcouncil" tabindex="-1" role="dialog"
-         aria-labelledby="modal-default" aria-hidden="true">
+        aria-labelledby="modal-default" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="h6 modal-title">@if($update)
+                    <h2 class="h6 modal-title">
+                        @if ($update)
                             Update
                         @else
                             Add
-                        @endif Municipal Council</h2>
+                        @endif Municipal Council
+                    </h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -122,42 +124,44 @@
                         <div class="mb-4 col-sm-12 col-md-12 col-lg-12">
                             <label for="name">Municipal Council Name <span class="text-danger">*</span></label>
                             <input type="text" wire:model="name"
-                                   class="form-control @error("name") is-invalid @enderror" id="name" placeholder="Enter Municipal Council Name">
-                            @error("name")
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                                class="form-control @error('name') is-invalid @enderror" id="name"
+                                placeholder="Enter Municipal Council Name">
+                            @error('name')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                         <div class="mb-4 col-sm-12 col-md-12 col-lg-12">
-                            <label for="regional_authority">Regional authority <span class="text-danger">*</span></label>
+                            <label for="regional_authority">Regional authority <span
+                                    class="text-danger">*</span></label>
                             <select wire:model="regional_authority"
-                                    class="form-control @error("regional_authority") is-invalid @enderror"
-                                    id="regional_authority">
+                                class="form-control @error('regional_authority') is-invalid @enderror"
+                                id="regional_authority">
                                 <option value="">--Choose--</option>
-                                @foreach($regional_authorities as $regional_authority)
-                                    <option
-                                        value="{{ $regional_authority->id }}">{{ $regional_authority->name }}</option>
-                                @endforeach
+                                {{-- @foreach ($regional_authorities as $regional_authority)
+                                    <option value="{{ $regional_authority->id }}">{{ $regional_authority->name }}
+                                    </option>
+                                @endforeach --}}
                             </select>
-                            @error("regional_authority")
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                            @error('regional_authority')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                         <div class="mb-4 col-sm-12 col-md-12 col-lg-12">
                             <label for="status">Status <span class="text-danger">*</span></label>
-                            <select wire:model="status" class="form-control @error("status") is-invalid @enderror"
-                                    id="status">
+                            <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
+                                id="status">
                                 <option value="">--Choose--</option>
                                 <option value="active">active</option>
                                 <option value="inactive">Inactive</option>
                             </select>
-                            @error("status")
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                            @error('status')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                         <div class="modal-footer">
@@ -165,7 +169,9 @@
                                 Close
                             </button>
 
-                            <button type="button" wire:click.prevent="store" class="{{ $update ? 'btn btn-success' : 'btn btn-primary' }}">  {{ $update ? 'Update' : 'Add' }}</button>
+                            <button type="button" wire:click.prevent="store"
+                                class="{{ $update ? 'btn btn-success' : 'btn btn-primary' }}">
+                                {{ $update ? 'Update' : 'Add' }}</button>
                         </div>
                     </div>
                 </div>
@@ -176,20 +182,20 @@
 
     <!-- Delete Modal -->
     <div wire:ignore.self class="modal fade" id="deleteModalmunicipalcouncil" data-backdrop="false" tabindex="-1"
-         role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Delete Confirm </h5>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure want to delete <strong>{{ $delete_confirm? $delete_confirm->name: ''  }}</strong> ?
+                    <p>Are you sure want to delete <strong>{{ $delete_confirm ? $delete_confirm->name : '' }}</strong> ?
                     </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" wire:click.prevent="destroy()" class="btn btn-danger close-modal"
-                            data-bs-dismiss="modal">Yes, Delete
+                        data-bs-dismiss="modal">Yes, Delete
                     </button>
                 </div>
             </div>
@@ -235,11 +241,11 @@
                     return (a, b) =>
                         ((row1, row2) => {
                             return row1 !== "" &&
-                            row2 !== "" &&
-                            !isNaN(row1) &&
-                            !isNaN(row2)
-                                ? row1 - row2
-                                : row1.toString().localeCompare(row2);
+                                row2 !== "" &&
+                                !isNaN(row1) &&
+                                !isNaN(row2) ?
+                                row1 - row2 :
+                                row1.toString().localeCompare(row2);
                         })(
                             this.getCellValue(this.sortAsc ? a : b, index),
                             this.getCellValue(this.sortAsc ? b : a, index)

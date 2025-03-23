@@ -107,7 +107,7 @@
                         @endforelse
                     </tbody>
                 </table>
-                {{ $shehias->links() }}
+                {{-- {{ $shehias->links() }} --}}
             </div>
         </div>
     </div>

@@ -27,10 +27,8 @@ class DepartmentComponent extends Component
 
     public function mount()
     {
-        $this->ministries = Ministry::all();
-   
-        // $this->$ministry_address = $this->ministries->address;
-        $this->institutions = Institution::all();
+        // $this->ministries = Ministry::all();
+        // $this->institutions = Institution::all();
     }
 
 
@@ -101,19 +99,19 @@ class DepartmentComponent extends Component
 
     public function render()
     {
-        $departments = Department::query()->latest();
-        if ($this->search_keyword) {
-            $departments->where('id', $this->search_keyword)
-                ->orWhere('name', 'like', '%' . $this->search_keyword . '%')->orWhere('institution_id', 'like', '%' . $this->search_keyword . '%')->orWhere('address', 'like', '%' . $this->search_keyword . '%');
-        }
+        // $departments = Department::query()->latest();
+        // if ($this->search_keyword) {
+        //     $departments->where('id', $this->search_keyword)
+        //         ->orWhere('name', 'like', '%' . $this->search_keyword . '%')->orWhere('institution_id', 'like', '%' . $this->search_keyword . '%')->orWhere('address', 'like', '%' . $this->search_keyword . '%');
+        // }
 
-        $departments = $departments->paginate();
+        // $departments = $departments->paginate();
 
 
         return view('livewire.department-component', [
-            'departments' => $departments,
-            'institutions' => Institution::all(),
-            'ministries' => Ministry::all(),
+            // 'departments' => $departments,
+            // 'institutions' => Institution::all(),
+            // 'ministries' => Ministry::all(),
         ])->layout('layouts.app');
     }
 }

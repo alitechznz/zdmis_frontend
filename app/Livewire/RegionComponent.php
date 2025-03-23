@@ -26,6 +26,11 @@ class RegionComponent extends Component
         $this->resetField();
     }
 
+    private function getBaseUrl()
+    {
+        return config('services.api.base_url');
+    }
+
     public function store()
     {
         $this->validate([
@@ -34,33 +39,37 @@ class RegionComponent extends Component
         ]);
 
         // Determine if this is a create or update operation based on $this->region_id
-        $url = $this->region_id ? "http://41.59.105.130:3000/regions/{$this->region_id}" : 'http://41.59.105.130:3000/regions';
+        $baseUrl = $this->getBaseUrl();
+        $url = $this->region_id ? "{$baseUrl}/region/{$this->region_id}" : "{$baseUrl}/region";
         $method = $this->region_id ? 'put' : 'post';
 
+        $token = session('token');
+
         // API request to external endpoint
-        $response = Http::$method($url, [
+        $payload = [
             'regionName' => $this->name,
-            'status' => $this->status,
-        ]);
+            'status' => in_array(strtolower($this->status), ['active', 'true', '1']), // safely cast to true/false
+        ];
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])->$method($url, $payload);
+
+
 
         if ($response->successful()) {
-            // Sync with local database
-            // Region::updateOrCreate(['id' => $this->region_id], [
-            //     'regionName' => $this->name,
-            //     'status' => $this->status,
-            // ]);
-            logger()->info("URL requested: {$url}");
-            logger()->info("Data sent: ", ['regionName' => $this->name, 'status' => $this->status]);
-
-
-            // session()->flash('message', $this->region_id ? 'Region Updated Successfully.' : 'Region Created Successfully.');
+            // logger()->info("URL requested: {$url}");
+            // logger()->info("Data sent: ", ['regionName' => $this->name, 'status' => $this->status]);
             $this->dispatch('swal:info', title: $this->region_id ? 'Region Updated.' : 'Region Created');
             $this->resetField();
             $this->dispatch('closeModal'); // Ensure you have the listeners set up for this event
         } else {
+            // logger()->error("Failed to update or create the region: {$response->body()}");
             session()->flash('error', 'Failed to create or update the region on the external server.');
+            $this->dispatch('swal:info', title: $this->region_id ? 'Error while updating region.' : 'Error while creating region');
         }
     }
+
 
 
 
@@ -71,44 +80,48 @@ class RegionComponent extends Component
         $this->region_id = $region_id;
 
         // Construct the URL for the API request
-        $url = "http://41.59.105.130:3000/regions/{$region_id}";
-        $response = Http::get($url);
+        $baseUrl = $this->getBaseUrl();
+        $url = "{$baseUrl}/region/{$region_id}";
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->get($url);
 
         if ($response->successful()) {
-            $regionData = $response->json();
+            $responseBody = $response->json();
+            logger()->info('Region Data:', $responseBody);
 
-            // Check if the array is not empty and the keys exist
-            if (!empty($regionData) && isset($regionData[0]['regionName'], $regionData[0]['status'])) {
-                $this->name = $regionData[0]['regionName'];
-                $this->status = $regionData[0]['status'];
+            if (!empty($responseBody['data']) && is_array($responseBody['data'])) {
+                $regionData = $responseBody['data']; // Assuming the first element is what you want
+
+                $this->name = $regionData['regionName'] ?? 'No region name provided';
+                $this->status = $regionData['status'] ?? 'No status provided';
+
+                logger()->info('Region Data:', [
+                    'regionName' => $this->name,
+                    'status' => $this->status,
+                ]);
             } else {
-                // Handle the case where the expected keys are not present or the array is empty
-                session()->flash('error', 'The expected data keys are not present in the API response.');
-                return; // Stop further execution if the necessary data is missing
+                logger()->error("Failed to load load region: {$response->body()}");
+                session()->flash('error', 'No region data found or structure is incorrect.');
             }
         } else {
-            // Log error or handle the situation when the region is not found or the API call fails
+            logger()->error("Failed to load region: {$response->body()}");
             session()->flash('error', 'Failed to fetch region details. Error: ' . $response->body());
-            return; // Stop further execution if the API call was unsuccessful
         }
     }
 
 
 
 
-
-
-    public function deleteConfirm(Region $region)
-    {
-        $this->delete_confirm = $region;
-    }
-
-
-
     public function destroy($regionId)
     {
-        $url = "http://41.59.105.130:3000/regions/{$regionId}";
-        $response = Http::delete($url);
+        $baseUrl = $this->getBaseUrl();
+        $url = "{$baseUrl}/region/{$regionId}";
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->delete($url);
 
         if ($response->successful()) {
             $this->dispatch('swal:info', title: 'Region Deleted');
@@ -119,26 +132,13 @@ class RegionComponent extends Component
     }
 
 
+
     private function resetField()
     {
         $this->reset('name', 'status', 'region_id', 'update');
     }
 
-    // public function render()
-    // {
-    //     $regions = Region::query()->latest();
-    //     if ($this->search_keyword) {
-    //         $regions->where('id', $this->search_keyword)
-    //             ->orWhere('name', 'like', '%' . $this->search_keyword . '%')->orWhere('status', 'like', '%' . $this->search_keyword . '%');
-    //     }
 
-    //     $regions = $regions->paginate();
-
-
-    //     return view('livewire.region-component', [
-    //         'regions' => $regions
-    //     ])->layout('layouts.app');
-    // }
 
 
     public function paginateCollection($items, $perPage = 15, $page = null, $options = [])
@@ -154,52 +154,48 @@ class RegionComponent extends Component
         );
     }
 
-    // public function render()
-    // {
-    //     $query = [];
 
-    //     // Check if there's a search keyword and prepare the query parameters
-    //     if ($this->search_keyword) {
-    //         $query['search'] = $this->search_keyword; // Assuming the API uses 'search' query param for filtering
-    //     }
-
-    //     // Fetch regions from the external API with search query if present
-    //     $response = Http::get('http://41.59.105.130:3000/regions', $query);
-    //     $regions = collect([]);
-
-    //     if ($response->successful()) {
-    //         $regionsData = $response->json();
-    //         // Convert the response to a collection for easier handling in Blade
-    //         $regions = collect($regionsData)->map(function ($region) {
-    //             return (object)$region; // Convert each array to an object
-    //         });
-    //     } else {
-    //         // Optionally handle errors or log them
-    //     }
-
-    //     return view('livewire.region-component', [
-    //         'regions' => $regions
-    //     ])->layout('layouts.app');
-    // }
 
     public function render()
     {
-        $query = [];
 
+        $query = [];
         if ($this->search_keyword) {
             $query['search'] = $this->search_keyword;
         }
 
-        $response = Http::get('http://41.59.105.130:3000/regions', $query);
+        $baseUrl = $this->getBaseUrl();
+        // Assuming the token is stored in the session, you can retrieve it like this:
+        $token = session('token'); // Ensure you have set this session variable when you login
+
+        if (!$token) {
+            session()->flash('error', 'No authentication token available. Please login again.');
+            return view('livewire.region-component', ['regions' => collect([])])->layout('layouts.app');
+        }
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])->get("{$baseUrl}/region", $query);
+
         $regions = collect([]);
 
         if ($response->successful()) {
-            $regionsData = $response->json();
+            $regionsData = $response->json()['data'];
+            logger()->info('Fetched regions:', $regionsData);
             $regions = collect($regionsData)->map(function ($region) {
-                return (object)$region;
+                return (object) [
+                    'id' => $region['id'],
+                    'name' => $region['regionName'],
+                    'status' => $region['status'],
+                ];
             });
-            // Now paginate the collection
-            $regions = $this->paginateCollection($regions, 10); // Adjust '10' to however many items per page you want
+
+            // Apply pagination
+            $regions = $this->paginateCollection($regions, 10);
+        } else {
+            session()->flash('error', 'Failed to fetch regions from the server.');
+            logger()->error('Error Fetching regions:', ['response' => $response->body()]);
         }
 
         return view('livewire.region-component', [

@@ -10,11 +10,12 @@
             padding-top: 1.3pt;
         }
     </style>
+
     <div class="container-fluid">
         <div class="page-title">
             <div class="row">
                 <div class="col-sm-6 p-0">
-                    <h3>Manage Region </h3>
+                    <h3>Manage Standard Measurement </h3>
                 </div>
                 {{-- <div class="col-sm-6 p-0">
                     <ol class="breadcrumb">
@@ -22,7 +23,7 @@
                                 <svg class="stroke-icon">
                                     <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
                                 </svg></a></li>
-                        <li class="breadcrumb-item">Regions</li>
+                        <li class="breadcrumb-item">Districts</li>
                     </ol>
                 </div> --}}
             </div>
@@ -35,14 +36,14 @@
                 <div class="col-6">
                     <div class="input-group">
                         <input type="search" wire:model.live="search_keyword"
-                            class="form-control form-control-sm w-auto" placeholder="Search region ...">
+                            class="form-control form-control-sm w-auto" placeholder="Search standard...">
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="float-end">
 
                         <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#modal-region" wire:click='create'><i class="fa fa-plus"></i> Add New </a>
+                            data-bs-target="#modal-district" wire:click='create'><i class="fa fa-plus"></i> Add New </a>
 
 
                     </div>
@@ -55,9 +56,12 @@
                     <thead class="table-light">
                         <tr class="text-capitalize">
                             <th>SN</th>
-                            <th @click="sortByColumn" class="cursor-pointer select-none">Region Name <span
+                            <th @click="sortByColumn" class="cursor-pointer select-none">Disaster_Name <span
                                     class="float-end text-secondary">&#8645;</span>
                             </th>
+                            {{-- <th @click="sortByColumn" class="cursor-pointer select-none">Region <span
+                                    class="float-end text-secondary">&#8645;</span>
+                            </th> --}}
                             <th @click="sortByColumn" class="cursor-pointer select-none">Status <span
                                     class="float-end text-secondary">&#8645;</span>
                             </th>
@@ -66,43 +70,49 @@
                     </thead>
                     <tbody x-ref="tbody">
                         @php $sn = 1; @endphp
-                        @forelse ($regions as $region)
+                        @forelse ($districts as $district)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $region->name }}</td>
+                                <td>{{ $sn }}</td>
+                                <td>{{ $district->districtName }}</td>
+                                {{-- <td>{{ $district->region->name }}</td> --}}
                                 <td>
                                     <span
-                                        class="badge {{ $region->status ? 'badge-light-success' : 'badge-light-danger' }}">
-                                        {{ $region->status ? 'Active' : 'Inactive' }}
+                                        class="badge {{ $district->status == 'active' ? 'badge-light-success' : 'badge-light-danger' }}">
+                                        {{ ucfirst($district->status) }}
                                     </span>
                                 </td>
-
                                 <td style="display: flex; gap: 5px;">
 
-                                    <a href="#" wire:click="edit({{ $region->id }})"
+                                    <a href="#" wire:click="edit({{ $district->id }})"
                                         class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#modal-region">
+                                        data-bs-target="#modal-district">
                                         Edit </a>
+
+
+
                                     <a href="#" class="btn btn-sm btn-danger"
-                                        wire:click="destroy({{ $region->id }})" data-bs-toggle="modal"
+                                        wire:click="destroy({{ $district->id }})" data-bs-toggle="modal"
                                         data-bs-target="">
                                         Delete </a>
+
+
+
                                 </td>
                             </tr>
                             @php $sn++; @endphp
                         @empty
                             <tr>
-                                <td colspan="3" class="text-danger text-center"> No Region Found</td>
+                                <td colspan="4" class="text-danger text-center"> No Data Found</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
-                {{-- {{ $regions->links() }} --}}
+                {{ $districts->links() }}
             </div>
         </div>
     </div>
     <!-- Modal Content -->
-    <div class="modal fade" wire:ignore.self id="modal-region" tabindex="-1" role="dialog"
+    <div class="modal fade" wire:ignore.self id="modal-district" tabindex="-1" role="dialog"
         aria-labelledby="modal-default" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -112,23 +122,24 @@
                             Update
                         @else
                             Add
-                        @endif Region
+                        @endif Disaster Source
                     </h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="mb-4">
-                            <label for="name">Region Name <span class="text-danger">*</span></label>
+                            <label for="name">Source Name <span class="text-danger">*</span></label>
                             <input type="text" wire:model="name"
                                 class="form-control @error('name') is-invalid @enderror" id="name"
-                                placeholder="Enter Region Name">
+                                placeholder="Enter Source Name">
                             @error('name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
+
                         <div class="mb-4">
                             <label for="status">Status <span class="text-danger">*</span></label>
                             <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
@@ -158,15 +169,15 @@
     <!-- End of Modal Content -->
 
     <!-- Delete Modal -->
-    <div wire:ignore.self class="modal fade" id="deleteModalregion" data-backdrop="false" tabindex="-1" role="dialog"
-        aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="deleteModaldistrict" data-backdrop="false" tabindex="-1"
+        role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Delete Confirm </h5>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure want to delete <strong>{{ $delete_confirm ? $delete_confirm->name : '' }}</strong>
+                    <p>Are you sure want to delete <strong>this source</strong>
                         ?
                     </p>
                 </div>
@@ -180,11 +191,63 @@
         </div>
     </div>
 
+    <script>
+        function data() {
+            return {
+                sortBy: "",
+                sortAsc: false,
+                sortByColumn($event) {
+                    if (this.sortBy === $event.target.innerText) {
+                        if (this.sortAsc) {
+                            this.sortBy = "";
+                            this.sortAsc = false;
+                        } else {
+                            this.sortAsc = !this.sortAsc;
+                        }
+                    } else {
+                        this.sortBy = $event.target.innerText;
+                    }
+
+                    this.getTableRows()
+                        .sort(
+                            this.sortCallback(
+                                Array.from($event.target.parentNode.children).indexOf(
+                                    $event.target
+                                )
+                            )
+                        )
+                        .forEach((tr) => {
+                            this.$refs.tbody.appendChild(tr);
+                        });
+                },
+                getTableRows() {
+                    return Array.from(this.$refs.tbody.querySelectorAll("tr"));
+                },
+                getCellValue(row, index) {
+                    return row.children[index].innerText;
+                },
+                sortCallback(index) {
+                    return (a, b) =>
+                        ((row1, row2) => {
+                            return row1 !== "" &&
+                                row2 !== "" &&
+                                !isNaN(row1) &&
+                                !isNaN(row2) ?
+                                row1 - row2 :
+                                row1.toString().localeCompare(row2);
+                        })(
+                            this.getCellValue(this.sortAsc ? a : b, index),
+                            this.getCellValue(this.sortAsc ? b : a, index)
+                        );
+                }
+            };
+        }
+    </script>
     @push('scripts')
         <script>
             document.addEventListener('livewire:initialized', () => {
                 @this.on('closeModal', (event) => {
-                    $('#modal-region').modal('hide')
+                    $('#modal-district').modal('hide')
                 });
             });
         </script>
