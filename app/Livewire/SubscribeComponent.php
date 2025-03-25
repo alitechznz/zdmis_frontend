@@ -17,17 +17,123 @@ class SubscribeComponent extends Component
     public $search_keyword = null;
     public $update = false;
     public $delete_confirm = null;
-    public $description, $location, $status, $incident, $incident_id = null;
+    public $description, $location, $status, $incident, $subject, $contact, $message, $notify_id, $incident_id = null;
+    public $selectedContact;
+
 
     private function getBaseUrl()
     {
         return config('services.api.base_url');
     }
 
+    public function setContact($contact)
+    {
+        // $this->selectedContact = $contact;
+        $this->selectedContact = '+255' . substr($contact, 1);
+        $this->reset(['subject', 'message']); // Optional: Reset these fields if you have them in the form
+    }
+
+
     public function create()
     {
         $this->resetField();
     }
+
+
+    public function notify()
+    {
+        $this->validate([
+            'subject' => 'required',
+            'message' => 'required',
+        ]);
+
+        $baseUrl = $this->getBaseUrl();
+        $url = $this->notify_id ? "{$baseUrl}/subscriber/alert/{$this->notify_id}" : "{$baseUrl}/subscriber/alert";
+        $method = $this->notify_id ? 'put' : 'post';
+
+        $token = session('token'); // Retrieve the auth token
+
+        // Adjusted payload with correct field names and structures
+        $payload = [
+            'contact' => $this->selectedContact,
+            'subject' => $this->subject,
+            'message' => $this->message,
+        ];
+
+        logger()->info("Sending notification with payload:", $payload);
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])->$method($url, $payload);
+        // logger()->info("Sending notification with payload:", $payload);
+        if ($response->successful()) {
+            logger()->info("Notification updated or created successfully.");
+            $this->dispatch('swal:info', title: $this->incident_id ? 'Notification updated successfully.' : 'Notification successfully Created');
+            $this->resetField();
+        } else {
+            logger()->error("Failed to update or create the Notification: {$response->body()}");
+            $this->dispatch('swal:info', title: 'Failed to create or update the Notification on the external server.');
+            session()->flash('error', 'Failed to create or update the Notification on the external server.');
+        }
+    }
+
+
+    public function notifyAll()
+    {
+        $this->validate([
+            'subject' => 'required',
+            'message' => 'required',
+        ]);
+
+        $baseUrl = $this->getBaseUrl();
+        $token = session('token');
+
+        $subscriberResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->get("{$baseUrl}/subscriber");
+
+        $subscribers = collect([]);
+        if ($subscriberResponse->successful()) {
+            $subscriberData = $subscriberResponse->json()['data'];
+            $subscribers = collect($subscriberData)->map(function ($subscriber) {
+                return (object) [
+                    'id' => $subscriber['id'],
+                    'contact' => $subscriber['contact'],
+                    'subscription_type' => $subscriber['subscription_type'],
+                    'status' => $subscriber['status'],
+                ];
+            });
+        } else {
+            logger()->error('Error Fetching subscribers:', ['response' => $subscriberResponse->body()]);
+        }
+
+        foreach ($subscribers as $subscriber) {
+            if ($subscriber->status == 'active' && $subscriber->subscription_type == 'phone') {
+                $url = "{$baseUrl}/subscriber/alert";
+                $payload = [
+                    'contact' => $subscriber->contact,
+                    'subject' => $this->subject,
+                    'message' => $this->message,
+                ];
+
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept' => 'application/json'
+                ])->post($url, $payload);
+
+                if (!$response->successful()) {
+                    logger()->error("Failed to send notification to {$subscriber->contact}: {$response->body()}");
+                    // Handle error appropriately, e.g., by breaking out of the loop or logging the error
+                }
+            }
+        }
+
+        $this->dispatch('swal:info', title: 'Notifications sent successfully.');
+        $this->reset(['subject', 'message', 'selectedContact']); // Reset fields after sending
+    }
+
 
 
     public function store()
@@ -116,38 +222,45 @@ class SubscribeComponent extends Component
     }
 
 
-
-
-    public function destroy($incidentId)
+    public function deleteConfirm($subscriberId)
     {
-        $baseUrl = $this->getBaseUrl();
-        $url = "{$baseUrl}/incidents/{$incidentId}";
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . session('token'),
-            'Accept' => 'application/json'
-        ])->delete($url);
+        $this->delete_confirm = $subscriberId;
+    }
 
-        if ($response->successful()) {
-            $this->dispatch('swal:info', title: 'Incident Deleted');
-        } else {
-            logger()->error("Failed to delete Incident: " . $response->body());
-            $this->dispatch('swal:info', title: 'Failed to delete the Incident.');
+    public function destroy()
+    {
+        if ($this->delete_confirm) {
+            $baseUrl = $this->getBaseUrl();
+            $url = "{$baseUrl}/subscriber/{$this->delete_confirm}";
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . session('token'),
+                'Accept' => 'application/json'
+            ])->delete($url);
+
+            if ($response->successful()) {
+                $this->dispatch('swal:info', title: 'Subscriber Deleted');
+                $this->reset('delete_confirm');
+            } else {
+                logger()->error("Failed to delete Subscriber: " . $response->body());
+                $this->dispatch('swal:info', title: 'Failed to delete the Subscriber.');
+            }
         }
+        $this->dispatch('closeModal');
     }
 
     private function resetField()
     {
-        $this->reset('description', 'location', 'incident', 'status', 'incident_id', 'update');
+        $this->reset('description', 'location', 'incident', 'status', 'incident_id', 'update', 'message', 'subject');
     }
-    
 
-    public function paginateCollection($items, $perPage = 15, $page = null, $options = [])
+
+    public function paginateCollection($items, $perPage = 10, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
         return new LengthAwarePaginator(
-            $items->forPage($page, $perPage),
-            $items->count(),
+            $items->forPage($page, $perPage)->all(), // Ensure items are an array
+            $items->count(), // Total number of items
             $perPage,
             $page,
             $options
@@ -156,70 +269,51 @@ class SubscribeComponent extends Component
 
     public function render()
     {
+        $baseUrl = $this->getBaseUrl();
+        $token = session('token');
+
+        // Check for the authentication token
+        if (!$token) {
+            session()->flash('error', 'No authentication token available. Please login again.');
+            return view('livewire.subscribe-component', ['subscribers' => collect([])])->layout('layouts.app');
+        }
+
+        // Preparing the query
         $query = [];
         if ($this->search_keyword) {
             $query['search'] = $this->search_keyword;
         }
 
-        $baseUrl = $this->getBaseUrl();
-        // Assuming the token is stored in the session, you can retrieve it like this:
-        $token = session('token'); // Ensure you have set this session variable when you login
-
-        if (!$token) {
-            session()->flash('error', 'No authentication token available. Please login again.');
-            return view('livewire.matukio-component', ['incidents' => collect([])])->layout('layouts.app');
-        }
-
+        // Make the HTTP GET request with the search query
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
             'Accept' => 'application/json'
-        ])->get("{$baseUrl}/incidents", $query);
+        ])->get("{$baseUrl}/subscriber", $query);
 
-        $incidents = collect([]);
+        // Initialize an empty collection for subscribers
+        $subscribers = collect([]);
 
         if ($response->successful()) {
-            $incidentsData = $response->json()['data'];
-            // logger()->info('Fetched Incidents:', $incidentsData);
-            $incidents = collect($incidentsData)->map(function ($incident) {
+            $subscribersData = $response->json()['data'];
+            // logger()->info('Fetched subscribers:', $subscribersData);
+            $subscribers = collect($subscribersData)->map(function ($subscriber) {
                 return (object) [
-                    'id' => $incident['id'],
-                    'title' => $incident['incidentType']['title'],
-                    'reportedBy' => $incident['reportedBy']['fullName'],
-                    'description' => $incident['description'],
-                    'location' => $incident['location'],
-                    'status' => $incident['status'],
-                    'reportedBy' => $incident['reportedBy']['fullName'] ?? 'N/A',
-                    'createdAt' => date('Y-m-d', strtotime($incident['createdAt'])),
-                    'updatedAt' => $incident['updatedAt'],
+                    'id' => $subscriber['id'],
+                    'contact' => $subscriber['contact'],
+                    'subscription_type' => $subscriber['subscription_type'],
+                    'status' => $subscriber['status'],
                 ];
             });
 
-            // Apply pagination
-            $incidents = $this->paginateCollection($incidents, 10);
+            // Apply pagination if necessary
+            $subscribers = $this->paginateCollection($subscribers, 10);
         } else {
-            session()->flash('error', 'Failed to fetch incidents from the server.');
-            // logger()->error('Error Fetching Incidents:', ['response' => $response->body()]);
+            session()->flash('error', 'Failed to fetch subscribers from the server.');
+            // logger()->error('Error Fetching subscribers:', ['response' => $response->body()]);
         }
 
-
-        // Fetch incident types if necessary, or handle other data fetching here
-        $typeResponse = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-            'Accept' => 'application/json'
-        ])->get("{$baseUrl}/incident-type");
-
-        $incidentTypes = collect([]);
-        if ($typeResponse->successful()) {
-            $typesData = $typeResponse->json()['data'];
-            $incidentTypes = collect($typesData)->map(function ($type) {
-                return (object) [
-                    'id' => $type['id'],
-                    'title' => $type['title'],
-                ];
-            });
-        } else {
-            logger()->error('Error Fetching Incident Types:', ['response' => $typeResponse->body()]);
-        }
-        return view('livewire.subscribe-component');
+        return view('livewire.subscribe-component', [
+            'subscribers' => $subscribers,
+        ])->layout('layouts.app');
     }
 }

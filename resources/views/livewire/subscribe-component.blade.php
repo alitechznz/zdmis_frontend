@@ -15,7 +15,7 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-sm-6 p-0">
-                    <h3>Orodha ya Matukio </h3>
+                    <h3>Orodha ya Subscribers </h3>
                 </div>
                 {{-- <div class="col-sm-6 p-0">
                     <ol class="breadcrumb">
@@ -38,15 +38,18 @@
                         <input type="search" wire:model.live="search_keyword"
                             class="form-control form-control-sm w-auto" placeholder="Tafuta taarifa...">
                     </div>
+
+                    {{-- <div class="input-group">
+                        <input type="search" wire:model.debounce.300ms="search_keyword"
+                            class="form-control form-control-sm w-auto" placeholder="Search information...">
+                    </div> --}}
+                    
                 </div>
                 <div class="col-6">
                     <div class="float-end">
-
-                        {{-- <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#modal-matukio" wire:click='create'><i class="fa fa-plus"></i> Weka Taarifa
-                        </a> --}}
-
-
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#modal-notify" wire:click='create'><i class="fa fa-plus"></i> Send alert
+                        </a>
                     </div>
 
                 </div>
@@ -57,135 +60,98 @@
                     <thead class="table-light">
                         <tr class="text-capitalize">
                             <th>SN</th>
-                            <th @click="sortByColumn" class="cursor-pointer select-none">Aina ya Tukio <span
+                            <th @click="sortByColumn" class="cursor-pointer select-none">Contact <span
                                     class="float-end text-secondary">&#8645;</span>
                             </th>
 
-                            <th @click="sortByColumn" class="cursor-pointer select-none">Mahala <span
+                            <th @click="sortByColumn" class="cursor-pointer select-none">Subscription_Type <span
                                     class="float-end text-secondary">&#8645;</span>
                             </th>
 
-                            <th @click="sortByColumn" class="cursor-pointer select-none">Maelezo <span
+                            <th @click="sortByColumn" class="cursor-pointer select-none">Status <span
                                     class="float-end text-secondary">&#8645;</span>
                             </th>
 
-                            <th @click="sortByColumn" class="cursor-pointer select-none">Tarehe iliyowasilishwa <span
-                                    class="float-end text-secondary">&#8645;</span>
-                            </th>
-                            <th @click="sortByColumn" class="cursor-pointer select-none">Imewasilishwa <span
-                                    class="float-end text-secondary">&#8645;</span>
-                            </th>
-                            <th @click="sortByColumn" class="cursor-pointer select-none">Hali (status) <span
-                                    class="float-end text-secondary">&#8645;</span>
-                            </th>
-                            <th width="220">Hatua</th>
+                            <th width="220">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($incidents as $index => $incident)
+                        @forelse ($subscribers as $subscriber)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $incident->title }}</td>
-                                <td>{{ $incident->location }}</td>
-                                <td title="{{ $incident->description }}">
-                                    {{ Str::limit($incident->description, 40, '...') }}</td>
-                                <td>{{ $incident->createdAt }}</td>
-                                <td>{{ $incident->reportedBy }}</td>
+                                <td>{{ $subscriber->contact }}</td>
+                                <td>{{ $subscriber->subscription_type }}</td>
                                 <td>
                                     <span
-                                        class="badge {{ $incident->status == 'active' ? 'badge-light-success' : 'badge-light-danger' }}">
-                                        {{ ucfirst($incident->status) }}
+                                        class="badge {{ $subscriber->status == 'active' ? 'badge-light-success' : 'badge-light-danger' }}">
+                                        {{ ucfirst($subscriber->status) }}
                                     </span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-success" wire:click="edit({{ $incident->id }})"
-                                        data-bs-toggle="modal" data-bs-target="#modal-matukio">Edit</button>
                                     <button class="btn btn-sm btn-danger"
-                                        wire:click="destroy({{ $incident->id }})">Delete</button>
+                                        wire:click="deleteConfirm({{ $subscriber->id }})" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModalSubscriber">Delete</button>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center text-danger">No Incidents Found</td>
+                                <td colspan="8" class="text-center text-danger">No subscribers Found</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
-                {{ $incidents->links() }}
+                @if($subscribers->count())
+                    {{ $subscribers->links() }}
+                @else
+                    {{-- <tr>
+                        <td colspan="6" class="text-center">No institutions found.</td>
+                    </tr> --}}
+                @endif
             </div>
         </div>
     </div>
     <!-- Modal Content -->
-    <div class="modal fade" wire:ignore.self id="modal-matukio" tabindex="-1" role="dialog"
+    <div class="modal fade" wire:ignore.self id="modal-notify" tabindex="-1" role="dialog"
         aria-labelledby="modal-default" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="h6 modal-title">{{ $update ? 'Badili' : 'Weka' }} Taarifa</h2>
+                    <h2 class="h6 modal-title">Notify</h2>
                     {{-- <h2 class="h6 modal-title">{{ $update ? 'Update' : 'Add' }} </h2> --}}
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
 
+                        <div class="mb-4 col-md-12 col-sm-12 col-lg-12" xmlns="http://www.w3.org/1999/html">
+                            <label for="subject">Subject <span class="text-danger">*</span></label>
+                            <textarea wire:model="subject" class="form-control @error('subject') is-invalid @enderror" id="subject"
+                                placeholder="Enter subject" rows="4">
+                            </textarea>
+                            @error('subject')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
-                        <div class="mb-4">
-                            <label for="incident">Aina ya tukio <span class="text-danger">*</span></label>
-                            <select wire:model="incident" class="form-control @error('incident') is-invalid @enderror"
-                                id="incident">
-                                <option value="">--Chagua--</option>
-                                @foreach ($incidentTypes as $incident)
-                                    <option value="{{ $incident->id }}">{{ $incident->title }}</option>
-                                @endforeach
-                            </select>
-                            @error('incident')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="mb-4">
-                            <label for="location">Location <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="location"
-                                class="form-control @error('location') is-invalid @enderror" id="location"
-                                placeholder="Andika Mahala">
-                            @error('location')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
 
                         <div class="mb-4 col-md-12 col-sm-12 col-lg-12" xmlns="http://www.w3.org/1999/html">
-                            <label for="description">Maelezo <span class="text-danger">*</span></label>
-                            <textarea wire:model="description" class="form-control @error('description') is-invalid @enderror" id="description"
-                                placeholder="Enter description" rows="4">
+                            <label for="message">Message <span class="text-danger">*</span></label>
+                            <textarea wire:model="message" class="form-control @error('message') is-invalid @enderror" id="message"
+                                placeholder="Enter message" rows="4">
                             </textarea>
-                            @error('descriptioKuna moto Fuoni Mambosasa')
+                            @error('message')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
 
-                        <div class="mb-4">
-                            <label for="status">Hali <span class="text-danger">*</span></label>
-                            <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
-                                id="status">
-                                <option value="">--Chagua--</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                            @error('status')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal"
                                 wire:click='create'>Close</button>
-                            <button type="button" wire:click.prevent="store"
+                            <button type="button" wire:click.prevent="notifyAll"
                                 class="{{ $update ? 'btn btn-success' : 'btn btn-primary' }}">
                                 {{ $update ? 'Update' : 'Add' }}</button>
                         </div>
@@ -197,7 +163,7 @@
     <!-- End of Modal Content -->
 
     <!-- Delete Modal -->
-    <div wire:ignore.self class="modal fade" id="deleteModalshehia" data-backdrop="false" tabindex="-1"
+    <div wire:ignore.self class="modal fade" id="deleteModalSubscriber" data-backdrop="false" tabindex="-1"
         role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -205,7 +171,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Delete Confirm </h5>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure want to delete <strong></strong> ?</p>
+                    <p>Are you sure want to delete ?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close-btn"

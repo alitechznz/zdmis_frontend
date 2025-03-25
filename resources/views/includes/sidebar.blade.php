@@ -171,7 +171,7 @@
                     </li>
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist') }}">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('education') }}">
                             <svg class="stroke-icon">
                                 <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
                             </svg>
