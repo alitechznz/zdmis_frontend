@@ -412,7 +412,7 @@
                         {{-- @can('view user authentication') --}}
                             <li class="sidebar-list">
                                 <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="">
+                                <a class="sidebar-link sidebar-title link-nav" href="{{ route('user') }}">
                                     <svg class="stroke-icon">
                                         <use href="../assets/svg/icon-sprite.svg#stroke-user"></use>
                                     </svg>
