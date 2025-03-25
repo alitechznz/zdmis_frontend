@@ -35,6 +35,7 @@ use App\Livewire\RegionalAuthorityComponent;
 use App\Livewire\RegionComponent;
 use App\Livewire\ShehiaComponent;
 use App\Livewire\Standard\StandardComponent;
+use App\Livewire\UserComponent;
 use App\Livewire\Weather\WeatherSourceComponent;
 use Mpdf\Shaper\Indic;
 
@@ -101,6 +102,8 @@ Route::middleware(['auth.token'])->group(function () {
     Route::get('/standard', StandardComponent::class)->name('standard');
 
     # user setup
+    Route::get('user', UserComponent::class)->name('user');
+
     Route::get('ministry', MinistryComponent::class)->name('ministry');
     Route::get('institutions', InstitutionComponent::class)->name('institutions');
     Route::get('departments', DepartmentComponent::class)->name('departments');

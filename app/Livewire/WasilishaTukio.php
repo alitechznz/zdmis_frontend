@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Log;
+
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 
@@ -14,9 +16,10 @@ class WasilishaTukio extends Component
     public $isLoading = false;
     public $isCompleted = false;
 
+    public $contact_person, $phone_number, $municipal_council, $contact_detail;
     public function mount()
     {
-       // $this->fetchSubscribers();
+        // $this->fetchSubscribers();
     }
 
     public function subscribe()
@@ -149,15 +152,45 @@ class WasilishaTukio extends Component
 
     public function submit()
     {
-        $this->validate([
-            'contact_person' => 'required|string|max:255',
-            'phone_number' => 'required|numeric',
-            'municipal_council' => 'required',
-            'contact_detail' => 'required|string'
-        ]);
+        try {
+            Log::info('Submitting form', ['state' => $this->getState()]);
 
-        // Process the form submission here after validation passes
+            $this->validate([
+                'contact_person' => 'required|string|max:255',
+                'phone_number' => 'required|numeric',
+                'municipal_council' => 'required',
+                'contact_detail' => 'required|string'
+            ]);
+
+            // Process the form submission here after validation passes
+            Log::info('Form validation passed', [
+                'contact_person' => $this->contact_person,
+                'phone_number' => $this->phone_number,
+                'municipal_council' => $this->municipal_council,
+                'contact_detail' => $this->contact_detail,
+            ]);
+
+            // Further processing such as saving data to database or calling an API
+
+        } catch (\Exception $e) {
+            Log::error('Error during form submission', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            session()->flash('error', 'An error occurred while submitting the form.');
+        }
     }
+
+    private function getState()
+    {
+        return [
+            'contact_person' => $this->contact_person,
+            'phone_number' => $this->phone_number,
+            'municipal_council' => $this->municipal_council,
+            'contact_detail' => $this->contact_detail,
+        ];
+    }
+
 
     public function render()
     {

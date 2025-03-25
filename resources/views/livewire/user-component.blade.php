@@ -41,10 +41,10 @@
                 </div>
                 <div class="col-6">
                     <div class="float-end">
-                        @can('add user authentication')
+                       
                             <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-user" wire:click="create"
                             ><i class="fas fa-plus"></i> Add user </a>
-                        @endcan
+                      
                     </div>
 
                 </div>
@@ -54,11 +54,12 @@
                     <thead class="table-light">
                     <tr class="text-capitalize">
                         <th scope="col">SN </th>
-                        <th scope="col">Name </th>
+                        <th scope="col">Full_Name </th>
+                        <th scope="col">Username </th>
                         <th scope="col">Email </th>
+                        <th scope="col">Phone_Number </th>
                         <th scope="col">Role </th>
-                        <th scope="col">Status </th>
-                        <th scope="col">Created At</th>
+                        <th scope="col">Status</th>
                         <th scope="col" width="220">Actions</th>
                     </tr>
                     </thead>
@@ -66,34 +67,33 @@
                     @forelse ($users as $user)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->fullName }}</td>
+                            <td>{{ $user->username }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->getRoleNames()[0] ?? 'None' }}</td>
+                            <td>{{ $user->phoneNumber }}</td>
+                            <td>{{ $user->roleName }}</td>
                             <td>
-                                @if($user->status == 'active')
-                                    <span class="badge bg-success">Active</span>
-                                @else
-                                    <span class="badge bg-danger">Inactive</span>
-                                @endif
+                                <span
+                                    class="badge {{ $user->isActive ? 'badge-light-success' : 'badge-light-danger' }}">
+                                    {{ $user->isActive ? 'Active' : 'Inactive' }}
+                                </span>
                             </td>
-                            <td>{{ $user->created_at->format('d F, Y') }}</td>
+                            {{-- <td>{{ $user->created_at->format('d F, Y') }}</td> --}}
                             <td style="display: flex; gap: 5px;">
-                                @can('edit user authentication')
+                               
                                     <a href="#" wire:click="edit({{ $user->id }})"
                                        class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modal-user">
                                         Edit </a>
-                                @endcan
-
-                                @can('delete user authentication')
+                               
+                          
                                     <a href="#" class="btn btn-sm btn-danger" wire:click="deleteConfirm({{$user->id}})"
                                        data-bs-toggle="modal" data-bs-target="#deleteModaluser">
                                         Delete </a>
-                                @endcan
-
-                                <a href="#" class="btn btn-sm btn-primary" wire:click="extendTimeConfirm({{ $user->id }})"
-                                    data-bs-toggle="modal" data-bs-target="#extendTimeTokenModel">
+                              
+                                {{-- <a href="#" class="btn btn-sm btn-primary" wire:click="extendTimeConfirm({{ $user->id }})"
+                                    data-bs-toggle="modal" data-bs-target="">
                                      Reset
-                                 </a>
+                                 </a> --}}
 
 
                             </td>
@@ -105,14 +105,20 @@
                     @endforelse
                     </tbody>
                 </table>
-                {{ $users->links() }}
+                @if($users->count())
+                    {{ $users->links() }}
+                @else
+                    {{-- <tr>
+                        <td colspan="6" class="text-center">No institutions found.</td>
+                    </tr> --}}
+                @endif
             </div>
         </div>
     </div>
     <!-- Modal Content -->
     <div class="modal fade" wire:ignore.self id="modal-user" tabindex="-1" role="dialog" aria-labelledby="modal-default"
          aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="h6 modal-title">@if($update)
@@ -125,10 +131,10 @@
                 <div class="modal-body">
                     <div class="row">
                         @if(!$update)
-                            <div class="mb-4">
+                            <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
                                 <label for="username">Username</label>
                                 <input type="text" wire:model="username"
-                                       class="form-control @error("username") is-invalid @enderror" id="username">
+                                       class="form-control @error("username") is-invalid @enderror" id="username" placeholder="Enter username">
                                 @error("username")
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -137,33 +143,82 @@
                             </div>
                         @endif
 
-                        <div class="mb-4">
-                            <label for="name">FullName</label>
-                            <input type="text" wire:model="name"
-                                   class="form-control @error("name") is-invalid @enderror" id="name">
-                            @error("name")
-                            <div class="invalid-feedback">
+                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
+                            <label for="fullname">Fullname</label>
+                            <input type="text" wire:model="fullname"
+                                   class="form-control @error("fullname") is-invalid @enderror" id="fullname" placeholder="Enter fullname">
+                            @error("fullname")
+                            <div class="invalid-feedback">deleteModaluser
                                 {{ $message }}
                             </div>
                             @enderror
                         </div>
-                        <div class="mb-4 col-md-6">
+
+                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
                             <label for="email">Email</label>
                             <input type="text" wire:model="email" @if($update) disabled @endif
-                            class="form-control @error("email") is-invalid @enderror" id="email">
+                            class="form-control @error("email") is-invalid @enderror" id="email" placeholder="Enter your email">
                             @error("email")
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                             @enderror
                         </div>
-                        <div class="mb-4 col-md-6">
+
+                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
+                            <label for="phoneNumber">Phone number</label>
+                            <input type="text" wire:model="phoneNumber"
+                            class="form-control @error("phoneNumber") is-invalid @enderror" id="phoneNumber" placeholder="Enter Phone number">
+                            @error("phoneNumber")
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+
+
+
+                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
+                            <label for="organizationType">Organization Type <span class="text-danger">*</span></label>
+                            <select id="organizationType" class="form-control @error('organizationType') is-invalid @enderror" onchange="toggleDropdowns()" wire:model='organizationType'>
+                                <option value="">--Choose--</option>
+                                <option value="Ministry">Ministry</option>
+                                <option value="Institution">Institution</option>
+                            </select>
+                            @error('organizationType')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+    
+                        <!-- Institution Dropdown -->
+                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6" id="institution-dropdown" style="display: none;">
+                            <label for="organization">Institution</label>
+                            <select id="institution" class="form-control" wire:model="organization">
+                                <option value="">--Select Institution--</option>
+                                @foreach($institutions as $institution)
+                                    <option value="{{ $institution->id }}">{{ $institution->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+    
+                        <!-- Ministry Dropdown -->
+                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6" id="ministry-dropdown" style="display: none;">
+                            <label for="organization">Ministry</label>
+                            <select id="ministry" class="form-control" wire:model="organization">
+                                <option value="">--Select Ministry--</option>
+                                @foreach($ministries as $ministry)
+                                    <option value="{{ $ministry->id }}">{{ $ministry->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
                             <label for="role">Role</label>
                             <select wire:model="role"
                                     class="form-control @error("role") is-invalid @enderror" id="role">
                                 <option value="">--Role--</option>
                                 @forelse($roles as $rol)
-                                    <option value="{{ $rol->name }}">{{ $rol->name }}</option>
+                                    <option value="{{ $rol->id }}">{{ $rol->name }}</option>
                                 @empty
                                 @endforelse
                             </select>
@@ -174,56 +229,85 @@
                             @enderror
                         </div>
 
-                        @if($update)
-                            <div class="mb-4">
-                                <label for="change_password">Change Password</label>
-                                <input type="checkbox" id="change_password" wire:model.live="change_password" class="form-check-input">
-                            </div>
-                        @endif
 
-                        <div class="mb-4 col-6">
+                       @if ($update)
+                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
+                            <label for="isActive">Status <span class="text-danger">*</span></label>
+                            <select wire:model="isActive" class="form-control @error('isActive') is-invalid @enderror"
+                                id="isActive">
+                                <option value="">--Choose--</option>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                            @error('isActive')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                       @endif
+
+                        {{-- @if($update)
+                            <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
+                                <label for="change_password">Change Password</label>
+                                <input type="checkbox" id="change_password" wire:model.live="change_password" class="form-check-input" placeholder="Change your password">
+                            </div>
+                        @endif --}}
+
+                        {{-- <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
                             <label for="password">Password</label>
                             <input type="password" wire:model="password" @if($update && !$change_password) disabled @endif
-                            class="form-control @error("password") is-invalid @enderror" id="password">
+                            class="form-control @error("password") is-invalid @enderror" id="password" placeholder="Type your password">
+                            @error("password")
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div> --}}
+
+                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
+                            <label for="password">Password</label>
+                            <input type="password" wire:model="password"
+                            class="form-control @error("password") is-invalid @enderror" id="password" placeholder="Type your password">
                             @error("password")
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                             @enderror
                         </div>
-                        <div class="mb-4 col-6">
+
+                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
                             <label for="password_confirmation">Confirm Password</label>
-                            <input type="password" wire:model="password_confirmation" @if($update && !$change_password) disabled @endif
-                            class="form-control @error("password_confirmation") is-invalid @enderror" id="password_confirmation">
+                            <input type="password" wire:model="password_confirmation"
+                            class="form-control @error("password_confirmation") is-invalid @enderror" id="password_confirmation" placeholder="Confirm password">
                             @error("password_confirmation")
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                             @enderror
                         </div>
-                        <div class="mb-4">
-                            <label for="status">Status</label>
-                            <select wire:model="status"
-                                    class="form-control @error("status") is-invalid @enderror" id="status">
-                                <option value="">--Status--</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                            @error("status")
+                        {{-- <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
+                            <label for="password_confirmation">Confirm Password</label>
+                            <input type="password" wire:model="password_confirmation" @if($update && !$change_password) disabled @endif
+                            class="form-control @error("password_confirmation") is-invalid @enderror" id="password_confirmation" placeholder="Confirm password">
+                            @error("password_confirmation")
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                             @enderror
-                        </div>
+                        </div> --}}
+                    
                         <div class="modal-footer">
-                            <button type="button" wire:click.prevent="store" class="btn btn-secondary"> @if($update)
-                                    Update
-                                @else
-                                    Add
-                                @endif</button>
-                            <button type="button" class="btn btn-link text-gray-600 ms-auto"
-                                    data-bs-dismiss="modal">Close
-                            </button>
+                            deleteModaluser
+                        <button type="button" class="btn btn-link text-gray-600 ms-auto"
+                            data-bs-dismiss="modal">
+                            Close
+                        </button>
+
+                        <button type="button" wire:click.prevent="store"
+                            class="{{ $update ? 'btn btn-success' : 'btn btn-primary' }}">
+                            {{ $update ? 'Update' : 'Add' }}</button>
+
                         </div>
                     </div>
                 </div>
@@ -266,8 +350,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Delete Confirm </h5>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure want to delete <strong>{{ $delete_confirm? $delete_confirm->name: ''  }}</strong> ?
-                    </p>
+                    <p>Are you sure want to delete ?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Cancel
@@ -330,6 +413,13 @@
                         );
                 }
             };
+        }
+    </script>
+    <script>
+        function toggleDropdowns() {
+            var selectedValue = document.getElementById('organizationType').value;
+            document.getElementById('institution-dropdown').style.display = (selectedValue === 'Institution') ? 'block' : 'none';
+            document.getElementById('ministry-dropdown').style.display = (selectedValue === 'Ministry') ? 'block' : 'none';
         }
     </script>
     @push('scripts')

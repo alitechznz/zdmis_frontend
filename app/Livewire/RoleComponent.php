@@ -8,6 +8,9 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 class RoleComponent extends Component
 {
@@ -18,195 +21,191 @@ class RoleComponent extends Component
     public $search_keyword = null;
     public $update = false;
     public $delete_confirm = null;
-    public $role_name, $role_edit;
+    public $name, $role_edit, $role_id = null;
     public $roleName;
     public $status = true;
-    public $roles;
     public $roleId;
 
     public function mount()
     {
-        $this->fetchRoles(); // Fetch roles on mount
+        // $this->fetchRoles();
     }
 
-    public function fetchRoles()
+    private function getBaseUrl()
     {
-        $baseUrl = config('services.api.base_url');
-        $token = session('token');  // Retrieve the token from the session
-
-        // Make sure to include the token in the Authorization header
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-        ])->get("{$baseUrl}/roles");
-
-
-        if ($response->successful()) {
-            $this->roles = $response->json()['data'] ?? [];
-        } else {
-            // Handle the case where the token might be expired or invalid
-            // $this->emit('error', 'Failed to fetch roles. Please check authentication.');
-            $this->roles = [];  // Clear the roles if the fetch is unsuccessful
-        }
+        return config('services.api.base_url');
     }
 
 
-    public function storeRole()
+    public function store()
     {
-
         $this->validate([
-            'role_name' => 'required|string|min:3', // Validate role name is not empty and at least 3 characters
-            'status' => 'required|boolean', // Validate status is boolean
+            'name' => 'required',
+            'status' => 'required',
         ]);
 
+        // Determine if this is a create or update operation based on $this->region_id
+        $baseUrl = $this->getBaseUrl();
+        $url = $this->role_id ? "{$baseUrl}/roles/{$this->role_id}" : "{$baseUrl}/roles";
+        $method = $this->role_id ? 'put' : 'post';
 
-        $baseUrl = config('services.api.base_url');
         $token = session('token');
 
-
+        // API request to external endpoint
+        $payload = [
+            'roleName' => $this->name,
+            'status' => in_array(strtolower($this->status), ['active', 'true', '1']), // safely cast to true/false
+        ];
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-        ])->post("{$baseUrl}/roles", [
-            'roleName' => $this->role_name,
-            'status' => $this->status,
-        ]);
+            'Accept' => 'application/json'
+        ])->$method($url, $payload);
+
+
 
         if ($response->successful()) {
-            // session()->flash('message', 'Role added successfully');
-            $this->update = false;
-            $this->reset('role_name', 'role_edit');
-            $this->resetInput();
+            logger()->info("URL requested: {$url}");
+            logger()->info("Data sent: ", ['roleName' => $this->name, 'status' => $this->status]);
+            $this->dispatch('swal:info', title: $this->role_id ? 'Role Updated.' : 'Role Created');
+            $this->resetField();
+            $this->dispatch('closeModal'); // Ensure you have the listeners set up for this event
         } else {
-            $this->update = false;
-            $this->reset('role_name', 'role_edit');
-            session()->flash('error', 'Error adding role: ' . $response->body());
-
+            logger()->error("Failed to update or create the Role: {$response->body()}");
+            session()->flash('error', 'Failed to create or update the Role on the external server.');
+            $this->dispatch('swal:info', title: $this->role_id ? 'Error while updating Role.' : 'Error while creating Role');
         }
     }
 
-    private function resetInput()
-    {
-        $this->roleId = null;
-        $this->roleName = '';
-        $this->status = true;
-    }
 
-    public function confirmDelete($id)
+    public function edit($role_id)
     {
-        $this->roleId = $id;
-    }
+        $this->resetErrorBag();
+        $this->update = true;
+        $this->role_id = $role_id;
 
-     /**
-     * Update a role.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(Request $request, $id)
-    {
-        $baseUrl = config('services.api.base_url');
-        $token = session('token'); // Assuming token is stored in session
+        // Construct the URL for the API request
+        $baseUrl = $this->getBaseUrl();
+        $url = "{$baseUrl}/roles/{$role_id}";
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-        ])->put("{$baseUrl}/roles/{$id}", $request->all());
-
-        if($response->successful()) {
-            return response()->json([
-                'message' => 'Role updated successfully',
-                'data' => $response->json()
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Failed to update role',
-                'errors' => $response->json()
-            ], $response->status());
-        }
-    }
-
-    /**
-     * Delete a role.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy($id)
-    {
-        $baseUrl = config('services.api.base_url');
-        $token = session('token'); // Assuming token is stored in session
-
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-        ])->delete("{$baseUrl}/roles/{$id}");
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->get($url);
 
         if ($response->successful()) {
-            return response()->json([
-                'message' => 'Role deleted successfully'
-            ]);
+            $responseBody = $response->json();
+            logger()->info('Roles Data:', $responseBody);
+
+            if (!empty($responseBody['data']) && is_array($responseBody['data'])) {
+                $roleData = $responseBody['data']; // Assuming the first element is what you want
+                $this->name = $roleData['roleName'] ?? 'No role name provided';
+                $this->status = $roleData['status'] ?? 'No status provided';
+
+                logger()->info('ministry Data:', [
+                    'roleName' => $this->name,
+                    'status' => $this->status,
+                ]);
+            } else {
+                logger()->error("Failed to load load role: {$response->body()}");
+                session()->flash('error', 'No role data found or structure is incorrect.');
+            }
         } else {
-            return response()->json([
-                'message' => 'Failed to delete role',
-                'errors' => $response->json()
-            ], $response->status());
+            logger()->error("Failed to load role: {$response->body()}");
+            session()->flash('error', 'Failed to fetch role details. Error: ' . $response->body());
         }
     }
 
-    // public function removeRole(Role $role)
-    // {
-    //     if($role->users()->count() > 0){
-    //         $this->dispatch('swal:error', title: 'Role In Use');
-    //         return false;
-    //     }
 
-
-    //     $role->delete();
-    //     $this->dispatch('swal:info', title: 'Role Deleted');
-    // }
-
-    // public function editRole(Role $role)
-    // {
-    //     $this->role_name = $role->name;
-    //     $this->role_edit = $role->id;
-
-    //     $this->update = true;
-    // }
-
-
-
-    // public function deleteConfirm(Role $role)
-    // {
-    //     $this->delete_confirm = $role;
-    // }
-
-    // public function destroy()
-    // {
-    //     $this->delete_confirm->delete();
-    //     $this->dispatch('swal:info', title: 'Role Deleted');
-    // }
-
-    public function editRole($id)
+    private function resetField()
     {
-        $role = $this->roles->firstWhere('id', $id);
-        if ($role) {
-            $this->roleId = $role['id'];
-            $this->roleName = $role['roleName'];
-            $this->status = $role['status'];
-        }
+        $this->reset('name', 'status', 'role_id', 'update');
     }
+
+
+
+    public function deleteConfirm($roleId)
+    {
+        $this->delete_confirm = $roleId;
+    }
+
+    public function destroy()
+    {
+        if ($this->delete_confirm) {
+            $baseUrl = $this->getBaseUrl();
+            $url = "{$baseUrl}/roles/{$this->delete_confirm}";
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . session('token'),
+                'Accept' => 'application/json'
+            ])->delete($url);
+
+            if ($response->successful()) {
+                $this->dispatch('swal:info', title: 'Role Deleted');
+                $this->reset('delete_confirm');
+            } else {
+                logger()->error("Failed to delete Role: " . $response->body());
+                $this->dispatch('swal:info', title: 'Failed to delete the Role.');
+            }
+        }
+        $this->dispatch('closeModal');
+    }
+
+    public function paginateCollection($items, $perPage = 10, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator(
+            $items->forPage($page, $perPage)->all(), // Ensure items are an array
+            $items->count(), // Total number of items
+            $perPage,
+            $page,
+            $options
+        );
+    }
+
+
 
     public function render()
     {
-        $this->fetchRoles();
-        // dd($this->roles);
+        $query = [];
+        if ($this->search_keyword) {
+            $query['search'] = $this->search_keyword;
+        }
+
+        $baseUrl = $this->getBaseUrl();
+        // Assuming the token is stored in the session, you can retrieve it like this:
+        $token = session('token'); // Ensure you have set this session variable when you login
+
+        if (!$token) {
+            session()->flash('error', 'No authentication token available. Please login again.');
+            return view('livewire.role-component', ['roles' => collect([])])->layout('layouts.app');
+        }
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])->get("{$baseUrl}/roles", $query);
+
+        $roles = collect([]);
+
+        if ($response->successful()) {
+            $rolesData = $response->json()['data'];
+            logger()->info('Fetched roles:', $rolesData);
+            $roles = collect($rolesData)->map(function ($role) {
+                return (object) [
+                    'id' => $role['id'],
+                    'name' => $role['roleName'],
+                    'status' => $role['status'],
+                ];
+            });
+
+            // Apply pagination
+            $roles = $this->paginateCollection($roles, 10);
+        } else {
+            session()->flash('error', 'Failed to fetch roles from the server.');
+            logger()->error('Error Fetching roles:', ['response' => $response->body()]);
+        }
+
         return view('livewire.role-component', [
-            'roles' => $this->roles
+            'roles' => $roles
         ]);
     }
 }

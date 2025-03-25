@@ -35,11 +35,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col mb-4">
-                    <label for="role_name">Jina La Jukumu <span class="text-danger">*</span></label>
-                    <input type="text" wire:model.defer="role_name"
-                        class="form-control @error('role_name') is-invalid @enderror" id="role_name"
+                    <label for="name">Jina La Jukumu <span class="text-danger">*</span></label>
+                    <input type="text" wire:model="name"
+                        class="form-control @error('name') is-invalid @enderror" id="name"
                         placeholder="Ingiza jukumu">
-                    @error('role_name')
+                    @error('name')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -47,14 +47,14 @@
                 </div>
 
                 <div class="mb-4 col-md-4">
-                    <label for="municipal_council">Hali <span class="text-danger">*</span></label>
+                    <label for="status">Hali <span class="text-danger">*</span></label>
                     <select wire:model.defer="status"
-                        class="form-control @error('municipal_council') is-invalid @enderror" id="municipal_council">
+                        class="form-control @error('status') is-invalid @enderror" id="status">
                         <option value="">--Chagua--</option>
-                        <option value="true">Hai</option>
-                        <option value="false">Sio Hai</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
                     </select>
-                    @error('municipal_council')
+                    @error('status')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -63,7 +63,7 @@
 
 
                 <div class="col mb-4 text-end" style="margin-top: 7px;">
-                    <a wire:click="storeRole" class="btn btn-secondary mt-4">
+                    <a wire:click="store" class="btn btn-secondary mt-4">
                         <i class="fa fa-plus"></i>
                         @if ($update)
                             Badilisha
@@ -75,56 +75,61 @@
                 </div>
             </div>
             <div class="table-responsive custom-scrollbar">
+
                 <table
-                    class="table table-bordered table-sm table-hover table-striped table-responsive custom-scrollbar-sm">
-                    <tr class="text-uppercase">
-                        <th width="35">#</th>
+                class="table table-bordered table-sm table-hover table-striped table-responsive custom-scrollbar-sm">
+                <thead class="table-light">
+                    <tr class="text-capitalize">
+                        <th scope="col">SN</th>
                         <th scope="col">Jukumu</th>
                         <th scope="col">Hali</th>
                         <th width="400">Kitendo</th>
                     </tr>
-
-                    @forelse($roles as $r)
+                </thead>
+                <tbody x-ref="tbody">
+                    @forelse ($roles as $role)
                         <tr>
-                            <td>{{ $loop->index + 1 }}</td>
-                            <td>{{ $r['roleName'] }}</td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $role->name }}</td>
                             <td>
-                                @if ($r['status'])
-                                    <i class="fa fa-check" aria-hidden="true" style="color: green;"></i>
-                                @else
-                                    <i class="fa fa-times" aria-hidden="true" style="color: red;"></i>
-                                @endif
+                                <span
+                                    class="badge {{ $role->status ? 'badge-light-success' : 'badge-light-danger' }}">
+                                    {{ $role->status ? 'Active' : 'Inactive' }}
+                                </span>
                             </td>
-                            <td class="text-end" style="display: flex; gap: 5px;">
+                            <td style="display: flex; gap: 5px;">
                                 <div class="btn-group-sm">
-
                                     <a href="#" class="btn btn-sm btn-warning"
-                                        wire:click="$dispatch('perms', {role: {{ $r['id'] }}})"
+                                        wire:click=""
                                         data-bs-toggle="modal" data-bs-target="#modal-permission">
                                         <i class="fa fa-lock"></i> Ruhusa
                                     </a>
 
-
-                                    {{-- @if ($r->roleName != 'Super admin' and $r->roleName != 'Admin' and $r->roleName != 'ZPC Officer' and $r->roleName != 'Minister' and $r->name != 'DPPR' and $r->name != 'PS' and $r->name != 'Chairman ZPS') --}}
-                                    {{-- @can('edit role') --}}
-                                    <a wire:click="editRole({{ $r['id'] }})" class="btn btn-primary btn-sm">
+                                    <a wire:click="edit({{ $role->id }})" class="btn btn-primary btn-sm">
                                         <i class="fa fa-edit"></i> Badilisha
                                     </a>
-                                    {{-- @endcan --}}
-                                    {{-- @can('delete role') --}}
-                                    <a href="#" class="btn btn-sm btn-danger"
-                                        wire:click="deleteConfirm({{ $r['id'] }})" data-bs-toggle="modal"
+
+                                    <a wire:click="deleteConfirm({{ $role->id }})" class="btn btn-danger btn-sm"  data-bs-toggle="modal"
                                         data-bs-target="#deleteModalrole">
                                         <i class="fa fa-trash"></i> Futa
                                     </a>
-                                    {{-- @endcan --}}
-                                    {{-- @endif --}}
                                 </div>
                             </td>
                         </tr>
                     @empty
+                        <tr>
+                            <td colspan="8" class="text-danger text-center"> No Roles Found</td>
+                        </tr>
                     @endforelse
-                </table>
+                </tbody>
+            </table>
+            @if($roles->count())
+                {{ $roles->links() }}
+            @else
+                {{-- <tr>
+                    <td colspan="6" class="text-center">No institutions found.</td>
+                </tr> --}}
+            @endif
             </div>
         </div>
     </div>
@@ -155,7 +160,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Hakiki Kufuta </h5>
                 </div>
                 <div class="modal-body">
-                    <p>Je unataka kufuta <strong>{{ $delete_confirm ? $delete_confirm->name : '' }}</strong> ?
+                    <p>Je unataka kufuta ?
                     </p>
                 </div>
                 <div class="modal-footer">

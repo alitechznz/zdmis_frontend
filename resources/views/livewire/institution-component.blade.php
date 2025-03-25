@@ -57,31 +57,42 @@
                         <tr class="text-capitalize">
                             <th scope="col">SN </th>
                             <th scope="col">Institution_Name </th>
-                            <th scope="col">Ministry </th>
+                            <th scope="col">Ministry_Name </th>
+                            <th scope="col">Short_Name </th>
+                            {{-- <th scope="col">Ministry_Name </th> --}}
                             <th scope="col">Address </th>
+                            <th scope="col">Status </th>
                             <th scope="col" width="220">Actions</th>
                         </tr>
                     </thead>
                     <tbody x-ref="tbody">
-                        {{-- @forelse ($institutions as $institution)
+                        @forelse ($institutions as $institution)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $institution->name }}</td>
-                                <td>{{ $institution->ministry?->name }}</td>
+                                <td>{{ $institution->ministryName }}</td>
+                                <td>{{ $institution->short_name }}</td>
+                                {{-- <td>{{ $institution->ministry->ministryName }}</td> --}}
                                 <td>{{ Str::limit($institution->address, 50) }}</td>
+                                <td>
+                                    <span
+                                        class="badge {{ $institution->status ? 'badge-light-success' : 'badge-light-danger' }}">
+                                        {{ $institution->status ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </td>
                                 <td style="display: flex; gap: 5px;">
-                                    @can('edit institution')
+                                   
                                         <a href="#" wire:click="edit({{ $institution->id }})"
                                             class="btn btn-sm btn-success" data-bs-toggle="modal"
                                             data-bs-target="#modal-institution">
                                             Edit </a>
-                                    @endcan
-                                    @can('delete institution')
+                                   
+                                
                                         <a href="#" class="btn btn-sm btn-danger"
                                             wire:click="deleteConfirm({{ $institution->id }})" data-bs-toggle="modal"
                                             data-bs-target="#deleteModalinstitution">
                                             Delete </a>
-                                    @endcan
+                                  
 
                                 </td>
                             </tr>
@@ -89,10 +100,17 @@
                             <tr>
                                 <td colspan="10" class="text-danger text-center"> No Institution Found</td>
                             </tr>
-                        @endforelse --}}
+                        @endforelse
                     </tbody>
                 </table>
-                {{-- {{ $institutions->links() }} --}}
+                @if($institutions->count())
+                    {{ $institutions->links() }}
+                @else
+                    {{-- <tr>
+                        <td colspan="6" class="text-center">No institutions found.</td>
+                    </tr> --}}
+                @endif
+            
             </div>
         </div>
     </div>
@@ -126,26 +144,27 @@
                         </div>
 
 
-                        <div class="mb-4 col-sm-6 col-md-6 col-lg-6">
-                            <label for="vote_number">Vote Number <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="vote_number"
-                                class="form-control @error('vote_number') is-invalid @enderror" id="vote_number"
-                                placeholder="Enter Vote Number">
-                            @error('vote_number')
+                        <div class="mb-4  col-md-6 col-sm-6 col-lg-6">
+                            <label for="short_name">Short Name <span class="text-danger">*</span></label>
+                            <input type="text" wire:model="short_name"
+                                class="form-control @error('short_name') is-invalid @enderror" id="short_name"
+                                placeholder="Enter Short Name">
+                            @error('short_name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
 
+
                         <div class="mb-4 col-sm-6 col-md-6 col-lg-6">
                             <label for="ministry">Ministry <span class="text-danger">*</span></label>
                             <select wire:model="ministry" class="form-control @error('ministry') is-invalid @enderror"
                                 id="ministry">
                                 <option value="">--Choose--</option>
-                                {{-- @foreach ($ministries as $ministry)
+                                @foreach ($ministries as $ministry)
                                     <option value="{{ $ministry->id }}">{{ $ministry->name }}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
                             @error('ministry')
                                 <div class="invalid-feedback">
@@ -155,17 +174,22 @@
                         </div>
 
 
-                        <div class="mb-4 col-sm-6 col-md-6 col-lg-6">
-                            <label for="web_url">Website Link</label>
-                            <input type="text" wire:model="web_url"
-                                class="form-control @error('web_url') is-invalid @enderror" id="web_url"
-                                placeholder="eg www.zips.co.tz">
-                            @error('web_url')
+                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
+                            <label for="status">Status <span class="text-danger">*</span></label>
+                            <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
+                                id="status">
+                                <option value="">--Choose--</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                            @error('status')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
+
+
 
                         <div class="mb-4 col-sm-12 col-md-12 col-lg-12" xmlns="http://www.w3.org/1999/html">
                             <label for="address">Address <span class="text-danger">*</span></label>
@@ -203,7 +227,10 @@
                     <h5 class="modal-title" id="exampleModalLabel">Delete Confirm </h5>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure want to delete <strong>{{ $delete_confirm ? $delete_confirm->name : '' }}</strong> ?
+                    {{-- <p>Are you sure want to delete <strong>{{ $delete_confirm ? $delete_confirm->name : '' }}</strong> ?
+                    </p> --}}
+
+                    <p>Are you sure want to delete ?
                     </p>
                 </div>
                 <div class="modal-footer">

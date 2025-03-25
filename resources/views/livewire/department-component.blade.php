@@ -33,107 +33,54 @@
                         <tr class="text-capitalize">
                             <th scope="col">SN</th>
                             <th scope="col">Department_Name</th>
-                            <th cope="col">Institution</th>
-                            <th scope="col">Address</th>
-                            <th scope="col">Under</th>
+                            <th scope="col">Institution_Name</th>
                             <th scope="col">Status</th>
                             <th width="220">Actions</th>
                         </tr>
                     </thead>
+
                     <tbody x-ref="tbody">
-                        {{-- @forelse ($departments as $department)
+                        @forelse ($departments as $department)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $department->name }}</td>
-                                <td>
-                                    @if ($department->institution)
-                                        {{ $department->institution->name }}
-                                    @elseif ($department->ministry)
-                                        {{ $department->ministry->name }}
-                                    @else                        @forelse ($departments as $department)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $department->name }}</td>
-                                <td>
-                                    @if ($department->institution)
-                                        {{ $department->institution->name }}
-                                    @elseif ($department->ministry)
-                                        {{ $department->ministry->name }}
-                                    @else
-                                        Not Assigned
-                                    @endif
-                                </td>
-                                <td>{{ Str::limit($department->address, 50) }}</td>
-                                <td>{{ $department->under }}</td>
+                                <td>{{ $department->instituteName }}</td>
                                 <td>
                                     <span
-                                        class="badge {{ $department->status == 'active' ? 'bg-success' : 'bg-danger' }}">
-                                        {{ ucfirst($department->status) }}
+                                        class="badge {{ $department->status ? 'badge-light-success' : 'badge-light-danger' }}">
+                                        {{ $department->status ? 'Active' : 'Inactive' }}
                                     </span>
                                 </td>
                                 <td style="display: flex; gap: 5px;">
-                                    @can('edit department')
+                                   
                                         <a href="#" wire:click="edit({{ $department->id }})"
                                             class="btn btn-sm btn-success" data-bs-toggle="modal"
                                             data-bs-target="#modal-department">
-                                            Edit
-                                        </a>
-                                    @endcan
-                                    @can('delete department')
+                                            Edit </a>
+                                   
+                                
                                         <a href="#" class="btn btn-sm btn-danger"
                                             wire:click="deleteConfirm({{ $department->id }})" data-bs-toggle="modal"
                                             data-bs-target="#deleteModaldepartment">
-                                            Delete
-                                        </a>
-                                    @endcan
-
+                                            Delete </a>
+                                  
 
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="10" class="text-danger text-center"> No Department Found</td>
+                                <td colspan="10" class="text-danger text-center"> No department Found</td>
                             </tr>
                         @endforelse
-                                        Not Assigned
-                                    @endif
-                                </td>
-                                <td>{{ Str::limit($department->address, 50) }}</td>
-                                <td>{{ $department->under }}</td>
-                                <td>
-                                    <span
-                                        class="badge {{ $department->status == 'active' ? 'bg-success' : 'bg-danger' }}">
-                                        {{ ucfirst($department->status) }}
-                                    </span>
-                                </td>
-                                <td style="display: flex; gap: 5px;">
-                                    @can('edit department')
-                                        <a href="#" wire:click="edit({{ $department->id }})"
-                                            class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#modal-department">
-                                            Edit
-                                        </a>
-                                    @endcan
-                                    @can('delete department')
-                                        <a href="#" class="btn btn-sm btn-danger"
-                                            wire:click="deleteConfirm({{ $department->id }})" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModaldepartment">
-                                            Delete
-                                        </a>
-                                    @endcan
-
-
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="10" class="text-danger text-center"> No Department Found</td>
-                            </tr>
-                        @endforelse --}}
                     </tbody>
-
                 </table>
-                {{-- {{ $departments->links() }} --}}
+                @if($departments->count())
+                    {{ $departments->links() }}
+                @else
+                    {{-- <tr>
+                        <td colspan="6" class="text-center">No institutions found.</td>
+                    </tr> --}}
+                @endif
             </div>
         </div>
     </div>
@@ -143,7 +90,7 @@
     <!-- Modal Content -->
     <div class="modal fade" wire:ignore.self id="modal-department" tabindex="-1" role="dialog"
         aria-labelledby="modal-default" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="h6 modal-title">{{ $update ? 'Update' : 'Add' }} Department</h2>
@@ -161,23 +108,25 @@
                             @enderror
                         </div>
 
-
-
                         <div class="mb-4 col-sm-6 col-md-6 col-lg-6">
-                            <label for="web_url">Website Url </label>
-                            <input type="text" wire:model="web_url"
-                                class="form-control @error('web_url') is-invalid @enderror" id="web_url"
-                                placeholder="eg www.zips.co.tz">
-                            @error('web_url')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                            <label for="institution">Institution name <span class="text-danger">*</span></label>
+                            <select wire:model="institution" class="form-control @error('institution') is-invalid @enderror"
+                                id="institution">
+                                <option value="">--Choose--</option>
+                                @foreach ($institutions as $institution)
+                                    <option value="{{ $institution->id }}">{{ $institution->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('institution')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
 
-
-                        <div class="mb-4 col-sm-6 col-md-6 col-lg-6">
+                        <div class="mb-4 col-sm-12 col-md-12 col-lg-12">
                             <label for="status">Status <span class="text-danger">*</span></label>
-                            <select id="status" class="form-control @error('status') is-invalid @enderror"
-                                onchange="toggleDropdowns()" wire:model='status'>
+                            <select id="status" class="form-control @error('status') is-invalid @enderror" wire:model='status'>
                                 <option value="">--Choose--</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
@@ -187,7 +136,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-4 col-sm-6 col-md-6 col-lg-6">
+                        {{-- <div class="mb-4 col-sm-6 col-md-6 col-lg-6">
                             <label for="under">Under <span class="text-danger">*</span></label>
                             <select id="under" class="form-control @error('under') is-invalid @enderror"
                                 onchange="toggleDropdowns()" wire:model='under'>
@@ -198,32 +147,34 @@
                             @error('under')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         <!-- Institution Dropdown -->
-                        <div class="mb-4 col-sm-12 col-md-12 col-lg-12" id="institution-dropdown"
+
+                        {{-- <div class="mb-4 col-sm-12 col-md-12 col-lg-12" id="institution-dropdown"
                             style="display: none;">
                             <label for="institution">Institution</label>
                             <select id="institution" class="form-control" wire:model="institution">
                                 <option value="">--Select Institution--</option>
-                                {{-- @foreach ($institutions as $institution)
+                                @foreach ($institutions as $institution)
                                     <option value="{{ $institution->id }}">{{ $institution->name }}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
-                        </div>
+                        </div> --}}
+
 
                         <!-- Ministry Dropdown -->
-                        <div class="mb-4 col-sm-12 col-md-12 col-lg-12" id="ministry-dropdown" style="display: none;">
+                        {{-- <div class="mb-4 col-sm-12 col-md-12 col-lg-12" id="ministry-dropdown" style="display: none;">
                             <label for="ministry">Ministry</label>
                             <select id="ministry" class="form-control" wire:model="ministry">
                                 <option value="">--Select Ministry--</option>
-                                {{-- @foreach ($ministries as $ministry)
+                                @foreach ($ministries as $ministry)
                                     <option value="{{ $ministry->id }}">{{ $ministry->name }}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
-                        </div>
+                        </div> --}}
 
-                        <div class="mb-4 col-sm-12">
+                        {{-- <div class="mb-4 col-sm-12">
                             <label for="address">Address <span class="text-danger">*</span></label>
                             <textarea id="address" class="form-control @error('address') is-invalid @enderror" placeholder="Enter Address"
                                 wire:model='address'></textarea>
@@ -231,7 +182,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
 
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -255,9 +206,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Delete Confirm </h5>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure want to delete <strong>{{ $delete_confirm ? $delete_confirm->name : '' }}</strong>
-                        ?
-                    </p>
+                    <p>Are you sure want to delete ?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close-btn"
@@ -323,14 +272,14 @@
         }
     </script>
 
-    <script>
+    {{-- <script>
         function toggleDropdowns() {
             var underValue = document.getElementById('under').value;
             document.getElementById('institution-dropdown').style.display = (underValue === 'Institution') ? 'block' :
                 'none';
             document.getElementById('ministry-dropdown').style.display = (underValue === 'Ministry') ? 'block' : 'none';
         }
-    </script>
+    </script> --}}
 
     @push('scripts')
         <script>
