@@ -84,7 +84,7 @@
             </div>
         </div>
     </div>
-    <!-- Modal Content -->
+   
     <div class="modal fade" wire:ignore.self id="modal-shehia" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -103,51 +103,10 @@
                             </div>
                             @enderror
                         </div>
-
                         <div class="mb-4">
-                            <label for="district">Aina <span class="text-danger">*</span></label>
-                            <select wire:model="aina" class="form-control @error("aina") is-invalid @enderror" id="aina">
-                                <option value="">--Chagua--</option>
-                                <option value="Moto">Moto</option>
-                                <option value="Mafuriko">Mafuriko</option>
-                                <option value="Ajali Angani">Ajali ya Angani</option>
-                                <option value="Ajali ya Baharini">Ajali ya Baharini</option>
-                                <option value="Ajali ya Barabarani">Ajali ya Barabarani</option>
-                                <option value="Maradhi">Maradhi</option>
-
-                            </select>
-                            @error("aina")
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                        <div class="mb-4">
-                            <label for="name">Thamani (Value) <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="thamani" class="form-control @error("name") is-invalid @enderror" id="name" placeholder="Andika thamani" readonly>
-                            @error("name")
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                        <div class="mb-4">
-                            <label for="status">Kipimo (SI Unit) <span class="text-danger">*</span></label>
-                            <select wire:model="status" class="form-control @error("status") is-invalid @enderror" id="status">
-                                <option value="">--Chagua--</option>
-                                <option value="active">Km</option>
-                                <option value="inactive">C</option>
-                            </select>
-                            @error("status")
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                        <div class="mb-4">
-                            <label for="name">Chanzo cha Taarifa <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="name" class="form-control @error("name") is-invalid @enderror" id="name" placeholder="Enter chanzo cha taarifa" readonly>
-                            @error("name")
+                            <label for="maelezo">Maelezo ya Taarifa <span class="text-danger">*</span></label>
+                            <input type="text" wire:model="maelezo" class="form-control @error("maelezo") is-invalid @enderror" id="name" placeholder="Enter chanzo cha taarifa" readonly>
+                            @error("maelezo")
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -174,9 +133,89 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- End of Modal Content -->
+    </div>   
 
+    <div class="modal fade" wire:ignore.self id="modal-matukio" tabindex="-1" role="dialog"
+        aria-labelledby="modal-default" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="h6 modal-title">{{ $update ? 'Badili' : 'Weka' }} Taarifa</h2>
+                    {{-- <h2 class="h6 modal-title">{{ $update ? 'Update' : 'Add' }} </h2> --}}
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+
+                        <div class="mb-4">
+                            <label for="incident">Aina ya tukio <span class="text-danger">*</span></label>
+                            <select wire:model="incident" class="form-control @error('incident') is-invalid @enderror"
+                                id="incident">
+                                <option value="">--Chagua--</option>
+                                @foreach ($incidentTypes as $incident)
+                                    <option value="{{ $incident->id }}">{{ $incident->title }}</option>
+                                @endforeach
+                            </select>
+                            @error('incident')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label for="location">Location <span class="text-danger">*</span></label>
+                            <input type="text" wire:model="location"
+                                class="form-control @error('location') is-invalid @enderror" id="location"
+                                placeholder="Andika Mahala">
+                            @error('location')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4 col-md-12 col-sm-12 col-lg-12" xmlns="http://www.w3.org/1999/html">
+                            <label for="description">Maelezo <span class="text-danger">*</span></label>
+                            <textarea wire:model="description" class="form-control @error('description') is-invalid @enderror" id="description"
+                                placeholder="Enter description" rows="4">
+                            </textarea>
+                            @error('descriptioKuna moto Fuoni Mambosasa')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="status">Hali <span class="text-danger">*</span></label>
+                            <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
+                                id="status">
+                                <option value="">--Chagua--</option>
+                                <option value="Uvumi">Uvumi </option>
+                                <option value="Imejirudia">Imejirudia </option>
+                                <option value="Imeanzishwa">Imeanzishwa </option>
+                                <option value="Inaendelea">Inaendelea</option>
+                                <option value="Imetatuliwa">Imetatuliwa</option>
+                            </select>
+                            @error('status')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal"
+                                wire:click='create'>Close</button>
+                            <button type="button" wire:click.prevent="store"
+                                class="{{ $update ? 'btn btn-success' : 'btn btn-primary' }}">
+                                {{ $update ? 'Update' : 'Add' }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Delete Modal -->
     <div wire:ignore.self class="modal fade" id="deleteModalshehia" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

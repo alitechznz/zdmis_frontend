@@ -76,10 +76,16 @@
                                 <td>{{ $shehia->name }}</td>
                                 {{-- <td>{{ $shehia->district->name }}</td> --}}
                                 <td>
-                                    <span
-                                        class="badge {{ $shehia->status == 'active' ? 'badge-light-success' : 'badge-light-danger' }}">
-                                        {{ ucfirst($shehia->status) }}
-                                    </span>
+                                        @if($shehia->status == 1)
+                                            <span class="badge badge-light-success">
+                                            Active
+                                            </span>
+                                        @else
+                                            <span class="badge badge-light-danger">
+                                                Inactive
+                                            </span>
+                                        @endif
+                                   
                                 </td>
                                 <td style="display: flex; gap: 5px;">
 

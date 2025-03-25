@@ -37,6 +37,7 @@ use App\Livewire\ShehiaComponent;
 use App\Livewire\Standard\StandardComponent;
 use App\Livewire\UserComponent;
 use App\Livewire\Weather\WeatherSourceComponent;
+use App\Livewire\WasilishaTukio;
 use App\Http\Controllers\WasilishaTukioNdaniController;
 use App\Livewire\EducationComponent;
 use Mpdf\Shaper\Indic;

@@ -92,7 +92,7 @@
                                 <td>{{ $incident->createdAt }}</td>
                                 <td>{{ $incident->reportedBy }}</td>
                                 <td>
-                                    <span class="badge {{ $incident->status == 'closed' ? 'badge-light-success' : 'badge-light-danger' }}">
+                                    <span class="badge {{ $incident->status == 'Imetatuliwa' ? 'badge-light-success' : 'badge-light-danger' }}">
                                         {{ ucfirst($incident->status) }}
                                     </span>
                                 </td>
@@ -101,8 +101,7 @@
                                         data-bs-toggle="modal" data-bs-target="#modal-matukio">Badilisha</button>
                                     <button class="btn btn-sm btn-danger"
                                         wire:click="destroy({{ $incident->id }})">Futa</button>
-                                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-shehia" wire:click='create'
-                                        ><i class="fa fa-plus"></i> Weka Taarifa </a>
+                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-shehia"  wire:click="taarifa({{ $incident->id }})"><i class="fa fa-plus"></i> Weka Taarifa </a>
                                     <button class="btn btn-sm btn-warning" wire:click="">Fuatilia</button>
 
                                 </td>
@@ -118,86 +117,62 @@
             </div>
         </div>
     </div>
-    <!-- Modal Content -->
-    <div class="modal fade" wire:ignore.self id="modal-matukio" tabindex="-1" role="dialog"
-        aria-labelledby="modal-default" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+
+     <!-- Modal Content -->
+     <div class="modal fade" wire:ignore.self id="modal-shehia" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="h6 modal-title">{{ $update ? 'Badili' : 'Weka' }} Taarifa</h2>
-                    {{-- <h2 class="h6 modal-title">{{ $update ? 'Update' : 'Add' }} </h2> --}}
+                    <h2 class="h6 modal-title"> Weka Taarifa ya Tukio. </h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-
-
+                    <div  class="row">
                         <div class="mb-4">
-                            <label for="incident">Aina ya tukio <span class="text-danger">*</span></label>
-                            <select wire:model="incident" class="form-control @error('incident') is-invalid @enderror"
-                                id="incident">
-                                <option value="">--Chagua--</option>
-                                @foreach ($incidentTypes as $incident)
-                                    <option value="{{ $incident->id }}">{{ $incident->title }}</option>
-                                @endforeach
-                            </select>
-                            @error('incident')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                            <label for="taarifa_tukio">Chanzo cha Taarifa <span class="text-danger">*</span></label>
+                            <input type="text" wire:model="taarifa_tukio" class="form-control @error("taarifa_tukio") is-invalid @enderror" id="name" placeholder="Andika chanzo cha taarifa" readonly>
+                            @error("taarifa_tukio")
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                             @enderror
                         </div>
                         <div class="mb-4">
-                            <label for="location">Location <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="location"
-                                class="form-control @error('location') is-invalid @enderror" id="location"
-                                placeholder="Andika Mahala">
-                            @error('location')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                            <label for="chanzo">Chanzo cha Taarifa <span class="text-danger">*</span></label>
+                            <input type="text" wire:model="chanzo" class="form-control @error("chanzo") is-invalid @enderror" id="name" placeholder="Andika chanzo cha taarifa">
+                            @error("chanzo")
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                             @enderror
                         </div>
-
-                        <div class="mb-4 col-md-12 col-sm-12 col-lg-12" xmlns="http://www.w3.org/1999/html">
-                            <label for="description">Maelezo <span class="text-danger">*</span></label>
-                            <textarea wire:model="description" class="form-control @error('description') is-invalid @enderror" id="description"
-                                placeholder="Enter description" rows="4">
-                            </textarea>
-                            @error('descriptioKuna moto Fuoni Mambosasa')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
+                        <input type="hidden" wire:model="tukio_id" class="form-control" readonly>    
+                        <input type="hidden" wire:model="user_aliengia_id" class="form-control" readonly>
 
                         <div class="mb-4">
-                            <label for="status">Hali <span class="text-danger">*</span></label>
-                            <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
-                                id="status">
-                                <option value="">--Chagua--</option>
-                                <option value="Imeanzishwa">Imeanzishwa </option>
-                                <option value="Inaendelea">Inaendelea</option>
-                                <option value="Imetatuliwa">Imetatuliwa</option>
-                            </select>
-                            @error('status')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                            <label for="maelezo">Maelezo ya Taarifa <span class="text-danger">*</span></label>
+                            <textarea wire:model="maelezo" rows="3" class="form-control @error('maelezo') is-invalid @enderror"></textarea>
+                            @error("maelezo")
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                             @enderror
                         </div>
+                       
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal"
-                                wire:click='create'>Close</button>
-                            <button type="button" wire:click.prevent="store"
-                                class="{{ $update ? 'btn btn-success' : 'btn btn-primary' }}">
-                                {{ $update ? 'Update' : 'Add' }}</button>
+                            <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal" wire:click='create'>Close</button>
+                            <button type="button" wire:click.prevent="wekaTaarifa"> Wasilisha</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- End of Modal Content -->
+    <!-- Modal Content -->
+     <!-- Modal Content -->
+   
+    <!-- End of Modal Content -->
     <!-- End of Modal Content -->
 
     <!-- Delete Modal -->
