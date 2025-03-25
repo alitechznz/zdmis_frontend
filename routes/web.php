@@ -36,6 +36,7 @@ use App\Livewire\RegionComponent;
 use App\Livewire\ShehiaComponent;
 use App\Livewire\Standard\StandardComponent;
 use App\Livewire\Weather\WeatherSourceComponent;
+use App\Livewire\WasilishaTukio;
 use App\Http\Controllers\WasilishaTukioNdaniController;
 use Mpdf\Shaper\Indic;
 use NunoMaduro\Collision\Adapters\Phpunit\Subscribers\Subscriber;

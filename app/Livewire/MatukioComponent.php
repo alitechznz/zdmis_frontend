@@ -118,7 +118,39 @@ class MatukioComponent extends Component
         }
     }
 
+    public function taarifa($incident_id)
+    {
+        $this->resetErrorBag();
+        $this->update = true;
+        $this->incident_id = $incident_id;
 
+        // Construct the URL for the API request
+        $baseUrl = $this->getBaseUrl();
+        $url = "{$baseUrl}/incidents/{$incident_id}";
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->get($url);
+
+        if ($response->successful()) {
+            $responseBody = $response->json();
+            // logger()->info('Incident Data:', $responseBody);
+
+            if (!empty($responseBody['data']) && is_array($responseBody['data'])) {
+                $incidentData = $responseBody['data']; // Assuming the first element is what you want
+
+                $this->description = $incidentData['description'] ?? 'No description provided';
+                $this->location = $incidentData['location'] ?? 'No location provided';
+                $this->status = $incidentData['status'] ?? 'No status provided';
+                $this->incident = $incidentData['incidentType']['id'] ?? null; // Adjusted to fetch from nested incidentType
+
+            } else {
+                session()->flash('error', 'No incident data found or structure is incorrect.');
+            }
+        } else {
+            session()->flash('error', 'Failed to fetch incident details. Error: ' . $response->body());
+        }
+    }
 
 
     public function destroy($incidentId)

@@ -76,10 +76,17 @@
                                 <td>{{ $district->name }}</td>
                                 {{-- <td>{{ $district->region->name }}</td> --}}
                                 <td>
-                                    <span
-                                        class="badge {{ $district->status == 'active' ? 'badge-light-success' : 'badge-light-danger' }}">
-                                        {{ ucfirst($district->status) }}
-                                    </span>
+                                    @if($district->status == 1)
+                                        <span class="badge badge-light-success">
+                                           Active
+                                        </span>
+                                    @else
+                                        <span class="badge badge-light-danger">
+                                            Inactive
+                                        </span>
+                                    @endif
+
+
                                 </td>
                                 <td style="display: flex; gap: 5px;">
 
