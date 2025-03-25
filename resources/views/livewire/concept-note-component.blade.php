@@ -43,7 +43,7 @@
                                       <input id="upfile" type="file" onchange="sub(this)">
                                     </div>
                                   </form>
-                                  <a class="btn btn-outline-primary ms-2" href="{{ route('tma-dashboard')}}"><i data-feather="upload">   </i>TMA Dashboard   </a>
+                                  <a class="btn btn-outline-primary ms-2" href="{{ route('tma-dashboard')}}"><i data-feather="upload">   </i>TMA2 Dashboard   </a>
                                 </div>
                               </div>
                             </div>
