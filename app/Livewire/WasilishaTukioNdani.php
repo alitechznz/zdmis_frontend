@@ -9,7 +9,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Livewire\WithPagination;
 
-class SubscribeComponent extends Component
+class WasilishaTukioNdani extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
@@ -17,7 +17,22 @@ class SubscribeComponent extends Component
     public $search_keyword = null;
     public $update = false;
     public $delete_confirm = null;
+
+    public $subscribers = [];
+    public $contact, $subscription_type, $email, $phone;
+    public $subscriber_id;
+    // In your Livewire component
+    public $isLoading = false;
+    public $isCompleted = false;
+
     public $description, $location, $status, $incident, $incident_id = null;
+
+    public $mkoas = [];
+    public $ainaTukio = [];
+    public $selectedMkoa = null;
+    public $wilayas = [];
+    public $selectedWilaya = null;
+    public $shehias  = [];
 
     private function getBaseUrl()
     {
@@ -139,7 +154,6 @@ class SubscribeComponent extends Component
     {
         $this->reset('description', 'location', 'incident', 'status', 'incident_id', 'update');
     }
-    
 
     public function paginateCollection($items, $perPage = 15, $page = null, $options = [])
     {
@@ -152,6 +166,70 @@ class SubscribeComponent extends Component
             $page,
             $options
         );
+    }
+
+    public function mount()
+    {
+        $this->fetchTukioAina();
+        $this->fetchMkoas();
+    }
+
+    public function fetchMkoas()
+    {
+        $response = Http::get('https://maafaznz.go.tz/takwimuApi/mkoa.php');
+        $this->mkoas = $response->json();  // Assuming the endpoint returns a JSON array
+        //dd($this->mkoas);
+    }
+
+    public function fetchTukioAina()
+    {
+        $response = Http::get('https://maafaznz.go.tz/takwimuApi/aina_api.php');
+        $this->ainaTukio = $response->json();  // Assuming the endpoint returns a JSON array
+        //dd($this->mkoas);
+    }
+
+    public function updatedSelectedMkoa($mkoa)
+    {
+        $this->wilayas = [];
+        $this->shehias = [];
+        $this->selectedWilaya = null;  // Reset selectedWilaya when mkoa changes
+
+        if (!empty($mkoa)) {
+            $this->fetchWilayas($mkoa);
+        }
+    }
+
+    public function fetchWilayas($mkoa)
+    {
+        $response = Http::get('https://maafaznz.go.tz/takwimuApi/wilaya.php', ['mkoa' => $mkoa]);
+        $this->wilayas = $response->json();
+    }
+
+    public function updatedSelectedWilaya($wilaya)
+    {
+        $this->shehias = [];
+
+        if (!empty($wilaya)) {
+            $this->fetchShehias($wilaya);
+        }
+    }
+
+    public function fetchShehias($wilaya)
+    {
+        $response = Http::get('https://maafaznz.go.tz/takwimuApi/shehia.php', ['wilaya' => $wilaya]);
+        $this->shehias = $response->json();
+    }
+
+    public function sisi()
+    {
+        $this->validate([
+            'contact_person' => 'required|string|max:255',
+            'phone_number' => 'required|numeric',
+            'municipal_council' => 'required',
+            'contact_detail' => 'required|string'
+        ]);
+
+        // Process the form submission here after validation passes
     }
 
     public function render()
@@ -167,7 +245,7 @@ class SubscribeComponent extends Component
 
         if (!$token) {
             session()->flash('error', 'No authentication token available. Please login again.');
-            return view('livewire.matukio-component', ['incidents' => collect([])])->layout('layouts.app');
+            return view('livewire.matukio-component', ['incidents' => collect([])]);
         }
 
         $response = Http::withHeaders([
@@ -220,6 +298,9 @@ class SubscribeComponent extends Component
         } else {
             logger()->error('Error Fetching Incident Types:', ['response' => $typeResponse->body()]);
         }
-        return view('livewire.subscribe-component');
+        return view('livewire.wasilisha-tukio-ndani', [
+            'incidents' => $incidents,
+            'incidentTypes' => $incidentTypes,
+        ]);
     }
 }
