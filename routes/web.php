@@ -68,7 +68,7 @@ Route::middleware(['auth.token'])->group(function () {
     Route::get('/dashboard', [dashboardController::class, 'index'])->name('/dashboard');
 
     //usajili wa majukumu
-    Route::get('/majukumu', [majukumuController::class, 'index'])->name('/majukumu');
+    Route::get('/majukumu', [majukumuController::class, 'index'])->name('majukumu');
     Route::get('/majukumu/create', [majukumuController::class, 'create'])->name('create');
 
     // Web Routes

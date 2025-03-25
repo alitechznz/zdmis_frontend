@@ -108,7 +108,7 @@
                         </a>
                         <ul class="sidebar-submenu">
                             {{-- @can('view screening question') --}}
-                            <li><a href="{{ route('/majukumu') }}">Majukumu</a></li>
+                            
                             <li><a href="">{{ __('menu.basic_setup') }}</a></li>
                             {{-- @endcan --}}
                             {{-- @can('view screening question') --}}
@@ -438,7 +438,7 @@
                         {{-- @can('view role') --}}
                             <li class="sidebar-list">
                                 <i class="fa fa-thumb-tack"></i>
-                                <a class="sidebar-link sidebar-title link-nav" href="">
+                                <a class="sidebar-link sidebar-title link-nav" href="{{ route('majukumu') }}">
                                     <svg class="stroke-icon">
                                         <use href="../assets/svg/icon-sprite.svg#stroke-others"></use>
                                     </svg>
