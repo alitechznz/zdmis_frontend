@@ -154,10 +154,10 @@
                             {{-- @endcan --}}
                             {{-- @can('view rd committee') --}}
                             {{-- <li><a href="{{ route('divisions') }}">Division</a></li> --}}
-                            <li><a href="{{ route('rd-committees') }}">RD Committees</a></li>
+                            {{-- <li><a href="{{ route('rd-committees') }}">RD Committees</a></li> --}}
                             {{-- @endcan --}}
                             {{-- @can('view municipal council') --}}
-                            <li><a href="{{ route('municipal-council') }}">Municipal Council</a></li>
+                            {{-- <li><a href="{{ route('municipal-council') }}">Municipal Council</a></li> --}}
                             {{-- @endcan --}}
                             {{-- <li><a href="{{ route('shehia-committees') }}">Shehia Committee</a></li> --}}
                         </ul>
@@ -171,7 +171,7 @@
                     </li>
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist') }}">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('education') }}">
                             <svg class="stroke-icon">
                                 <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
                             </svg>

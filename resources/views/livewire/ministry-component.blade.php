@@ -57,9 +57,9 @@
                             <th scope="col">SN
                             <th scope="col">Ministry_Name
                             <th scope="col">Short_Name
-                            <th scope="col">Phone
-                            <th scope="col">Email
+                            <th scope="col">Vote_Number
                             <th scope="col">Address
+                            <th scope="col">Status
                             <th scope="col" width="220">Actions</th>
                         </tr>
                     </thead>
@@ -68,25 +68,24 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $ministry->name }}</td>
-                                <td>{{ $ministry->short_name }}</td>
-                                <td>{{ $ministry->phone }}</td>
-                                <td>{{ $ministry->email }}</td>
+                                <td>{{ $ministry->shortName }}</td>
+                                <td>{{ $ministry->voteNumber }}</td>
                                 <td>{{ $ministry->address }}</td>
+                                <td>
+                                    <span
+                                        class="badge {{ $ministry->status ? 'badge-light-success' : 'badge-light-danger' }}">
+                                        {{ $ministry->status ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </td>
                                 <td style="display: flex; gap: 5px;">
-                                    @can('edit ministry')
                                         <a href="#" wire:click="edit({{ $ministry->id }})"
                                             class="btn btn-sm btn-success" data-bs-toggle="modal"
                                             data-bs-target="#modal-ministry">
                                             Edit</a>
-                                    @endcan
-                                    @can('delete ministry')
                                         <a href="#" class="btn btn-sm btn-danger"
                                             wire:click="deleteConfirm({{ $ministry->id }})" data-bs-toggle="modal"
                                             data-bs-target="#deleteModalministry">
                                             Delete</a>
-                                    @endcan
-
-
                                 </td>
                             </tr>
                         @empty
@@ -96,7 +95,13 @@
                         @endforelse
                     </tbody>
                 </table>
-                {{ $ministries->links() }}
+                @if($ministries->count())
+                    {{ $ministries->links() }}
+                @else
+                    {{-- <tr>
+                        <td colspan="6" class="text-center">No institutions found.</td>
+                    </tr> --}}
+                @endif
             </div>
         </div>
     </div>
@@ -156,45 +161,19 @@
                         </div>
 
                         <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
-                            <label for="phone">Phone <span class="text-danger">*</span></label>
-                            <input type="number" wire:model="phone"
-                                class="form-control @error('phone') is-invalid @enderror" id="phone"
-                                placeholder="Enter Phone Number" pattern="\d{10}"
-                                title="Phone number must be exactly 10 digits.">
-                            @error('phone')
+                            <label for="status">Status <span class="text-danger">*</span></label>
+                            <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
+                                id="status">
+                                <option value="">--Choose--</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                            @error('status')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
-
-
-
-
-                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
-                            <label for="email">Email <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="email"
-                                class="form-control @error('email') is-invalid @enderror" id="email"
-                                placeholder="Enter Email Address">
-                            @error('email')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
-                            <label for="web_url">Website Link </label>
-                            <input type="text" wire:model="web_url"
-                                class="form-control @error('web_url') is-invalid @enderror" id="web_url"
-                                placeholder="eg www.zips.co.tz">
-                            @error('web_url')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
 
                         <div class="mb-4 col-md-12 col-sm-12 col-lg-12" xmlns="http://www.w3.org/1999/html">
                             <label for="address">Address <span class="text-danger">*</span></label>
@@ -234,9 +213,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Delete Confirm </h5>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure want to delete <strong>{{ $delete_confirm ? $delete_confirm->name : '' }}</strong>
-                        ?
-                    </p>
+                    <p>Are you sure want to delete ?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close-btn"

@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Log;
+
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 
@@ -11,7 +13,9 @@ class WasilishaTukio extends Component
     public $subscribers = [];
     public $contact, $subscription_type, $status, $email, $phone;
     public $subscriber_id;
+
     public $contact_person, $phone_number, $tukio, $shehia, $eneo, $latitude, $longitude, $contact_detail, $tukiosababu;
+
     // In your Livewire component
     public $isLoading = false;
     public $isCompleted = false;
@@ -25,6 +29,7 @@ class WasilishaTukio extends Component
     public $selectedWilaya = null;
     public $shehias  = [];
 
+    public $contact_person, $phone_number, $municipal_council, $contact_detail;
     public function mount()
     {
         $this->fetchTukioAina();
