@@ -81,6 +81,72 @@
     <!-- Plugins JS Ends-->
     <!-- Theme js-->
     <script src="{{ asset('assets/js/script.js') }}"></script>
+    <script>window.gtranslateSettings = {"default_language":"sw","native_language_names":true,"detect_browser_language":true,"languages":["sw","en"],"wrapper_selector":".gtranslate_wrapper","flag_style":"3d","alt_flags":{"en":"usa"}}</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/fc.js" defer></script>
+
+    <script src="{{ asset('sweetalert2/dist/sweetalert2.min.js')}}"></script>
+    <script>
+        //Sweet alert for livewire
+        var toastMixin = Swal.mixin({
+            toast: true,
+            animation: false,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        window.addEventListener('swal:success', event => {
+            toastMixin.fire({
+                animation: true,
+                icon: 'success',
+                title: '<b style="font-size:12pt!important; margin-left: 10px;">' + event.detail.title + '</b>'
+            });
+        })
+
+        window.addEventListener('swal:info', event => {
+            toastMixin.fire({
+                animation: true,
+                icon: 'success',
+                title: '<b style="font-size:12pt!important; margin-left: 10px;">' + event.detail.title + '</b>'
+            });
+        })
+
+        window.addEventListener('swal:error', event => {
+            toastMixin.fire({
+                animation: true,
+                icon: 'error',
+                title: '<b style="font-size:12pt!important; margin-left: 10px;">' + event.detail.title + '</b>'
+            });
+        })
+
+        @if(Session::has('success'))
+        toastMixin.fire({
+            animation: true,
+            icon: 'success',
+            title: '<b style="font-size:12pt!important; margin-left: 10px;">{{Session::get('success')}}</b>'
+        });
+        @php
+            Session::forget('success');
+        @endphp
+        @endif
+
+        @if(Session::has('warning'))
+        toastMixin.fire({
+            animation: true,
+            icon: 'error',
+            title: '<b style="font-size:12pt!important; margin-left: 10px;">{{Session::get('warning')}}</b>'
+        });
+        @php
+            Session::forget('warning');
+        @endphp
+        @endif
+
+    </script>
     @stack('scripts')
     @livewireScripts
 </body>

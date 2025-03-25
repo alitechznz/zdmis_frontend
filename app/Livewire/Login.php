@@ -38,6 +38,21 @@ class Login extends Component
             session(['token' => $token]); // Store the token in the session
             // session(['token' => $data['data']['token']]);
             // $this->emit('loginSuccess');
+
+            // Fetch additional user details
+            $fullName = $data['data']['userDto']['fullName'];
+            $organizationId = $data['data']['userDto']['organizationId'];
+            $roleName = $data['data']['userDto']['role']['roleName'];
+            $phoneNo = $data['data']['userDto']['phoneNumber'];
+
+            // Store these details in the session as well
+            session([
+                'fullName' => $fullName,
+                'organizationId' => $organizationId,
+                'roleName' => $roleName,
+                'phoneNumber' => $phoneNo,
+            ]);
+
             return redirect()->to('/dashboard');
         } else {
             $this->addError('email', 'The provided credentials are incorrect or authentication failed.');

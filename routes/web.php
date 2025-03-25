@@ -37,7 +37,9 @@ use App\Livewire\ShehiaComponent;
 use App\Livewire\Standard\StandardComponent;
 use App\Livewire\UserComponent;
 use App\Livewire\Weather\WeatherSourceComponent;
+use App\Http\Controllers\WasilishaTukioNdaniController;
 use Mpdf\Shaper\Indic;
+use NunoMaduro\Collision\Adapters\Phpunit\Subscribers\Subscriber;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,4 +111,7 @@ Route::middleware(['auth.token'])->group(function () {
     Route::get('departments', DepartmentComponent::class)->name('departments');
     Route::get('rd-committees', RegionalAuthorityComponent::class)->name('rd-committees');
     Route::get('municipal-councils', MunicipalCouncilComponent::class)->name('municipal-council');
+
+    Route::get('/subscriber', [SubscriberController::class, 'index'])->name('subscriber');
+    Route::get('/tukio-ndani', [WasilishaTukioNdaniController::class, 'index'])->name('tukio-ndani');
 });

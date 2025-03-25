@@ -12,185 +12,81 @@ class WasilishaTukio extends Component
     public $subscribers = [];
     public $contact, $subscription_type, $status, $email, $phone;
     public $subscriber_id;
+    public $contact_person, $phone_number, $tukio, $shehia, $eneo, $latitude, $longitude, $contact_detail;
     // In your Livewire component
     public $isLoading = false;
     public $isCompleted = false;
 
+    public $mkoas = [];
+    public $ainaTukio = [];
+    public $selectedMkoa = null;
+    public $wilayas = [];
+    public $selectedWilaya = null;
+    public $shehias  = [];
+
     public $contact_person, $phone_number, $municipal_council, $contact_detail;
     public function mount()
     {
-        // $this->fetchSubscribers();
+        $this->fetchTukioAina();
+        $this->fetchMkoas();
     }
 
-    public function subscribe()
+    public function fetchMkoas()
     {
-        $this->resetLoadingState();
-        $this->dispatchBrowserEvent('show-confirmation-modal'); // Trigger modal
+        $response = Http::get('https://maafaznz.go.tz/takwimuApi/mkoa.php');
+        $this->mkoas = $response->json();  // Assuming the endpoint returns a JSON array
+        //dd($this->mkoas);
     }
 
-    public function confirmSubscription()
+    public function fetchTukioAina()
     {
-        $this->isLoading = true;
-        $this->isCompleted = false;
+        $response = Http::get('https://maafaznz.go.tz/takwimuApi/aina_api.php');
+        $this->ainaTukio = $response->json();  // Assuming the endpoint returns a JSON array
+        //dd($this->mkoas);
+    }
 
-        // Simulate a request...
+    public function updatedSelectedMkoa($mkoa)
+    {
+        $this->wilayas = [];
+        $this->shehias = [];
+        $this->selectedWilaya = null;  // Reset selectedWilaya when mkoa changes
 
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post(config('services.api.base_url') . '/subscriber/activate', [
-            'contact' => $this->email,
-            'subscription_type' => 'email',
-            'status' => 'active',
+        if (!empty($mkoa)) {
+            $this->fetchWilayas($mkoa);
+        }
+    }
+
+    public function fetchWilayas($mkoa)
+    {
+        $response = Http::get('https://maafaznz.go.tz/takwimuApi/wilaya.php', ['mkoa' => $mkoa]);
+        $this->wilayas = $response->json();
+    }
+
+    public function updatedSelectedWilaya($wilaya)
+    {
+        $this->shehias = [];
+
+        if (!empty($wilaya)) {
+            $this->fetchShehias($wilaya);
+        }
+    }
+
+    public function fetchShehias($wilaya)
+    {
+        $response = Http::get('https://maafaznz.go.tz/takwimuApi/shehia.php', ['wilaya' => $wilaya]);
+        $this->shehias = $response->json();
+    }
+
+    public function submitWasilish()
+    {
+        $this->validate([
+            'contact_person' => 'required|string|max:255',
+            'phone_number' => 'required|numeric',
+            'contact_detail' => 'required|string'
         ]);
 
-        if ($response->successful()) {
-            // $this->resetInputFields();
-            $this->dispatch('swal:info', title: 'Ahsante kujiunga nasi!');
-            // $this->fetchSubscribers();
-        } else {
-            // session()->flash('error', 'Error adding role: ' . $response->body());
-            $this->dispatch('swal:info', title: $response->body());
-        }
-
-        // sleep(2); // Do your API call or other operations here
-
-        $this->isLoading = false;
-        $this->isCompleted = true;
-
-        // Close modal after action
-        // $this->dispatch('swal:info', title: 'Ahsante kujiunga nasi!');
-        // $this->dispatchBrowserEvent('close-confirmation-modal');
+        // Process the form submission here after validation passes
     }
-
-    public function confirmSubscription_p()
-    {
-        $this->isLoading = true;
-        $this->isCompleted = false;
-
-        // Simulate a request...
-
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post(config('services.api.base_url') . '/subscriber/activate', [
-            'contact' => $this->phone,
-            'subscription_type' => 'phone',
-            'status' => 'active',
-        ]);
-
-        // dd($response);
-        if ($response->successful()) {
-            // $this->resetInputFields();
-            $this->dispatch('swal:info', title: 'Ahsante kujiunga nasi!');
-            // $this->fetchSubscribers();
-        } else {
-            // session()->flash('error', 'Error adding role: ' . $response->body());
-            $this->dispatch('swal:info', title: $response->body());
-        }
-
-        // sleep(2); // Do your API call or other operations here
-
-        $this->isLoading = false;
-        $this->isCompleted = true;
-
-        // Close modal after action
-        // $this->dispatch('swal:info', title: 'Ahsante kujiunga nasi!');
-        // $this->dispatchBrowserEvent('close-confirmation-modal');
-    }
-
-    private function resetLoadingState()
-    {
-        $this->isLoading = false;
-        $this->isCompleted = false;
-    }
-
-    public function fetchSubscribers()
-    {
-
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-        ])->get(config('services.api.base_url') . '/subscribers');
-
-        if ($response->successful()) {
-            $this->subscribers = $response->json();
-        }
-    }
-
-    public function createSubscriber()
-    {
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post(config('services.api.base_url') . '/subscriber', [
-            'contact' => $this->email,
-            'subscription_type' => 'email',
-            'status' => 'active',
-        ]);
-
-        if ($response->successful()) {
-            $this->resetInputFields();
-            $this->dispatch('swal:info', title: 'Ahsante kujiunga nasi!');
-            // $this->fetchSubscribers();
-        } else {
-            session()->flash('error', 'Error adding role: ' . $response->body());
-        }
-    }
-
-    public function createSubscriber_phone()
-    {
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post(config('services.api.base_url') . '/subscriber', [
-            'contact' => $this->phone,
-            'subscription_type' => 'phone',
-            'status' => 'active',
-        ]);
-
-        if ($response->successful()) {
-            $this->resetInputFields();
-            $this->fetchSubscribers();
-        }
-    }
-
-    public function submit()
-    {
-        try {
-            Log::info('Submitting form', ['state' => $this->getState()]);
-
-            $this->validate([
-                'contact_person' => 'required|string|max:255',
-                'phone_number' => 'required|numeric',
-                'municipal_council' => 'required',
-                'contact_detail' => 'required|string'
-            ]);
-
-            // Process the form submission here after validation passes
-            Log::info('Form validation passed', [
-                'contact_person' => $this->contact_person,
-                'phone_number' => $this->phone_number,
-                'municipal_council' => $this->municipal_council,
-                'contact_detail' => $this->contact_detail,
-            ]);
-
-            // Further processing such as saving data to database or calling an API
-
-        } catch (\Exception $e) {
-            Log::error('Error during form submission', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            session()->flash('error', 'An error occurred while submitting the form.');
-        }
-    }
-
-    private function getState()
-    {
-        return [
-            'contact_person' => $this->contact_person,
-            'phone_number' => $this->phone_number,
-            'municipal_council' => $this->municipal_council,
-            'contact_detail' => $this->contact_detail,
-        ];
-    }
-
 
     public function render()
     {
