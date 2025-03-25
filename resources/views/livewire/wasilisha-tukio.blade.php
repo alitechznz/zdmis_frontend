@@ -1,13 +1,11 @@
 <div>
-    @livewire('page-za-nje.heade-component')
-
     <div class="container-fluid py-3" style="background-color: rgb(234, 244, 245);">
         <div class="card border-light mb-3 mx-auto">
             <h2 class="text-center pt-3">Wasilisha Tukio</h2>
             <p class="text-center" style="font-family: 'Montserrat', sans-serif; font-size: 15px;">Karibu kuwasilisha taarifa za tukio</p>
 
             <div class="container" wire:ignore.self>
-                <form wire:submit.prevent="submitWasilish">
+                <form wire:submit.prevent="submitWasilisha">
 
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -25,8 +23,8 @@
                             @enderror
                         </div>
                         <div class="col-6">
-                            <label for="tukio" class="form-label">Chagua Tukio<span class="text-danger"> *</span></label>
-                            <select wire:model="tukio" class="form-control @error('tukio') is-invalid @enderror">
+                            <label for="selectedTukio" class="form-label">Chagua Tukio<span class="text-danger"> *</span></label>
+                            <select wire:model="selectedTukio" class="form-control @error('selectedTukio') is-invalid @enderror">
                                 <option value="">--Choose--</option>
                                 @foreach ($ainaTukio as $type)
                                     <option value="{{ $type['id'] }}">{{ $type['aina_name'] }}</option>
@@ -34,6 +32,19 @@
                                 <!-- Add dynamic options here -->
                             </select>
                             @error('tukio')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-6">
+                            <label for="tukiosababu" class="form-label">Chagua Tukio sababu<span class="text-danger"> *</span></label>
+                            <select wire:model="tukiosababu" class="form-control @error('tukiosababu') is-invalid @enderror">
+                                <option value="">--Choose--</option>
+                                @foreach($sababu as $type)
+                                    <option value="{{ $type['id'] }}">{{ $type['sababu'] }}</option>
+                                @endforeach
+                                <!-- Add dynamic options here -->
+                            </select>
+                            @error('tukiosababu')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -52,7 +63,7 @@
                         </div>
                         <div class="col-6">
                             <label for="selectedWilaya" class="form-label">Chagua Wilaya <span class="text-danger"> *</span></label>
-                            @if (!empty($wilayas))
+                            {{-- @if (!empty($wilayas)) --}}
                                 <select wire:model="selectedWilaya" class="form-control @error('selectedWilaya') is-invalid @enderror">
                                     <option value="">--Choose--</option>
                                     @foreach ($wilayas as $wilaya)
@@ -60,14 +71,14 @@
                                     @endforeach
                                     <!-- Add dynamic options here -->
                                 </select>
-                            @endif
+                            {{-- @endif --}}
                             @error('selectedWilaya')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-6">
                             <label for="shehia" class="form-label">Chagua Shehia <span class="text-danger"> *</span></label>
-                            @if (!empty($shehias))
+                            {{-- @if (!empty($shehias)) --}}
                                 <select wire:model="shehia" class="form-control @error('shehia') is-invalid @enderror">
                                     <option value="">--Choose--</option>
                                     @foreach ($shehias as $shehia)
@@ -75,20 +86,20 @@
                                     @endforeach
                                     <!-- Add dynamic options here -->
                                 </select>
-                            @endif
+                            {{-- @endif --}}
                             @error('shehia')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-md-12">
-                                <label for="latitude" class="form-label">Andika Mtaa/Kijiji/Eneo <span class="text-danger"> *</span></label>
+                        <div class="col-md-6">
+                                <label for="eneo" class="form-label">Andika Mtaa/Kijiji/Eneo <span class="text-danger"> *</span></label>
                                 <input type="text" wire:model="eneo" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                                 <!-- <label for="latitude" class="form-label">Latitude</label> -->
                                 <input type="hidden" wire:model="latitude" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                                 <!-- <label for="longitude" class="form-label">Longitude</label> -->
                                 <input type="hidden" wire:model="longitude" class="form-control">
                         </div>
@@ -102,7 +113,7 @@
                         <div class="form-group mb-0">
 
                             <div class="text-end mt-3">
-                                <!-- <button type="submit">Wasilisha</button> -->
+
                                 <button type="submit" class="btn-success w-40 subscribe-button">Wasilisha</button>
 
                             </div>
@@ -113,9 +124,8 @@
         </div>
     </div>
 
-    @livewire('page-za-nje.jiunge-component')
-    @livewire('page-za-nje.footer-component')
-
-
-
+    {{-- @include('../page-za-nje.jiunge-component') --}}
+    {{-- @livewire('page-za-nje.jiunge-component') --}}
+    {{-- @livewire('page-za-nje.footer-component')  --}}
 </div>
+

@@ -5,12 +5,13 @@ namespace App\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 
+
 class WasilishaTukio extends Component
 {
     public $subscribers = [];
     public $contact, $subscription_type, $status, $email, $phone;
     public $subscriber_id;
-    public $contact_person, $phone_number, $tukio, $shehia,$eneo, $latitude, $longitude, $contact_detail;
+    public $contact_person, $phone_number, $tukio, $shehia, $eneo, $latitude, $longitude, $contact_detail, $tukiosababu;
     // In your Livewire component
     public $isLoading = false;
     public $isCompleted = false;
@@ -18,6 +19,8 @@ class WasilishaTukio extends Component
     public $mkoas = [];
     public $ainaTukio = [];
     public $selectedMkoa = null;
+    public $selectedTukio = null;
+    public $sababu = [];
     public $wilayas = [];
     public $selectedWilaya = null;
     public $shehias  = [];
@@ -42,8 +45,10 @@ class WasilishaTukio extends Component
         //dd($this->mkoas);
     }
 
+
     public function updatedSelectedMkoa($mkoa)
     {
+       // dd($mkoa);
         $this->wilayas = [];
         $this->shehias = [];
         $this->selectedWilaya = null;  // Reset selectedWilaya when mkoa changes
@@ -51,6 +56,21 @@ class WasilishaTukio extends Component
         if (!empty($mkoa)) {
             $this->fetchWilayas($mkoa);
         }
+    }
+
+    public function updatedSelectedTukio($tukio)
+    {
+        $this->sababu = [];
+        $this->tukiosababu = null;  // Reset selectedWilaya when mkoa changes
+        if (!empty($tukio)) {
+            $this->fetchSababu($tukio);
+        }
+    }
+
+    public function fetchSababu($tukio)
+    {
+        $response = Http::get('https://maafaznz.go.tz/takwimuApi/sababu_api.php', ['janga_id' => $tukio]);
+        $this->sababu = $response->json();
     }
 
     public function fetchWilayas($mkoa)
@@ -74,11 +94,22 @@ class WasilishaTukio extends Component
         $this->shehias = $response->json();
     }
 
-    public function submitWasilish()
+    public function myFunction()
+    {
+        // Perform your action here
+        dd('Function has been executed successfully!');
+    }
+
+    public function submitWasilisha()
     {
         $this->validate([
             'contact_person' => 'required|string|max:255',
             'phone_number' => 'required|numeric',
+            'selectedMkoa' => 'required|string',
+            'tukio' => 'required|string',
+            'selectedWilaya' => 'required|string',
+            'shehia' => 'required|string',
+            'eneo' => 'required|string',
             'contact_detail' => 'required|string'
         ]);
 
