@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    @livewire('subscribe-component')
+    @livewire('wasilisha-tukio-ndani')
 @endsection

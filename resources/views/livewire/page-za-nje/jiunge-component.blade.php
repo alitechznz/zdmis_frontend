@@ -35,7 +35,7 @@
                                 @if($isCompleted)
                                     <i class="fas fa-check" style="color: green;"></i>
                                 @endif
-                                
+
                             </div>
                         </div>
                     </form>
@@ -60,7 +60,7 @@
                                 @if($isCompleted_p)
                                     <i class="fas fa-check" style="color: green;"></i>
                                 @endif
-                               
+
                             </div>
                         </div>
                     </form>
@@ -70,7 +70,7 @@
                 <div class="card">
                     <h2><i class="fas fa-mobile-alt icon" style="color: #4CAF50;"></i> Pakua Mfumo</h2>
                     <div>
-                        
+
                         <i class="fab fa-google-play google"></i> Get it on Google Play <br />
                         <i class="fab fa-app-store-ios apple"></i> Download on the App Store
                     </div>
@@ -78,7 +78,7 @@
                             <i class="fas fa-download"></i> Download APK
                             <img src="{{ asset('assets/images/apk.png') }}" class="d-block w-50 mx-auto my-2" alt="App Download" style="width: 100%; padding-left: 0%;">
                     </a><br />
-                    
+
                 </div>
             </div>
         </div>
@@ -145,7 +145,7 @@
             });
         });
 
-       
+
     </script>
     <script>
         document.addEventListener('livewire:load', function () {
@@ -189,7 +189,7 @@
         });
     </script>
     <script>
-       
+
        document.addEventListener('DOMContentLoaded', function() {
            window.addEventListener('livewire:load', function () {
                Livewire.on('refreshPage', function () {
@@ -199,7 +199,7 @@
                });
            });
        });
-   
+
        </script>
     @endpush
     @push('styles')

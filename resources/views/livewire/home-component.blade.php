@@ -27,7 +27,7 @@
                   <div class="card-body">
                     <div class="d-flex">
                       <div class="flex-grow-1">
-                        <h1>Hello, {{ auth()->user()->name }}.</h1>
+                        <h1>Hello, </h1>
                         <p>Welcome to the Admin clan! We appreciate your interest in our ZiPS dashboard.</p>
                       </div>
                       <div class="flex-shrink-0"> <img src="../assets/images/dashboard/welcome.png" alt=""></div>
@@ -200,10 +200,10 @@
                   </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-8 box-col-8">
+                    {{-- <div class="col-md-8 box-col-8">
                         <div class="card o-hidden">
                           <div class="card-header">
-                            <h4>Monthly Financing History</h4>
+                            <h4>Matukio kwa Mwezi</h4>
                             <div class="card-header-center-icon" style="margin-left:0%;">
                                 <div class="dropdown">
                                   <button class="btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown">Budget Year</button>
@@ -221,8 +221,8 @@
                             </div>
                           </div>
                         </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-md-6 proorder-xl-1">
+                    </div> --}}
+                    <div class="col-xl-12 col-lg-12 col-md-12 proorder-xl-1">
                         <div class="card">
                           <div class="card-header pb-0">
                             <div class="header-top">
@@ -246,7 +246,7 @@
                                 </thead>
                                 <tbody>
                                     @php $sn =1; @endphp
-                                 
+
                                 </tbody>
                               </table>
                             </div>

@@ -73,7 +73,7 @@
                         @forelse ($shehias as $shehia)
                             <tr>
                                 <td>{{ $sn }}</td>
-                                <td>{{ $shehia->shehiaName }}</td>
+                                <td>{{ $shehia->name }}</td>
                                 {{-- <td>{{ $shehia->district->name }}</td> --}}
                                 <td>
                                     <span

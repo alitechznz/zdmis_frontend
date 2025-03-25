@@ -92,16 +92,19 @@
                                 <td>{{ $incident->createdAt }}</td>
                                 <td>{{ $incident->reportedBy }}</td>
                                 <td>
-                                    <span
-                                        class="badge {{ $incident->status == 'active' ? 'badge-light-success' : 'badge-light-danger' }}">
+                                    <span class="badge {{ $incident->status == 'closed' ? 'badge-light-success' : 'badge-light-danger' }}">
                                         {{ ucfirst($incident->status) }}
                                     </span>
                                 </td>
                                 <td>
                                     <button class="btn btn-sm btn-success" wire:click="edit({{ $incident->id }})"
-                                        data-bs-toggle="modal" data-bs-target="#modal-matukio">Edit</button>
+                                        data-bs-toggle="modal" data-bs-target="#modal-matukio">Badilisha</button>
                                     <button class="btn btn-sm btn-danger"
-                                        wire:click="destroy({{ $incident->id }})">Delete</button>
+                                        wire:click="destroy({{ $incident->id }})">Futa</button>
+                                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-shehia" wire:click='create'
+                                        ><i class="fa fa-plus"></i> Weka Taarifa </a>
+                                    <button class="btn btn-sm btn-warning" wire:click="">Fuatilia</button>
+
                                 </td>
                             </tr>
                         @empty
@@ -173,8 +176,9 @@
                             <select wire:model="status" class="form-control @error('status') is-invalid @enderror"
                                 id="status">
                                 <option value="">--Chagua--</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="Imeanzishwa">Imeanzishwa </option>
+                                <option value="Inaendelea">Inaendelea</option>
+                                <option value="Imetatuliwa">Imetatuliwa</option>
                             </select>
                             @error('status')
                                 <div class="invalid-feedback">
