@@ -8,6 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Livewire\WithPagination;
+use Carbon\Carbon;
 
 class MatukioComponent extends Component
 {
@@ -48,11 +49,15 @@ class MatukioComponent extends Component
 
         $token = session('token'); // Retrieve the auth token
 
+        // First, generate the incident code
+        $incidentCode = $this->generateIncidentCode($this->incident);
+
         // Adjusted payload with correct field names and structures
         $payload = [
             'description' => $this->description,
             'location' => $this->location,
             'status' => $this->status,
+            'incidentCode' => $incidentCode, // Include the generated incident code
             'incidentType' => [
                 'id' => $this->incident, // Assuming this is the ID of the incident type
             ],
@@ -77,6 +82,16 @@ class MatukioComponent extends Component
         }
     }
 
+    private function generateIncidentCode($incidentTypeId)
+    {
+        $currentYear = Carbon::now()->year;
+        $incidentType = IncidentType::find($incidentTypeId);
+        $incidentCount = Incident::whereYear('created_at', $currentYear)
+                                 ->where('incidentType_id', $incidentTypeId)
+                                 ->count();
+
+        return sprintf('%s/%s/%d', $incidentType->title, $currentYear, $incidentCount + 1);
+    }
 
     public function edit($incident_id)
     {
