@@ -8,6 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Livewire\WithPagination;
+use Carbon\Carbon;
 
 class MatukioComponent extends Component
 {
@@ -48,11 +49,15 @@ class MatukioComponent extends Component
 
         $token = session('token'); // Retrieve the auth token
 
+        // First, generate the incident code
+        $incidentCode = $this->generateIncidentCode($this->incident);
+
         // Adjusted payload with correct field names and structures
         $payload = [
             'description' => $this->description,
             'location' => $this->location,
             'status' => $this->status,
+            'incidentCode' => $incidentCode, // Include the generated incident code
             'incidentType' => [
                 'id' => $this->incident, // Assuming this is the ID of the incident type
             ],
@@ -77,6 +82,29 @@ class MatukioComponent extends Component
         }
     }
 
+    private function generateIncidentCode($incidentTypeId)
+{
+    $currentYear = now()->year;
+
+    // Endpoint to get incident type details
+    $incidentTypeResponse = Http::get("https://yourapi.com/api/incident-types/{$incidentTypeId}");
+    if ($incidentTypeResponse->failed()) {
+        throw new \Exception('Failed to fetch incident type');
+    }
+    $incidentType = $incidentTypeResponse->json();
+
+    // Endpoint to count incidents for this type and year
+    $incidentCountResponse = Http::get("https://yourapi.com/api/incidents/count", [
+        'year' => $currentYear,
+        'incidentTypeId' => $incidentTypeId
+    ]);
+    if ($incidentCountResponse->failed()) {
+        throw new \Exception('Failed to count incidents');
+    }
+    $incidentCount = $incidentCountResponse->json()['count'];
+
+    return "{$incidentType['title']}/{$currentYear}/{$incidentCount + 1}";
+}
 
     public function edit($incident_id)
     {
