@@ -40,6 +40,8 @@ use App\Livewire\Weather\WeatherSourceComponent;
 use App\Livewire\WasilishaTukio;
 use App\Http\Controllers\WasilishaTukioNdaniController;
 use App\Livewire\EducationComponent;
+use App\Livewire\InventoryComponent;
+use App\Livewire\InventoryTransactionComponent;
 use Mpdf\Shaper\Indic;
 use NunoMaduro\Collision\Adapters\Phpunit\Subscribers\Subscriber;
 
@@ -120,4 +122,8 @@ Route::middleware(['auth.token'])->group(function () {
 
     #Education
     Route::get('/education', EducationComponent::class)->name('education');
+
+    #Inventory
+    Route::get('/inventory-items', InventoryComponent::class)->name('inventory-items');
+    Route::get('/inventory-transactions', InventoryTransactionComponent::class)->name('inventory-transactions');
 });

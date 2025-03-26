@@ -193,18 +193,25 @@
                             <span>Machapisho</span>
                         </a>
                     </li>
+                 
+
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist') }}">
+                        <a class="sidebar-link sidebar-title " href="#">
                             <svg class="stroke-icon">
-                                <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
+                                <use href="../assets/svg/icon-sprite.svg#stroke-knowledgebase"></use>
                             </svg>
                             <svg class="fill-icon">
-                                <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
+                                <use href="../assets/svg/icon-sprite.svg#fill-knowledgebase"></use>
                             </svg>
-                            <span>Resource Inventory</span>
+                            <span class="">Manage Inventory</span>
                         </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('inventory-items') }}">Inventory items</a></li>
+                            <li><a href="{{ route('inventory-transactions') }}">Inventory transaction</a></li>
+                        </ul>
                     </li>
+
                     {{-- @canany(['long term', 'middle term', 'short term', 'international plan', 'regional plan']) --}}
                     <li class="sidebar-main-title">
                         <div>
