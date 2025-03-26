@@ -1,8 +1,6 @@
 <div>
-    {{-- Because she competes with no one, no one can compete with her. --}}
 
-
-<style>
+    <style>
         /* General Carousel Styling */
         #login-main {
             border: 1px solid rgb(188, 212, 182);
@@ -86,14 +84,14 @@
         .nav-item a:hover,
         .btn:hover {
             background-color: #2d2a2a;
-            color: #000;
+            color: #FFF;
             border-radius: 5%;
         }
 
         .btn {
             border: none;
-            background-color: white !important;
-            color: #333;
+            background-color: black !important;
+            color: white;
             padding: 0px 30px;
             cursor: pointer;
             font-family: Arial, sans-serif;
@@ -168,49 +166,49 @@
         }
 
         .card {
-        background-color:Canvas; /* Background color */
-        border-radius: 10px; /* Rounded corners */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* 3D shadow effect */
-        padding: 20px; /* Inner spacing */
-        margin: 20px; /* Outer spacing */
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transitions for hover effects */
-    }
+            background-color:Canvas; /* Background color */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* 3D shadow effect */
+            padding: 20px; /* Inner spacing */
+            margin: 20px; /* Outer spacing */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transitions for hover effects */
+        }
 
-    .card:hover {
-        transform: translateY(-5px); /* Lift card up slightly on hover */
-        box-shadow: 0 10px 16px rgba(0, 0, 0, 0.2), 0 12px 24px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
-    }
+        .card:hover {
+            transform: translateY(-5px); /* Lift card up slightly on hover */
+            box-shadow: 0 10px 16px rgba(0, 0, 0, 0.2), 0 12px 24px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+        }
 
-    .fa-phone {
-            font-size: 35px; /* Large size for the icon */
-            color: #4CAF50; /* Green color for visibility and thematic relevance to calling */
-    }
+        .fa-phone {
+                font-size: 35px; /* Large size for the icon */
+                color: #4CAF50; /* Green color for visibility and thematic relevance to calling */
+        }
 
-    /* Style for the Subscribe Button */
-    .subscribe-button {
-        background-color: #007bff; /* Primary blue color */
-        color: white; /* Text color */
-        border: none; /* No border for a cleaner look */
-        border-radius: 20px; /* Rounded corners */
-        padding: 10px 20px; /* Top/bottom and left/right padding */
-        font-size: 16px; /* Text size */
-        font-weight: bold; /* Bold text */
-        cursor: pointer; /* Cursor changes to pointer to indicate button */
-        transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effects */
-    }
+        /* Style for the Subscribe Button */
+        .subscribe-button {
+            background-color: #007bff; /* Primary blue color */
+            color: white; /* Text color */
+            border: none; /* No border for a cleaner look */
+            border-radius: 20px; /* Rounded corners */
+            padding: 10px 20px; /* Top/bottom and left/right padding */
+            font-size: 16px; /* Text size */
+            font-weight: bold; /* Bold text */
+            cursor: pointer; /* Cursor changes to pointer to indicate button */
+            transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effects */
+        }
 
-    /* Hover effect for the Subscribe Button */
-    .subscribe-button:hover {
-        background-color: #0056b3; /* Darker shade of blue on hover */
-        transform: scale(1.05); /* Slightly increase size */
-    }
+        /* Hover effect for the Subscribe Button */
+        .subscribe-button:hover {
+            background-color: #0056b3; /* Darker shade of blue on hover */
+            transform: scale(1.05); /* Slightly increase size */
+        }
 
-    /* Focus and active styles for better accessibility and UX */
-    .subscribe-button:focus,
-    .subscribe-button:active {
-        outline: none; /* Removes outline to maintain the design integrity */
-        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Adds a glow effect for focus */
-    }
+        /* Focus and active styles for better accessibility and UX */
+        .subscribe-button:focus,
+        .subscribe-button:active {
+            outline: none; /* Removes outline to maintain the design integrity */
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Adds a glow effect for focus */
+        }
 
 
         .google {
@@ -270,60 +268,57 @@
             /* Bootstrap default for danger/red */
         }
 
-        <!-- login page start-->
-        <div class="container-fluid" style="padding-left: 10px; padding-right: 10px; background-color: #1395d0;">
-            <!-- Header Section -->
-            <div class="row text-white text-center py-3" style="height: 140px; background-color: #1395d0;">
-                <div class="col-md-2">
-                    {{-- <img src="{{ asset('assets/images/smzlogoe.png') }}" class="d-block" alt="..." style="width: 70%;" /> --}}
-                    <img src="{{ asset('assets/images/smzlogoe.png') }}" alt="Logo" class="img-fluid">
-                </div>
-                <div class="col-md-8">
-                    <h3 style="color: white;">AFISI YA MAKAMO WA PILI WA RAIS</h2>
-                    <h1 style="color: white;">KAMISHENI YA KUKABILIANA NA MAAFA ZANZIBAR</h1>
-                    <h3 style="color: white;">MFUMO WA MAAFA (EARLY WARNING SYSTEM)</h3>
+       
+
+    </style>
+
+     <!-- login page start-->
+    <div class="container-fluid" style="padding-left: 10px; padding-right: 10px; background-color: #1395d0;">
+        <!-- Header Section -->
+        <div class="row text-white text-center py-3" style="height: 140px; background-color: #1395d0;">
+            <div class="col-md-2">
+                <img src="{{ asset('assets/images/smzlogoe.png') }}" alt="Logo" class="img-fluid">
+            </div>
+            <div class="col-md-8">
+                <h3 style="color: white;">AFISI YA MAKAMO WA PILI WA RAIS</h2>
+                <h1 style="color: white;">KAMISHENI YA KUKABILIANA NA MAAFA ZANZIBAR</h1>
+                <h3 style="color: white;">MFUMO WA MAAFA (EARLY WARNING SYSTEM)</h3>
             </div>
             <div class="col-md-2">
-                {{-- <img src="{{ asset('assets/images/smzlogoe.png') }}" class="d-block" alt="..." style="width: 70%; margin-right:60%;" /> --}}
                 <img src="{{ asset('assets/images/smzlogoe.png') }}" alt="Logo" class="img-fluid">
             </div>
         </div>
     </div>
-
-
-         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black; padding-left: 10px; padding-right: 10px;">
-            <div class="container-fluid" style="background-color: darkolivegreen;">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav" style="background-color: black;">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link text-white" href="{{ route('/')}}"><i class="fas fa-home"></i> Nyumbani</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="{{ route('tukio')}}"><i class="fas fa-exclamation-triangle"></i>Wasilisha Tukio</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="{{ route('elimu')}}"><i class="fas fa-tools"></i>Elimu & Mafunzo</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="{{ route('nje')}}"><i class="fas fa-tachometer-alt"></i>Dashibodi</a></li>
-                    </ul>
-                    <div class="gtranslate_wrapper"></div>
-                    <div class="d-flex">
-                        <a href="{{ route('login') }}" class="btn btn-success">Staff Login</a>
-                    </div></nav>
-                </div>
+     <!-- Navbar -->
+     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black; padding-left: 0px; padding-right: 10px;">
+        <div class="container-fluid" style="background-color: black;">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="background-color: black;">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav" style="background-color: black;">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('/')}}"><i class="fas fa-home"></i> Nyumbani</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('tukio')}}"><i class="fas fa-exclamation-triangle"></i>Wasilisha Tukio</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('elimu')}}"><i class="fas fa-tools"></i>Elimu & Mafunzo</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('nje')}}"><i class="fas fa-tachometer-alt"></i>Dashibodi</a></li>
+                </ul>
+                <div class="gtranslate_wrapper"></div>
+                <div class="d-flex">
+                    <a href="{{ route('login') }}" class="btn btn-success">Staff Login</a>
+                </div></nav>
             </div>
-        </nav>
-
-        <div class="row">
-            <div class="col-lg-2">
-                <button class="tahadhari-button">TAHADHARI >> </button>
-            </div>
-            <div class="col-lg-10">
-                <div class="marquee">
-                    <p>✶ March 2025 - Mvua Kubwa za masika zinatarajiwa; ✶ ✶ 2025 - Chemsa Maji na safisha  mazingira yaliyokuzunga ✶ Maradhi ya MPOX yapo Epuka kugusana na kupeyana mikono na kukusanyika ✶</p>
-                </div>
-            </div>
-
         </div>
+    </nav>
 
-</div>
+    <div class="row">
+        <div class="col-lg-2">
+            <button class="tahadhari-button">TAHADHARI >> </button>
+        </div>
+        <div class="col-lg-10">
+            <div class="marquee">
+                <p>✶ March 2025 - Mvua Kubwa za masika zinatarajiwa; ✶ ✶ 2025 - Chemsa Maji na safisha  mazingira yaliyokuzunga ✶ Maradhi ya MPOX yapo Epuka kugusana na kupeyana mikono na kukusanyika ✶</p>
+            </div>
+        </div>
+    </div>
 
 </div>
