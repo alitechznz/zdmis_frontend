@@ -83,15 +83,28 @@ class MatukioComponent extends Component
     }
 
     private function generateIncidentCode($incidentTypeId)
-    {
-        $currentYear = Carbon::now()->year;
-        $incidentType = IncidentType::find($incidentTypeId);
-        $incidentCount = Incident::whereYear('created_at', $currentYear)
-                                 ->where('incidentType_id', $incidentTypeId)
-                                 ->count();
+{
+    $currentYear = now()->year;
 
-        return sprintf('%s/%s/%d', $incidentType->title, $currentYear, $incidentCount + 1);
+    // Endpoint to get incident type details
+    $incidentTypeResponse = Http::get("https://yourapi.com/api/incident-types/{$incidentTypeId}");
+    if ($incidentTypeResponse->failed()) {
+        throw new \Exception('Failed to fetch incident type');
     }
+    $incidentType = $incidentTypeResponse->json();
+
+    // Endpoint to count incidents for this type and year
+    $incidentCountResponse = Http::get("https://yourapi.com/api/incidents/count", [
+        'year' => $currentYear,
+        'incidentTypeId' => $incidentTypeId
+    ]);
+    if ($incidentCountResponse->failed()) {
+        throw new \Exception('Failed to count incidents');
+    }
+    $incidentCount = $incidentCountResponse->json()['count'];
+
+    return "{$incidentType['title']}/{$currentYear}/{$incidentCount + 1}";
+}
 
     public function edit($incident_id)
     {
