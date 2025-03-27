@@ -92,11 +92,11 @@ class UserComponent extends Component
     public function store()
     {
         $this->validate([
-            'username' => 'required|min:5',  // Username must be at least 5 characters
-            'email' => 'required|email',     // Email must be a valid email format
-            'password' => 'required|min:6',  // Password must be at least 6 characters
-            'phoneNumber' => 'required|digits_between:10,15',  // Phone number with specific digit constraints
-            'fullname' => 'required|string|max:255',  // Full name as a string with a maximum length
+            'username' => 'required|min:5|unique:users,username',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'phoneNumber' => 'required|digits_between:10,15|unique:users,phoneNumber',
+            'fullname' => 'required|string|max:255',
             // 'isPrivate' => 'required|boolean',
         ]);
 
@@ -130,13 +130,13 @@ class UserComponent extends Component
 
 
         if ($response->successful()) {
-            // logger()->info("URL requested: {$url}");
-            // logger()->info("Data sent: ", ['username' => $this->username, 'isActive' => $this->isActive, 'organizationType' => $this->organizationType]);
+            logger()->info("URL requested: {$url}");
+            logger()->info("Data sent: ", ['username' => $this->username, 'isActive' => $this->isActive, 'organizationType' => $this->organizationType]);
             $this->dispatch('swal:info', title: $this->user_id ? 'User Updated.' : 'User Created');
             $this->resetField();
             $this->dispatch('closeModal'); // Ensure you have the listeners set up for this event
         } else {
-            // logger()->error("Failed to update or create the User: {$response->body()}");
+            logger()->error("Failed to update or create the User: {$response->body()}");
             session()->flash('error', 'Failed to create or update the User on the external server.');
             $this->dispatch('swal:info', title: $this->user_id ? 'Error while updating User.' : 'Error while creating User');
         }
@@ -211,7 +211,7 @@ class UserComponent extends Component
                 $this->dispatch('swal:info', title: 'User Deleted');
                 $this->reset('delete_confirm');
             } else {
-                // logger()->error("Failed to delete User: " . $response->body());
+                logger()->error("Failed to delete User: " . $response->body());
                 $this->dispatch('swal:info', title: 'Failed to delete the User.');
             }
         }

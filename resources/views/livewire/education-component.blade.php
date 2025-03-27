@@ -40,18 +40,18 @@
           <div class="vertical-main-wizard">
             <div class="row g-3">    
               <div class="col-xxl-3 col-xl-4 col-12">
-                <div class="nav flex-column header-vertical-wizard" id="wizard-tab" role="tablist" aria-orientation="vertical"><a class="nav-link active" id="wizard-contact-tab" data-bs-toggle="pill" href="#wizard-contact" role="tab" aria-controls="wizard-contact" aria-selected="true"> 
+                <div class="nav flex-column header-vertical-wizard" id="wizard-tab" role="tablist" aria-orientation="vertical"><a class="nav-link {{ $activeTab == 'wizard-contact' ? 'active' : '' }}" id="wizard-contact-tab" data-bs-toggle="pill" href="#wizard-contact" role="tab" aria-controls="wizard-contact" aria-selected="true"> 
                     <div class="vertical-wizard">
                       <div class="stroke-icon-wizard"><i class="fa fa-book"></i></div>
                       <div class="vertical-wizard-content"> 
                         <h3> Disaster Education</h3>
                         {{-- <p>Add your details </p> --}}
                       </div>
-                    </div></a><a class="nav-link" id="wizard-cart-tab" data-bs-toggle="pill" href="#wizard-cart" role="tab" aria-controls="wizard-cart" aria-selected="false"> 
+                    </div></a><a class="nav-link {{ $activeTab == 'wizard-cart' ? 'active' : '' }}" id="wizard-cart-tab" data-bs-toggle="pill" href="#wizard-cart" role="tab" aria-controls="wizard-cart" aria-selected="false"> 
                     <div class="vertical-wizard">
                       <div class="stroke-icon-wizard"><i class="fa fa-paperclip"></i></div>
                       <div class="vertical-wizard-content"> 
-                        <h3>Disaster Attachments</h3>
+                        <h3>Education Attachments</h3>
                         {{-- <p>Add your a/c details</p> --}}
                       </div>
                     </div></a><a class="nav-link" id="wizard-banking-tab" data-bs-toggle="pill" href="#wizard-banking" role="tab" aria-controls="wizard-banking" aria-selected="false"> 
@@ -59,7 +59,7 @@
               </div>
               <div class="col-xxl-9 col-xl-8 col-12">
                 <div class="tab-content" id="wizard-tabContent">
-                  <div class="tab-pane fade show active" id="wizard-contact" role="tabpanel" aria-labelledby="wizard-contact-tab">
+                  <div class="tab-pane fade show active" id="wizard-contact" role="tabpanel" aria-labelledby="wizard-contact-tab" wire:ignore.self>
                     <form class="row g-3 needs-validation custom-input" novalidate="">
 
 
@@ -68,8 +68,9 @@
                             <select wire:model="disaster" class="form-control @error('disaster') is-invalid @enderror"
                                 id="disaster">
                                 <option value="">--Choose--</option>
-                                <option value="earthquake">Earthquake</option>
-                                <option value="flood">Flood</option>
+                                @foreach ($incidentTypes as $incident)
+                                    <option value="{{ $incident->id }}">{{ $incident->title }}</option>
+                                @endforeach
                             </select>
                             @error('disaster')
                                 <div class="invalid-feedback">
@@ -119,15 +120,23 @@
                         @enderror
                     </div>
 
-                    <div class="mb-4 col-md-12 col-sm-12 col-lg-12">
+                    {{-- <div class="mb-4 col-md-12 col-sm-12 col-lg-12">
                         <label for="description">Description  <span class="text-danger">*</span></label>
                         <textarea wire:model="description" class="form-control @error('description') is-invalid @enderror" id="description"
-                            placeholder="Enter description">
+                            placeholder="Enter description" rows="4">{{ old('description') }}
                         </textarea>
                         @error('description')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
+                        @enderror
+                    </div> --}}
+
+                    <div class="mb-3 col-md-12 col-sm-12 col-lg-12">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="disasterEdu" required>{{ old('description') }}</textarea>
+                        @error('description')
+                        <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
 
@@ -180,7 +189,9 @@
                                         <td title="{{ $disaster->description }}">{{ $disaster->title }}</td>
                                         <td>{{ $disaster->audience }}</td>
                                         <td title="{{ $disaster->description }}">{{ Str::limit($disaster->description, 20, '...') }}</td>
-                                        <td>{{ $disaster->contentUrl }}</td>
+                                        <td>
+                                            <a href="{{ $disaster->contentUrl }}" target="_blank">{{ $disaster->contentUrl }}</a>
+                                        </td>                                        
                                         <td style="display: flex; gap: 5px;">
                                                 <a href="#" wire:click="edit({{ $disaster->id }})"
                                                     class="btn btn-sm btn-success" data-bs-toggle="modal"
@@ -210,7 +221,7 @@
 
 
                   </div>
-                  <div class="tab-pane fade" id="wizard-cart" role="tabpanel" aria-labelledby="wizard-cart-tab">
+                  <div class="tab-pane fade" id="wizard-cart" role="tabpanel" aria-labelledby="wizard-cart-tab" wire:ignore.self>
                     <form class="row g-3 needs-validation custom-input" novalidate="">
                         <div class="mb-4 col-md-6 col-sm-6 col-lg-6">
                             <label for="attachment_type">Attachment Type <span class="text-danger">*</span></label>
@@ -261,8 +272,8 @@
 
                     <div class="mb-4 col-md-12 col-sm-12 col-lg-12">
                         <label for="attachment_description">Description  <span class="text-danger">*</span></label>
-                        <textarea wire:model="attachment_description" class="form-control @error('attachment_description') is-invalid @enderror" id="attachment_description"
-                            placeholder="Enter description">
+                        <textarea wire:model="attachment_description" class="form-control @error('attachment_description') is-invalid @enderror" id="eduAttachment"
+                            placeholder="Enter description" rows="4">
                         </textarea>
                         @error('attachment_description')
                             <div class="invalid-feedback">
@@ -403,3 +414,14 @@
       </div>
 
 </div>
+
+
+<script>
+document.addEventListener('livewire:load', function () {
+    // Attach event listener to file input
+    const fileInput = document.getElementById('file');
+    fileInput.addEventListener('change', function (event) {
+        event.preventDefault(); // Prevent form submission on file select
+    });
+});
+</script>
