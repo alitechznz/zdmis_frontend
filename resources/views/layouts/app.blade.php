@@ -42,6 +42,8 @@
     <!-- In head section, add Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <!-- App css-->
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
     <style>
         .table th {
             padding-left: 10px;
@@ -257,6 +259,22 @@
             }
         }
     </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#disasterEdu').summernote({
+            height: 300
+        });
+    });
+
+    $(document).ready(function() {
+        $('#eduAttachment').summernote({
+            height: 300
+        });
+    });
+</script>
+
     <script src="https://cdn.gtranslate.net/widgets/latest/fc.js" defer></script>
     @stack('scripts')
     @livewireScripts

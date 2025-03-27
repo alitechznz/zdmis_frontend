@@ -19,6 +19,8 @@ class EducationComponent extends Component
     public $search_keyword = null;
     public $update = false;
     public $delete_confirm = null;
+    public $activeTab = 'wizard-contact';
+    // public $currentTab = 'wizard-contact';
 
     public $disaster, $title, $audience, $contentUrl, $attachment_type, $disaster_education, $file, $attachment_description, $description, $disaster_id = null, $disaster_attachment_id = null;
 
@@ -26,6 +28,29 @@ class EducationComponent extends Component
     {
         $this->resetField();
     }
+
+    public function updatedFile()
+    {
+        $this->activeTab = 'wizard-cart'; // Set to the attachments tab
+    }
+
+    // public function nextTab()
+    // {
+    //     if ($this->currentTab === 'wizard-contact') {
+    //         $this->currentTab = 'wizard-cart';
+    //     } elseif ($this->currentTab === 'wizard-cart') {
+    //         // Add other conditions for more tabs
+    //     }
+    // }
+
+    // public function previousTab()
+    // {
+    //     if ($this->currentTab === 'wizard-cart') {
+    //         $this->currentTab = 'wizard-contact';
+    //     } elseif ($this->currentTab === 'wizard-banking') {
+    //         // Add other conditions for more tabs
+    //     }
+    // }
 
 
     private function getBaseUrl()
@@ -304,7 +329,7 @@ class EducationComponent extends Component
 
         if (!$token) {
             session()->flash('error', 'No authentication token available. Please login again.');
-            return view('livewire.education-component', ['ministries' => collect([])])->layout('layouts.app');
+            return view('livewire.education-component', ['disasterEducations' => collect([])])->layout('layouts.app');
         }
 
         $response = Http::withHeaders([
@@ -373,10 +398,29 @@ class EducationComponent extends Component
         }
 
 
+        $incidentTypesResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . session('token'),
+            'Accept' => 'application/json'
+        ])->get("{$baseUrl}/incident-type");
+
+        $incidentTypes = collect([]);
+        if ($incidentTypesResponse->successful()) {
+            $incidentTypeData = $incidentTypesResponse->json()['data'];
+            $incidentTypes = collect($incidentTypeData)->map(function ($incidentType) {
+                return (object) [
+                    'id' => $incidentType['id'],
+                    'title' => $incidentType['title'],
+                ];
+            });
+        } else {
+            logger()->error('Error Fetching incident Types Types:', ['response' => $incidentTypesResponse->body()]);
+        }
+
 
         return view('livewire.education-component', [
             'disasters' => $disasterEducations,
-            'attachments' => $attachmentEducations
+            'attachments' => $attachmentEducations,
+            'incidentTypes' => $incidentTypes
         ])->layout('layouts.app');
     }
 }
