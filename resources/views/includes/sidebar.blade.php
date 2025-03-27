@@ -112,19 +112,19 @@
                             <li><a href="">{{ __('menu.basic_setup') }}</a></li>
                             {{-- @endcan --}}
                             {{-- @can('view screening question') --}}
-                            <li><a href="{{ route('disaster-source') }}">{{ __('menu.Hazard_Source') }}</a></li>
+                            {{-- <li><a href="{{ route('disaster-source') }}">{{ __('menu.Hazard_Source') }}</a></li> --}}
                             {{-- @endcan --}}
                             {{-- @can('view appraisal question') --}}
-                            <li><a href="{{ route('disaster-situation') }}">{{ __('menu.Hazard_Status') }}</a></li>
+                            {{-- <li><a href="{{ route('disaster-situation') }}">{{ __('menu.Hazard_Status') }}</a></li> --}}
                             {{-- @endcan --}}
                             {{-- @can('view appraisal question') --}}
-                            <li><a href="{{ route('disaster-analysis') }}">{{ __('menu.Hazard_Category') }}</a></li>
+                            {{-- <li><a href="{{ route('disaster-analysis') }}">{{ __('menu.Hazard_Category') }}</a></li> --}}
                             {{-- @endcan --}}
                             {{-- @can('view appraisal question') --}}
-                            <li><a href="{{ route('weather-source') }}">{{ __('menu.Weather_Source') }}</a></li>
+                            {{-- <li><a href="{{ route('weather-source') }}">{{ __('menu.Weather_Source') }}</a></li> --}}
                             {{-- @endcan --}}
                             {{-- @can('view appraisal question') --}}
-                            <li><a href="{{ route('standard') }}">{{ __('menu.Measurement_Unit') }}</a></li>
+                            {{-- <li><a href="{{ route('standard') }}">{{ __('menu.Measurement_Unit') }}</a></li> --}}
                             {{-- @endcan --}}
 
                         </ul>
@@ -181,19 +181,7 @@
                             <span>Elimu na Mafunzo</span>
                         </a>
                     </li>
-                    <li class="sidebar-list">
-                        <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('matukiolist') }}">
-                            <svg class="stroke-icon">
-                                <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="../assets/svg/icon-sprite.svg#fill-task"></use>
-                            </svg>
-                            <span>Machapisho</span>
-                        </a>
-                    </li>
-                 
+                   
 
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>

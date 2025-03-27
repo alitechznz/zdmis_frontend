@@ -83,28 +83,81 @@ class MatukioComponent extends Component
     }
 
     private function generateIncidentCode($incidentTypeId)
-{
-    $currentYear = now()->year;
+    {
+        $currentYear = now()->year;
+        $baseUrl = $this->getBaseUrl();
+        $token = session('token');  // Assuming the token is stored in the session
 
-    // Endpoint to get incident type details
-    $incidentTypeResponse = Http::get("https://yourapi.com/api/incident-types/{$incidentTypeId}");
-    if ($incidentTypeResponse->failed()) {
-        throw new \Exception('Failed to fetch incident type');
+        // Endpoint to get incident type details
+        $incidentTypeResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])->get("{$baseUrl}/incidents/{$incidentTypeId}");
+
+        if ($incidentTypeResponse->failed()) {
+            throw new \Exception('Failed to fetch incident type');
+        }
+        $incidentType = $incidentTypeResponse->json();
+
+        // Fetch all incidents
+        $incidentsResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Accept' => 'application/json'
+        ])->get("{$baseUrl}/api/incidents");
+
+        if ($incidentsResponse->failed()) {
+            throw new \Exception('Failed to fetch incidents');
+        } 
+            $incidents = $incidentsResponse->json();
+            $token = $incidents['data']['incidentType']['title'];
+       
+
+        // Count the number of incidents of the specified type and year
+        $incidentCount = 0;
+        foreach ($incidents as $incident) {
+            if (isset($incident['incidentType_id']) && $incident['incidentType_id'] == $incidentTypeId &&
+                Carbon::parse($incident['created_at'])->year == $currentYear) {
+                $incidentCount++;
+            }
+        }
+
+        $incidentCount = $incidentCount + 1;
+        $code_incident = $incidentType['title'].'/'.$currentYear.'/'.$incidentCount;
+    
+        return $code_incident;
     }
-    $incidentType = $incidentTypeResponse->json();
 
-    // Endpoint to count incidents for this type and year
-    $incidentCountResponse = Http::get("https://yourapi.com/api/incidents/count", [
-        'year' => $currentYear,
-        'incidentTypeId' => $incidentTypeId
-    ]);
-    if ($incidentCountResponse->failed()) {
-        throw new \Exception('Failed to count incidents');
+    private function generateIncidentCode1($incidentTypeId)
+    {
+        $currentYear = now()->year;
+    
+        // Endpoint to get incident type details
+        $incidentTypeResponse = Http::get("https://yourapi.com/api/incident-types/{$incidentTypeId}");
+        if ($incidentTypeResponse->failed()) {
+            throw new \Exception('Failed to fetch incident type');
+        }
+        $incidentType = $incidentTypeResponse->json();
+    
+        // Fetch all incidents (this might need pagination or other handling if there are many incidents)
+        $incidentsResponse = Http::get("https://yourapi.com/api/incidents");
+        if ($incidentsResponse->failed()) {
+            throw new \Exception('Failed to fetch incidents');
+        }
+        $incidents = $incidentsResponse->json();
+    
+        // Count the number of incidents of the specified type and year
+        $incidentCount = 0;
+        foreach ($incidents as $incident) {
+            if ($incident['incidentType_id'] == $incidentTypeId && 
+                Carbon::parse($incident['created_at'])->year == $currentYear) {
+                $incidentCount++;
+            }
+        }
+        $incidentCount = $incidentCount + 1;
+        $code_incident = $incidentType['title'].'/'.$currentYear.'/'.$incidentCount;
+    
+        return $code_incident;
     }
-    $incidentCount = $incidentCountResponse->json()['count'];
-
-    return "{$incidentType['title']}/{$currentYear}/{$incidentCount + 1}";
-}
 
     public function edit($incident_id)
     {
