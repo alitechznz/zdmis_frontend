@@ -94,10 +94,12 @@ class MatukioComponent extends Component
             'Accept' => 'application/json'
         ])->get("{$baseUrl}/incidents/{$incidentTypeId}");
 
+
         if ($incidentTypeResponse->failed()) {
             throw new \Exception('Failed to fetch incident type');
         }
         $incidentType = $incidentTypeResponse->json();
+
 
         // Fetch all incidents
         $incidentsResponse = Http::withHeaders([
